@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="在前端应用开发当中我们用到最多的与后端服务进行交互的技术就是Ajax,当然在Angular中我们可以使用$resource去完成我们对于后端服务的ajax请求调用。">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="使用Angular Resources 封装Rest API"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>使用Angular Resources 封装Rest API - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>使用Angular Resources 封装Rest API</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2014-07-31
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/angular/">#angular</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>在前端应用开发当中我们用到最多的与后端服务进行交互的技术就是Ajax,当然在Angular中我们可以使用$resource去完成我们对于后端服务的ajax请求调用。</p>
+<a id="more"></a>
+<h2 id="使用-http直接访问接口"><a href="#使用-http直接访问接口" class="headerlink" title="使用$http直接访问接口"></a>使用<a href="http://docs.angularjs.org/api/ng/service/$http" target="_blank" rel="external">$http</a>直接访问接口</h2><p>$http是angular提供的http调用的基础服务。</p>
+<p>基本用法为：</p>
+<pre><code>$http(config);
+</code></pre><p>config对象主要包含对诸如请求地址url,请求方法method,查询参数参数param.以及post对应的data等。 对于某些特定的http服务如oauth等需要在http头信息中包含一些特定的数据，这些都可以在config中进行配置，配置详情请参考<a href="http://docs.angularjs.org/api/ng/service/$http" target="_blank" rel="external">官方文档</a>。</p>
+<p>除此之外$http还提供了一些快捷方法如下所示：</p>
+<pre><code>$http.get(url, [config])
+$http.head(url, [config])
+$http.post(url, data, [config])
+$http.put(url, data, [config])
+$http.delete(url, [config])
+$http.jsonp(url, [config])
+</code></pre><p>示例：</p>
+<pre><code>$http({method: &apos;GET&apos;, url: &apos;/someUrl&apos;}).
+    success(function(data, status, headers, config) {
+      // this callback will be called asynchronously
+      // when the response is available
+    }).
+    error(function(data, status, headers, config) {
+      // called asynchronously if an error occurs
+      // or server returns response with an error status.
+    });
+</code></pre><p>除此之外$http还提供了请求拦截机制Interceptors可以对api请求进行统一的错误处理等功能。</p>
+<h2 id="http结合Factory封装访问接口"><a href="#http结合Factory封装访问接口" class="headerlink" title="$http结合Factory封装访问接口"></a>$http结合Factory封装访问接口</h2><p>factory是Angular中$provide注册组件的方法之一（常用的其他方法还包括provider,value,service），这里可以简单理解为一个对象工厂(if you code java)， 通过注册一个factory我们可以将后端程序提供的API接口进行统一的封装。</p>
+<p>示例：</p>
+<p>定义工厂：</p>
+<pre><code>angular.module(&apos;someApp&apos;)
+    .factory(&apos;FactoryName&apos;, [&apos;$http&apos;, function(){
+        return {
+            get: function(){ return $http.get(&apos;someUrl&apos;); },
+            query: function(){ return $http.get(&apos;someUrl&apos;); },
+            update: function(){ return $http.put(&apos;someUrl&apos;); },
+            delete: function(){ return $http.del(&apos;someUrl&apos;); },
+            otherAction: function(){ return $http.del(&apos;someUrl&apos;); }
+        }
+    }]);
+</code></pre><p>在controllrt中使用：</p>
+<pre><code>angular.module(&apos;someApp&apos;)
+    .controller(&apos;MainCtrl&apos;, function ($scope, FactoryName) {
+            FactoryName.query().success().error();
+        });
+</code></pre><h2 id="使用-resource封装Rest接口"><a href="#使用-resource封装Rest接口" class="headerlink" title="使用$resource封装Rest接口"></a>使用$resource封装Rest接口</h2><p>如上所示$http基本可以满足对API接口调用的所有需求，$http提供的是一个非常低级的实现，但是具有非常好的灵活性。对于REST类型的API接口还提供了一个独立的可选模块ngResource。 该模块容许我们定义一个资源描述对象来代表响应的REST资源，通过面向对象的方式来操作响应的REST API接口。</p>
+<p>使用$resource服务需要导入单独的<a href="https://github.com/angular/bower-angular-resource" target="_blank" rel="external">angular-reources.js</a>文件</p>
+<p>用法：</p>
+<pre><code>$resource(url, [paramDefaults], [actions]);
+</code></pre><p>resource描述资源对象主要包含:资源URL地址(url);请求的方法(method);默认的参数，以及附属的其他方法，返回值是数组或者对象等信息（isArray）。</p>
+<p>示例：</p>
+<pre><code>var SomeResources = $resource(&apos;/api/resourfes/:id&apos;, null, {
+   action1: {
+     method: &apos;GET&apos;,
+     url: &apos;someOtherUrl&apos;,
+     isArray: true  
+   }
+});
+</code></pre><p>如上所定义的SomeResources对象包含resource提供的默认方法get(), save(), query(), remove(), delete()等默认方法，以及自定义的action1方法。</p>
+<p>在调用过程中的映射关系如下：（$resources并未提供默认的put方法）</p>
+<table>
+<thead>
+<tr>
+<th>资源函数</th>
+<th><em>方法</em></th>
+<th>地址</th>
+<th><em>返回结果</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SomeResources.get({id: id})</td>
+<td>GET</td>
+<td>http /api/resources/:id</td>
+<td>JSON对象</td>
+</tr>
+<tr>
+<td>SomeResources.save({}, res)</td>
+<td>POST</td>
+<td>http POST /api/resources data=data</td>
+<td>JSON对象</td>
+</tr>
+<tr>
+<td>SomeResources.query()</td>
+<td>GET</td>
+<td>http /api/resources</td>
+<td>JSON数组</td>
+</tr>
+<tr>
+<td>SomeResources.remove({id:id})</td>
+<td>DELETE</td>
+<td>http DELETE /api/resources/:id</td>
+<td>JSON对象</td>
+</tr>
+</tbody>
+</table>
+<p>示例：</p>
+<pre><code>angular.module(&apos;someApp&apos;)
+    .factory(&apos;FactoryName&apos;, [&apos;$resource&apos;, function($resource){
+       return $resource(&apos;someUrl&apos;, null, {
+           action1: {
+             method: &apos;GET&apos;,
+             url: &apos;someOtherUrl&apos;,
+             isArray: true  
+           }
+       });
+    }]);
+</code></pre>
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

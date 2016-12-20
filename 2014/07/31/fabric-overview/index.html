@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="如果说要一句话去评价Fabric是话，那就应该是：“简单，犀利！”">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Fabric Overview"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Fabric Overview - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Fabric Overview</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2014-07-31
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/devops/">#devops</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>如果说要一句话去评价Fabric是话，那就应该是：“简单，犀利！”</p>
+<a id="more"></a>
+<h2 id="Hello-Fabric"><a href="#Hello-Fabric" class="headerlink" title="Hello Fabric"></a>Hello Fabric</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip <span class="keyword">install</span> fabric</div></pre></td></tr></table></figure>
+<p><strong>Code</strong></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(name=<span class="string">"world"</span>)</span></span>:</div><div class="line">    run(<span class="string">'echo "hello,world"'</span>)</div></pre></td></tr></table></figure>
+<p><strong>Execute</strong></p>
+<pre><code>fab hello:Jeff`
+</code></pre><p>或者</p>
+<pre><code>fab hello:name=Jeff
+</code></pre><h2 id="Fabric能做什么？"><a href="#Fabric能做什么？" class="headerlink" title="Fabric能做什么？"></a>Fabric能做什么？</h2><ul>
+<li>系统和服务器管理</li>
+<li>应用部署</li>
+</ul>
+<h2 id="Fabric的优势"><a href="#Fabric的优势" class="headerlink" title="Fabric的优势"></a>Fabric的优势</h2><ul>
+<li>角色定义</li>
+<li>代码易读</li>
+<li>封装了本地、远程操作</li>
+<li>参数灵活</li>
+<li>完整的日志输出</li>
+</ul>
+<h2 id="演示时间"><a href="#演示时间" class="headerlink" title="演示时间"></a>演示时间</h2><p>从<a href="https://github.com/yunlzheng/chat" target="_blank" rel="external">github</a>上拉去源码并部署到服务器</p>
+<pre><code>from __future__ import with_statement
+from fabric.api import *
+from fabric.colors import *
+from fabric.contrib.console import confirm
+
+def installs():
+    with cd(&quot;/home&quot;):
+        run(&quot;sudo apt-get install git&quot;)
+        run(&quot;sudo apt-get install redis-server&quot;)
+        run(&quot;sudo apt-get install python-pip&quot;)
+        run(&quot;sudo apt-get install build-essential&quot;)
+
+
+def commit():
+    local(&quot;git add -p &amp;&amp; git commit&quot;)
+
+
+def push():
+    local(&quot;git push&quot;)
+
+
+def prepare_deploy():
+    commit()
+    push()
+
+@settings(warn_only=True)
+def deploy():
+    code_dir = &apos;/home/vagrant/git/chat&apos;
+        if run(&quot;test -d %s&quot; % code_dir).failed:
+        run(&quot;git clone https://github.com/yunlzheng/chat.git %s&quot; % code_dir)
+
+    with cd(code_dir):
+        run(&quot;git pull&quot;)
+        run(&quot;sudo pip install -r requirements.txt&quot;)
+        run(&quot;sudo killall -9 python&quot;)
+        run(&quot;nohup python server.py &amp;&quot;)
+</code></pre><h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><pre><code>fab -l             -- 显示可用的task（命令）
+fab -H             -- 指定host，支持多host逗号分开
+fab -R             -- 指定role，支持多个
+fab -P             -- 并发数，默认是串行
+fab -w             -- warn_only，默认是碰到异常直接abort退出
+fab -f             -- 指定入口文件
+</code></pre><h2 id="主要API"><a href="#主要API" class="headerlink" title="主要API"></a>主要API</h2><pre><code>* cd                --进入远程服务器特定目录
+* lcd               --进入本地服务器特定目录
+* run               --在远程运行command
+* sudo              --以root身份运行command
+* local             --在本地运行command
+* get               --获取远程文件
+* put               --上传文件到远程`
+</code></pre>
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

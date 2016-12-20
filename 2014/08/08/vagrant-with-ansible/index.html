@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="在Vagrant出现的时候，发现原来使用虚拟机是这么爽得一件事情从vagrant init到vagrant up的过程是这么美好。于是程序员所有的虚拟机都开始通过Vagrant来进行管理(unless windows)
+我所有开发相关服务Mysql, Mongodb, Rabbit都跑在了Vagrant里面。 有一天我的虚拟机挂掉了，完蛋！ 又要重新装一遍这些所有的服务
+恩，其实Vagrant通过box的方式来打包虚拟机，我还可以把这些服务器都装好，然后打包再保存这些box。一个人玩挺好的，就是挺占我本就不大的存储空间的，不过也不是什么大问题了。
+于是有人尝试将这种方式推广到开发团队中，利用box来统一开发环境。 使用Pycharm甚至可以直接支持Vagrant的远程Python环境。
+但是随着越来越多好玩的新的技术，新的服务，新的中间件的加入。 团队的每个成员都重复这样一个过程，某个熟悉服务器配置的人将所有依赖配置完成，重新打包box，分发box，团队成员再从新导入box的循环当中。 而box的list也越来越长，所需要的存储空间也越来越大。">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="利用Ansible将开发环境纳入版本管理"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>利用Ansible将开发环境纳入版本管理 - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>利用Ansible将开发环境纳入版本管理</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2014-08-08
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/Devops/">#Devops</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>在Vagrant出现的时候，发现原来使用虚拟机是这么爽得一件事情从<strong>vagrant init</strong>到<strong>vagrant up</strong>的过程是这么美好。于是程序员所有的虚拟机都开始通过Vagrant来进行管理(unless windows)</p>
+<p>我所有开发相关服务Mysql, Mongodb, Rabbit都跑在了Vagrant里面。 有一天我的虚拟机挂掉了，完蛋！ 又要重新装一遍这些所有的服务</p>
+<p>恩，其实Vagrant通过box的方式来打包虚拟机，我还可以把这些服务器都装好，然后打包再保存这些box。一个人玩挺好的，就是挺占我本就不大的存储空间的，不过也不是什么大问题了。</p>
+<p>于是有人尝试将这种方式推广到开发团队中，利用box来统一开发环境。 使用Pycharm甚至可以直接支持Vagrant的远程Python环境。</p>
+<p>但是随着越来越多好玩的新的技术，新的服务，新的中间件的加入。 团队的每个成员都重复这样一个过程，某个熟悉服务器配置的人将所有依赖配置完成，重新打包box，分发box，团队成员再从新导入box的循环当中。 而box的list也越来越长，所需要的存储空间也越来越大。</p>
+<a id="more"></a>
+<h2 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h2><p>其实Vagrant已经提供好了解决这些所有问题的支持,在Vagrant的官方资料中是包含这样一个特性<strong>provisioning</strong>， 所谓的<strong>provisioning</strong>就是指在启动完成一个新的虚拟机之后，我们自动的去安装和配置软件的一个过程。</p>
+<p>Vagrant新版本中以及默认支持了譬如：Chef，Puppte以及Ansible和Docker等多种自动化工具。 利用这些自动化工具我们可以将配置开发环境的过程保存为相应的配置描述文件，在Vagrant启动一台新的虚拟机的时候就会自动根据这些配置文件所描述的内容安装和搭建好我们所需的开发测试的服务器环境</p>
+<p>引入自动化工具的好处就是我们可以将<strong>环境配置信息版本化</strong>，而不必再陷入去管理那些体积庞大的box的额外工作中。</p>
+<h2 id="利用Ansible实践"><a href="#利用Ansible实践" class="headerlink" title="利用Ansible实践"></a>利用Ansible实践</h2><p>开发测试环境需求：Java 1.7， Mysql</p>
+<h3 id="Vagrant初始化虚拟机"><a href="#Vagrant初始化虚拟机" class="headerlink" title="Vagrant初始化虚拟机"></a>Vagrant初始化虚拟机</h3><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">vagrant init</span></div></pre></td></tr></table></figure>
+<p>修改Vagrantfile文件，添加Mysql映射端口3306. 并添加<strong>vm.provision</strong>指定使用ansible来进行自动化配置.</p>
+<p>Vagrantfile文件内容如下：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"># -*- <span class="keyword">mode</span>: <span class="keyword">ruby</span> -*-</div><div class="line"># <span class="keyword">vi</span>: <span class="keyword">set</span> ft=<span class="keyword">ruby</span> :</div><div class="line"></div><div class="line"># Vagrantfile API/<span class="keyword">syntax</span> <span class="keyword">version</span>. Don<span class="string">'t touch unless you know what you'</span>re doing!</div><div class="line">VAGRANTFILE_API_VERSION = <span class="string">"2"</span></div><div class="line"></div><div class="line">Vagrant.configure(VAGRANTFILE_API_VERSION) <span class="keyword">do</span> |config|</div><div class="line">  config.<span class="keyword">vm</span>.box = <span class="string">"base"</span></div><div class="line"></div><div class="line">  config.<span class="keyword">vm</span>.network <span class="string">"forwarded_port"</span>, gues<span class="variable">t:</span> <span class="number">3306</span>, hos<span class="variable">t:</span> <span class="number">3306</span></div><div class="line"></div><div class="line">  config.<span class="keyword">vm</span>.provision <span class="string">"ansible"</span> <span class="keyword">do</span> |ansible|</div><div class="line">     ansible.playbook = <span class="string">"ansible/playbook.yml"</span></div><div class="line">  end</div><div class="line"></div><div class="line">end</div></pre></td></tr></table></figure>
+<p>在Vagrantfile中间我们指定了调用ansible/playbook.yml配置文件，在第一次启动vagrant时，<br>Vagrant会自动更具playbook.yml内容自动安装配置服务器，当配置文件发生变更以后使用<strong>vagrant provision</strong>命令重新加载配置即可</p>
+<p>playbook.yml文件内容如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line"><span class="comment">---</span></div><div class="line">- hosts: all</div><div class="line">  sudo: yes</div><div class="line">  vars:</div><div class="line">    http_port: 80</div><div class="line">    max_clients: 200</div><div class="line">    database_name: development</div><div class="line">    root_db_username: development</div><div class="line">    root_db_password: development</div><div class="line">  remote_user: vagrant</div><div class="line">  tasks:</div><div class="line">    - name: <span class="keyword">update</span> <span class="keyword">to</span> <span class="number">163</span> sources</div><div class="line">      copy: src=sources.list dest=/etc/apt/sources.list</div><div class="line">    - <span class="keyword">name</span>: <span class="keyword">update</span> <span class="keyword">key</span></div><div class="line">      shell: gpg <span class="comment">--keyserver keyserver.ubuntu.com --recv 3E5C1192</span></div><div class="line">    - <span class="keyword">name</span>: <span class="keyword">update</span> <span class="keyword">key</span></div><div class="line">      shell: gpg <span class="comment">--export --armor 3E5C1192 | sudo apt-key add -</span></div><div class="line">    - <span class="keyword">name</span>: <span class="keyword">install</span> python software properties</div><div class="line">      apt: <span class="keyword">name</span>=python-software-properties state=<span class="keyword">present</span></div><div class="line">    - <span class="keyword">name</span>: <span class="keyword">add</span> <span class="keyword">oracle</span> jdk repo</div><div class="line">      apt_repository: repo=<span class="string">"ppa:webupd8team/java"</span></div><div class="line">    - <span class="keyword">name</span>: <span class="keyword">update</span> apt-<span class="keyword">get</span> <span class="keyword">local</span> <span class="keyword">cache</span></div><div class="line">      shell: apt-<span class="keyword">get</span> <span class="keyword">update</span></div><div class="line">    - <span class="keyword">name</span> : <span class="keyword">Select</span> <span class="keyword">java</span> license</div><div class="line">      shell: echo <span class="keyword">oracle</span>-java7-installer <span class="keyword">shared</span>/accepted-<span class="keyword">oracle</span>-license-v1<span class="number">-1</span> <span class="keyword">select</span> <span class="literal">true</span> | /usr/<span class="keyword">bin</span>/debconf-<span class="keyword">set</span>-selections</div><div class="line">    - <span class="keyword">name</span>: ensure software <span class="keyword">is</span> the lastest <span class="keyword">version</span></div><div class="line">      apt: <span class="keyword">name</span>=&#123;&#123;item&#125;&#125; state=latest</div><div class="line">      with_items:</div><div class="line">      - mysql-<span class="keyword">server</span><span class="number">-5.5</span></div><div class="line">      - python-mysqldb</div><div class="line">      - <span class="keyword">oracle</span>-jdk7-installer</div><div class="line">      - maven</div><div class="line">      - git</div><div class="line">    - <span class="keyword">name</span>: ensure <span class="keyword">and</span> upload my.cnf</div><div class="line">      copy: src=my.cnf dest=/etc/mysql/my.cnf</div><div class="line">      notify:</div><div class="line">        - restart mysql</div><div class="line">    - <span class="keyword">name</span>: Ensure MySQL <span class="keyword">is</span> running</div><div class="line">      service: <span class="keyword">name</span>=mysql state=started enabled=<span class="literal">true</span></div><div class="line">      notify:</div><div class="line">        - restart mysql</div><div class="line">    - <span class="keyword">name</span>: <span class="keyword">Update</span> MySQL Root <span class="keyword">Password</span></div><div class="line">      mysql_user: host=% <span class="keyword">name</span>=&#123;&#123;root_db_username&#125;&#125; <span class="keyword">password</span>=&#123;&#123;root_db_password&#125;&#125; priv=*.*:ALL state=<span class="keyword">present</span></div><div class="line">    - <span class="keyword">name</span>: <span class="keyword">Create</span> <span class="keyword">local</span> development <span class="keyword">database</span></div><div class="line">      mysql_db: <span class="keyword">name</span>=&#123;&#123;database_name&#125;&#125; state=<span class="keyword">present</span></div><div class="line">  handlers:</div><div class="line">    - <span class="keyword">name</span>: restart mysql</div><div class="line">      service: <span class="keyword">name</span>=mysql state=restarted</div></pre></td></tr></table></figure>
+<p>上述的playbook.xml文件描述的基本内容包括：</p>
+<ul>
+<li>更新软件源为网易163源（这里直接在本地创建了一个sources.list文件并使用copy模块上传到服务器）</li>
+<li>添加和配置appkey</li>
+<li>添加oracle-jdk的repository</li>
+<li>调用apt-get update 更新软件包索引</li>
+<li>利用ansible的apt模块安装oracle-java7-installer, mysql-server-5.5,python-mysqldb,maven,git等相关软件</li>
+<li>利用ansible的copy讲本地的mysql配置文件my.conf,上传到服务器的指定位置(mysql监听的地址0.0.0.0在该配置文件设置)</li>
+<li>利用ansible的service模块启动mysql服务，并且设置为开机启动</li>
+<li>利用ansible的mysql_user模块添加mysql用户，并设置远程授权</li>
+<li>利用ansible的mysql_db模块创建数据库</li>
+</ul>
+<p>通过以上的过程，我们就可以在<strong>vagrant up</strong>的同时自动化的搭建好我们的开发测试环境。</p>
+<p>Java党蛋疼的问题在于集成开发环境如IDAD不支持直接使用远程的JDK环境。所以只能做到统一部分开发环境和测试环境</p>
+<p>但是对于Python程序员而言由于如Pycharm直接支持使用vagrant的远程python环境，所以完全能做到统一所有的开发和测试环境。而主机只是作为编辑代码的存在。什么时候能有python项目来做呢？想想还很激动呢~</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

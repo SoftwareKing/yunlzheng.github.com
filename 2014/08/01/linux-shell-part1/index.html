@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Linux作为当前最最常用的服务器操作系统，其重要性自然不言而喻。 对于想要学习自动化配置管理的同学来说，了解和掌握Linux的基本知识是非常重要的。这里我们主要来讲讲关于Shell的一些事儿~">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Linux Shell基础（一）"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Linux Shell基础（一） - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Linux Shell基础（一）</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2014-08-01
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/linux/">#linux</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>Linux作为当前最最常用的服务器操作系统，其重要性自然不言而喻。 对于想要学习自动化配置管理的同学来说，了解和掌握Linux的基本知识是非常重要的。这里我们主要来讲讲关于Shell的一些事儿~<br><a id="more"></a></p>
+<h3 id="Shell默认变量"><a href="#Shell默认变量" class="headerlink" title="Shell默认变量"></a>Shell默认变量</h3><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$n</td>
+<td>$1表示第一个参数，$2表示第二个参数</td>
+</tr>
+<tr>
+<td>$#</td>
+<td>命令行参数个数</td>
+</tr>
+<tr>
+<td>$0</td>
+<td>当前程序名称</td>
+</tr>
+<tr>
+<td>$?</td>
+<td>前一个程序的返回码</td>
+</tr>
+<tr>
+<td>$*</td>
+<td>以“参数1 参数2” 形式保存参数</td>
+</tr>
+<tr>
+<td>$@</td>
+<td>以“参数1”“残数”形式保存参数</td>
+</tr>
+<tr>
+<td>$$</td>
+<td>本程序的进程号</td>
+</tr>
+<tr>
+<td>$!</td>
+<td>上一个命令的pid</td>
+</tr>
+</tbody>
+</table>
+<p><strong>example 01</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#! /bin/bash</span></div><div class="line"></div><div class="line"><span class="built_in">echo</span> <span class="string">"the number paramter is <span class="variable">$#</span>"</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"the return code of last command $?"</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"the script name is <span class="variable">$0</span>"</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"the paramters is $*"</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"\$1=<span class="variable">$1</span> \$2=<span class="variable">$2</span>"</span></div></pre></td></tr></table></figure>
+<p><strong>example 02</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#! /bin/bash</span></div><div class="line"><span class="keyword">if</span> [ <span class="variable">$#</span> <span class="_">-ne</span> 2 ]; <span class="keyword">then</span></div><div class="line">     <span class="built_in">echo</span> <span class="string">"Usage <span class="variable">$0</span> string file"</span>;</div><div class="line">     <span class="built_in">exit</span> 1;</div><div class="line"></div><div class="line"><span class="keyword">fi</span></div><div class="line">grep <span class="variable">$1</span> <span class="variable">$2</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> [ $? <span class="_">-ne</span> 0 ]; <span class="keyword">then</span></div><div class="line">     <span class="built_in">echo</span> <span class="string">"Not found <span class="variable">$1</span> in <span class="variable">$2</span>"</span></div><div class="line">     <span class="built_in">exit</span> 1;</div><div class="line"></div><div class="line"><span class="keyword">fi</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"Found <span class="variable">$1</span> in <span class="variable">$2</span>"</span></div></pre></td></tr></table></figure>
+<h4 id="变量的显示与设置"><a href="#变量的显示与设置" class="headerlink" title="变量的显示与设置"></a>变量的显示与设置</h4><blockquote>
+<p>用户定义变量必须由字母数字以及下划线组成，且第一个字符不能为数字</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">name=yunlong</div><div class="line"><span class="built_in">echo</span> <span class="variable">$name</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"hello <span class="variable">$&#123;name&#125;</span>"</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>为避免混淆，常常使用${name}形式</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#! /bin/bash</span></div><div class="line"></div><div class="line"><span class="built_in">echo</span> <span class="string">"\$a = <span class="variable">$a</span>"</span></div><div class="line"><span class="comment"># readonly a=2</span></div><div class="line">a = 2</div><div class="line"><span class="built_in">echo</span> <span class="string">"\$a = <span class="variable">$a</span>"</span></div><div class="line"><span class="built_in">unset</span> a</div><div class="line"><span class="built_in">echo</span> <span class="string">"\$a = <span class="variable">$a</span>"</span></div></pre></td></tr></table></figure>
+<h3 id="变量的有效范围"><a href="#变量的有效范围" class="headerlink" title="变量的有效范围"></a>变量的有效范围</h3><p>环境变量可以被子进程使用，自定义变量则不会存在与子进程当中</p>
+<ul>
+<li>如果希望设置的变量其他shell都能用 export</li>
+<li>如果希望设置的变量在登录linux时有效，则设置到.bash_profile文件</li>
+</ul>
+<blockquote>
+<p>通常来说每个shell都是由某个shell（父shell）派生而来的，子shell中定义的变量只在子shell范围内有效</p>
+</blockquote>
+<h4 id="变量的读取，数组与申明"><a href="#变量的读取，数组与申明" class="headerlink" title="变量的读取，数组与申明"></a>变量的读取，数组与申明</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#! /bin/bash</span></div><div class="line">name=(<span class="string">"Tom"</span> <span class="string">"Tomy"</span> <span class="string">"Jena"</span>)</div><div class="line"></div><div class="line"><span class="keyword">for</span> i <span class="keyword">in</span> 0 1 2</div><div class="line"><span class="keyword">do</span></div><div class="line">     <span class="built_in">echo</span> <span class="string">"<span class="variable">$i</span> : <span class="variable">$&#123;name[i]&#125;</span>"</span></div><div class="line"><span class="keyword">done</span></div></pre></td></tr></table></figure>
+<p>export设置环境变量</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">NAME</span>=yunlong</div><div class="line"><span class="keyword">export</span> <span class="keyword">NAME</span></div><div class="line">env</div></pre></td></tr></table></figure>
+<h3 id="数据流从定向"><a href="#数据流从定向" class="headerlink" title="数据流从定向"></a>数据流从定向</h3><ul>
+<li>什么是数据流从定向</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&gt;</td>
+<td>以覆盖方式将标准输出（stdout）输出到指定的文件</td>
+</tr>
+<tr>
+<td>&gt;&gt;</td>
+<td>以追加的方式将标准输出（stdout）输出到指定的文件</td>
+</tr>
+<tr>
+<td>2&gt;</td>
+<td>以覆盖的方式将标准错误输出（stderr）输出到指定文件</td>
+</tr>
+<tr>
+<td>2&gt;&gt;</td>
+<td>以追加方式将标准错误输出（stderr）输出到指定文件</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>命令执行的判断依据 ;,&amp;&amp;, ||</li>
+</ul>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cmd1<span class="comment">;cmd2</span></div></pre></td></tr></table></figure>
+<p>cmd1执行完成后顺序执行cmd2的指令</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">cmd1</span> &amp;&amp; cmd2</div></pre></td></tr></table></figure>
+<p>如果cmd1执行完成且正确执行($?=0) 则接着执行cmd2; 如果cmd1执行完成且发生了错误($?!=0),则不执行cmd2</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cmd2 <span class="string">|| cmd2</span></div></pre></td></tr></table></figure>
+<p>如果cmd1执行完成且正确执行，则不执行cmd2; 如果cmd1执行完成且发生了错误，则执行cmd2</p>
+<h3 id="管道与命令替换"><a href="#管道与命令替换" class="headerlink" title="管道与命令替换"></a>管道与命令替换</h3><h4 id="管道命令"><a href="#管道命令" class="headerlink" title="管道命令"></a>管道命令</h4><p>linux中管道命令操作符是：”|”,它是指前一个命令的输出作为后一个命令的输入，也就是standard output 的信息，对于stdandard<br>error 信息没有直接处理能力。然后，传递给下一个命令，作为标准的输入 standard input.</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">* 管道命令只处理前一个命令正确输出，不处理错误输出<span class="comment">;</span></div><div class="line">* 管道命令右边命令，必须是能够接收标准输入流命令<span class="comment">;</span></div></pre></td></tr></table></figure>
+<p>单个管道：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">ps</span> -ef|<span class="keyword">grep</span> java</div></pre></td></tr></table></figure>
+<p>多个管道：</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ps -ef | <span class="type">grep</span> Google | <span class="type">wc</span> -l</div></pre></td></tr></table></figure>
+<p>查询最常使用的10个命令</p>
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat .bash_history | <span class="type">awk</span> '&#123;print $<span class="number">1</span>&#125;' | <span class="type">sort</span> | <span class="type">uniq</span> -c | <span class="type">sort</span> -nr | <span class="type">head</span> <span class="number">-10</span></div></pre></td></tr></table></figure>
+<h4 id="命令替换"><a href="#命令替换" class="headerlink" title="命令替换"></a>命令替换</h4><p>在Linux命令行模式下，当遇到一对“<code>” (上分割符)时，将首先执行“</code>”中间包含的命令，然后将其输出结果作为参数代入命令行中.</p>
+<figure class="highlight cos"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch `date +<span class="built_in">%Y</span><span class="built_in">%m</span><span class="built_in">%d</span><span class="built_in">%k</span><span class="built_in">%M</span><span class="built_in">%S</span>`.txt</div></pre></td></tr></table></figure>
+<p>该命令将会优先执行”`”之间的命令，它将按照指定格式输出当前时间，并作为参数传递个touch命令。即可创建一个包含当前时间的文本文件</p>
+<h3 id="命令别名设置"><a href="#命令别名设置" class="headerlink" title="命令别名设置"></a>命令别名设置</h3><p>设置别名</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">alias</span></div></pre></td></tr></table></figure>
+<p>取消别名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">unalias</span></div></pre></td></tr></table></figure>
+<h3 id="历史命令"><a href="#历史命令" class="headerlink" title="历史命令"></a>历史命令</h3><p>显示历史命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">history</span></div></pre></td></tr></table></figure>
+<p>执行历史命令</p>
+<ul>
+<li>!66 执行第66条命令</li>
+<li>!! 执行上一条命令</li>
+<li>!al 罪行最近以al开头的命令</li>
+</ul>
+<p>查询历史命令</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">ctrl</span> + r</div></pre></td></tr></table></figure>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

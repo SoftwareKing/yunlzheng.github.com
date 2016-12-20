@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="关于OpenStack的镜像创建官方已经提供了非常详细的说明，这里主要是记录一下如何使用KVM创建Windows系列镜像的基本过程；本文以创建Window7为例，其他版本类似，不同之处会在案例中进行说明；">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="OpenStack创建Windows镜像"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>OpenStack创建Windows镜像 - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>OpenStack创建Windows镜像</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2015-02-10
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/openstack/">#openstack</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>关于OpenStack的镜像创建官方已经提供了非常详细的说明，这里主要是记录一下如何使用KVM创建Windows系列镜像的基本过程；本文以创建Window7为例，其他版本类似，不同之处会在案例中进行说明；</p>
+<a id="more"></a>
+<h2 id="1，准备基础环境"><a href="#1，准备基础环境" class="headerlink" title="1，准备基础环境"></a>1，准备基础环境</h2><ul>
+<li>系统环境：ubuntu 14.04</li>
+<li>window7版本iso源文件；</li>
+<li>virtio驱动程序virtio-win-0.1-94.iso（下载地址：<a href="http://alt.fedoraproject.org/pub/alt/virtio-win/latest/）；" target="_blank" rel="external">http://alt.fedoraproject.org/pub/alt/virtio-win/latest/）；</a></li>
+</ul>
+<h2 id="2，安装相关软件包"><a href="#2，安装相关软件包" class="headerlink" title="2，安装相关软件包"></a>2，安装相关软件包</h2><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">apt-<span class="keyword">get</span> install vncviewer kvm qemu-kvm</div></pre></td></tr></table></figure>
+<p>注意：由于使用到KVM需要打开主机的Intel VT-x/EPT支持，否则无法使用kvm模块</p>
+<h2 id="3，创建windows7镜像"><a href="#3，创建windows7镜像" class="headerlink" title="3，创建windows7镜像"></a>3，创建windows7镜像</h2><p>这里默认建立具有20G存储空间的镜像,在实际使用中假如没有提供Cinder存储服务，虚拟机的磁盘空间往往不能满足使用需求</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">qemu-<span class="selector-tag">img</span> create -f qcow windows7<span class="selector-class">.qcow2</span> <span class="number">20</span>G</div></pre></td></tr></table></figure>
+<p>使用kvm创建虚拟机</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kvm -<span class="keyword">m</span> 2048 -<span class="keyword">no</span>-reboot -<span class="keyword">boot</span> <span class="keyword">order</span>=<span class="keyword">d</span> -drive <span class="keyword">file</span>=windows7.qcow2,<span class="keyword">if</span>=virtio,<span class="keyword">boot</span>=off -drive <span class="keyword">file</span>=windows7.iso,media=cdrom,<span class="keyword">boot</span>=<span class="keyword">on</span> -drive <span class="keyword">file</span>=virtio-<span class="keyword">win</span>-0.1-94.iso,media=cdrom,<span class="keyword">boot</span>=off -<span class="keyword">net</span> nic,model=virtio -nographic -vnc :1</div></pre></td></tr></table></figure>
+<p>ubuntu examples:</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">kvm -<span class="keyword">m</span> 1024 -cdrom ubuntu-14.04.1-desktop-amd64.iso -drive <span class="keyword">file</span>=ubuntu-14.04-desktop-amd64.qcow2 -<span class="keyword">boot</span> <span class="keyword">d</span> -nographic -vnc :2</div><div class="line"># restart</div><div class="line">kvm -<span class="keyword">m</span> 1024 -drive <span class="keyword">file</span>=ubuntu-14.04-desktop-amd64.qcow2 -<span class="keyword">boot</span> <span class="keyword">d</span> -nographic -vnc :2</div></pre></td></tr></table></figure>
+<p>之后可以通过vnc客户端连接到虚拟机</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">vncviewer</span> <span class="comment"># localhost:1</span></div></pre></td></tr></table></figure>
+<p>进入之后实际上就和我们安装操作系统的流程一致，安装windows7操作系统即可。</p>
+<ul>
+<li>安装中的第一个问题就是提示找不到任何磁盘安装操作系统，这里就是virtio发挥作用的地方之一</li>
+</ul>
+<p><img src="http://filehost.qiniudn.com/openstack-images-windows-001.png" alt=""></p>
+<p>点击加载驱动程序，确认</p>
+<p><img src="http://filehost.qiniudn.com/openstack-images-windows-002.png" alt=""></p>
+<p>按理来说应该是选择WIN7目录下的AMD64,不过似乎window2008和这个兼容也没出什么问题。</p>
+<p>这里实际上需要根据你当前的操作系统类型和架构进行选择即可</p>
+<p><img src="http://filehost.qiniudn.com/openstack-windows-windows-004.png" alt=""></p>
+<p>加载完成驱动之后，就可以开始继续我们的windows操作系统的安装</p>
+<p><img src="http://filehost.qiniudn.com/penstack-images-windows-005.png" alt=""><br><img src="http://filehost.qiniudn.com/openstack-images-window-007.png" alt=""></p>
+<h2 id="4，安装网卡驱动程序"><a href="#4，安装网卡驱动程序" class="headerlink" title="4，安装网卡驱动程序"></a>4，安装网卡驱动程序</h2><p>当完成系统安装之后，你会惊喜的发现windows系统找不到本地网络驱动设备，也就是说这个镜像依然无法在opensatck中正常使用。</p>
+<p>这是virtio发挥作用的第二个地方，安装网卡驱动。 你只需要进入windows的设备管理器，你会发现网卡设备上的一个黄色感叹号，点击安装驱动程序即可。</p>
+<p>当然驱动程序你可以在CDROM下面找到自己相应版本的操作系统驱动程序即可。 这里就不截图了（mei de jie）。</p>
+<h2 id="5，开放windows部分防火墙"><a href="#5，开放windows部分防火墙" class="headerlink" title="5，开放windows部分防火墙"></a>5，开放windows部分防火墙</h2><p>由于OpenStack使用到安装组（Securiyu Group进行安装管理），所以对于windows的操作系统镜像需要至少打开TCP3389和ICMP。</p>
+<h2 id="6，加载文件内容"><a href="#6，加载文件内容" class="headerlink" title="6，加载文件内容"></a>6，加载文件内容</h2><p>在完成基础的镜像制作之后（操作系统安装，网卡驱动安装），我们往往需要对虚拟机镜像进行一些其他操作诸如：激活操作系统，安装软件等定制化。 这时候需要我们能上传文件到虚拟机内部。</p>
+<p>此时采取的策略与加载virto驱动相识，我们实现创建好一个iso文件，并包含我们必要的文件内容。 在使用kvm启动虚拟机时以CDROM的方式加载ISO文件即可</p>
+<h3 id="6-1，创建临时文件目录"><a href="#6-1，创建临时文件目录" class="headerlink" title="6.1，创建临时文件目录"></a>6.1，创建临时文件目录</h3><figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">mkdir</span> /tmp/<span class="built_in">directory</span></div></pre></td></tr></table></figure>
+<p>将需要的文件保存到/tmp/directory目录下，建议按照不同操作系统分目录如：</p>
+<hr>
+<ul>
+<li>window7<br>|– amd64<br>|– x86</li>
+<li>window8<br>|– amd64<br>|– x86</li>
+</ul>
+<h3 id="6-2，将目录保存为iso文件，如-tmp-cd-iso"><a href="#6-2，将目录保存为iso文件，如-tmp-cd-iso" class="headerlink" title="6.2，将目录保存为iso文件，如/tmp/cd.iso"></a>6.2，将目录保存为iso文件，如/tmp/cd.iso</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mkisofs -o <span class="regexp">/tmp/</span>cd.iso  <span class="regexp">/tmp/</span>directory</div></pre></td></tr></table></figure>
+<h3 id="6-3，将cd-iso作为CDROM加载到虚拟机"><a href="#6-3，将cd-iso作为CDROM加载到虚拟机" class="headerlink" title="6.3，将cd.iso作为CDROM加载到虚拟机"></a>6.3，将cd.iso作为CDROM加载到虚拟机</h3><figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kvm -<span class="keyword">m</span> 2048 -<span class="keyword">no</span>-reboot -<span class="keyword">boot</span> <span class="keyword">order</span>=<span class="keyword">d</span> -drive <span class="keyword">file</span>=windows7.qcow2,<span class="keyword">if</span>=virtio,<span class="keyword">boot</span>=off -drive <span class="keyword">file</span>=virtio-<span class="keyword">win</span>-0.1-94.iso,media=cdrom -drive <span class="keyword">file</span>=<span class="keyword">cd</span>.iso,media=cdrom -<span class="keyword">net</span> nic,model=virtio -nographic -vnc :1</div></pre></td></tr></table></figure>
+<p><img src="http://filehost.qiniudn.com/kvm-load-file.png" alt=""></p>
+<h2 id="7，导入"><a href="#7，导入" class="headerlink" title="7，导入"></a>7，导入</h2><p>接下来你就可以使用glance的cli命令上传镜像到OpenStack并且进行测试了。</p>
+<figure class="highlight dsconfig"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="string">glance </span><span class="string">image-create </span><span class="built_in">--name</span> <span class="string">"windows7-x86_64"</span> <span class="built_in">--disk-format</span> <span class="string">qcow2 </span><span class="built_in">--container-format</span> <span class="string">bare </span><span class="built_in">--is-public</span> <span class="string">True </span><span class="built_in">--progress</span> &lt; <span class="string">windows7.</span><span class="string">qcow2</span></div></pre></td></tr></table></figure>
+<p>对于不同类型版本的windows操作系统，只需要选择相应的驱动程序即可。 Enjoy Your OpenStack;</p>
+<h2 id="8，其他"><a href="#8，其他" class="headerlink" title="8，其他"></a>8，其他</h2><p>For Linux 安装官方文档制作Linux虚拟机时，文档提供的shell脚本有部分错误，修改如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/bin/sh</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># This script will be executed *after* all the other init scripts.</span></div><div class="line"><span class="comment"># You can put your own initialization stuff in here if you don't</span></div><div class="line"><span class="comment"># want to do the full Sys V style init stuff.</span></div><div class="line"><span class="keyword">if</span> [ ! <span class="_">-d</span> /root/.ssh ]; <span class="keyword">then</span></div><div class="line">mkdir -p /root/.ssh</div><div class="line">chmod 700 /root/.ssh</div><div class="line"><span class="keyword">fi</span></div><div class="line">ATTEMPTS=30</div><div class="line">FAILED=0</div><div class="line"><span class="keyword">while</span> [ ! <span class="_">-f</span> /root/.ssh/authorized_keys ]; <span class="keyword">do</span></div><div class="line">curl <span class="_">-f</span> http://169.254.169.254/latest/meta-data/public-keys/0/openssh-key &gt; /tmp/metadata-key 2&gt;/dev/null</div><div class="line"><span class="keyword">if</span> [ \$? <span class="_">-eq</span> 0 ]; <span class="keyword">then</span></div><div class="line">cat /tmp/metadata-key &gt;&gt; /root/.ssh/authorized_keys</div><div class="line">chmod 0600 /root/.ssh/authorized_keys</div><div class="line">restorecon /root/.ssh/authorized_keys</div><div class="line">rm <span class="_">-f</span> /tmp/metadata-key</div><div class="line"><span class="built_in">echo</span> <span class="string">"Successfully retrieved public key from instance metadata"</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"*****************"</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"AUTHORIZED KEYS"</span></div><div class="line"><span class="built_in">echo</span> <span class="string">"*****************"</span></div><div class="line">cat /root/.ssh/authorized_keys</div><div class="line"><span class="built_in">echo</span> <span class="string">"*****************"</span></div><div class="line"><span class="keyword">fi</span></div><div class="line"><span class="keyword">done</span></div><div class="line"></div><div class="line">touch /var/loc/subsys/<span class="built_in">local</span></div><div class="line"></div><div class="line">/sbin/black_box.sh &gt;&gt; /var/<span class="built_in">log</span>/bbox.log 2&gt;&amp;1 &amp;</div></pre></td></tr></table></figure>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

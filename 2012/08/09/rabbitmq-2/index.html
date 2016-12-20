@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="信息发布与订阅Rabbit的核心组件包含Queue(消息队列)和Exchanges两部分，Exchange的主要部分就是对信息进行路由，通过将消息队列绑定到Exchange上，则可以实现订阅形式的消息发布及Publish/Subscribe在这种模式下消息发布者只需要将信息发布到相应的Exchange中，而Exchange则自动将信息分发到不同的Queue当中。
+这种模式下Exchange充当的角色
+在命令行中可以使用
+1sudo rabbitmqctl list_exchanges
+1sudo rabbitmqctl list_bindings
+分别查看当前系统种存在的Exchange和Exchange上绑定的Queue信息。">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="RabbitMQ之消息发布订阅与信息持久化技术"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>RabbitMQ之消息发布订阅与信息持久化技术 - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>RabbitMQ之消息发布订阅与信息持久化技术</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2012-08-09
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/rabbitMQ/">#rabbitMQ</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h1 id="信息发布与订阅"><a href="#信息发布与订阅" class="headerlink" title="信息发布与订阅"></a>信息发布与订阅</h1><p>Rabbit的核心组件包含Queue(消息队列)和Exchanges两部分，Exchange的主要部分就是对信息进行路由，通过将消息队列绑定到Exchange上，则可以实现订阅形式的消息发布及Publish/Subscribe在这种模式下消息发布者只需要将信息发布到相应的Exchange中，而Exchange则自动将信息分发到不同的Queue当中。</p>
+<p>这种模式下Exchange充当的角色</p>
+<p>在命令行中可以使用</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">sudo</span> rabbitmqctl list_exchanges</div></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">sudo</span> rabbitmqctl list_bindings</div></pre></td></tr></table></figure>
+<p>分别查看当前系统种存在的Exchange和Exchange上绑定的Queue信息。</p>
+<a id="more"></a>
+<p>消息发布者EmitLog.java</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> com.rabbitmq.client.Channel;</div><div class="line"><span class="keyword">import</span> com.rabbitmq.client.Connection;</div><div class="line"><span class="keyword">import</span> com.rabbitmq.client.ConnectionFactory;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> EmitLog &#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> final <span class="keyword">String</span>  EXCHANGE_NAME=<span class="string">"logs"</span>;</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) throws java.io.IOException&#123;</div><div class="line"></div><div class="line">		<span class="comment">//创建链接工厂</span></div><div class="line">		ConnectionFactory factory = <span class="keyword">new</span> ConnectionFactory();</div><div class="line">		factory.setHost(<span class="string">"localhost"</span>);</div><div class="line">		<span class="comment">//创建链接</span></div><div class="line">		Connection connection = factory.newConnection();</div><div class="line"></div><div class="line">		<span class="comment">//创建信息管道</span></div><div class="line">		Channel channel = connection.createChannel();</div><div class="line"></div><div class="line">		<span class="comment">//生命Exchange 非持久化</span></div><div class="line">		channel.exchangeDeclare(EXCHANGE_NAME, <span class="string">"fanout"</span>);</div><div class="line"></div><div class="line">		<span class="keyword">String</span> message = <span class="string">"Message "</span>+Math.<span class="built_in">random</span>();</div><div class="line"></div><div class="line">		<span class="comment">//第一个参数是对应的Exchange名称,如果为空则使用默认Exchange</span></div><div class="line">		channel.basicPublish(EXCHANGE_NAME, <span class="string">""</span>, null, message.getBytes());</div><div class="line">		System.out.<span class="built_in">println</span>(<span class="string">"[x] Sent '"</span>+message+<span class="string">"'"</span>);</div><div class="line"></div><div class="line">		<span class="comment">//关闭链接</span></div><div class="line">		channel.<span class="built_in">close</span>();</div><div class="line">		connection.<span class="built_in">close</span>();</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>消息消费者ReceiveLogs.java</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="meta"><span class="meta-keyword">import</span> java.io.IOException;</span></div><div class="line"></div><div class="line"><span class="meta"><span class="meta-keyword">import</span> com.rabbitmq.client.Channel;</span></div><div class="line"><span class="meta"><span class="meta-keyword">import</span> com.rabbitmq.client.Connection;</span></div><div class="line"><span class="meta"><span class="meta-keyword">import</span> com.rabbitmq.client.ConnectionFactory;</span></div><div class="line"><span class="meta"><span class="meta-keyword">import</span> com.rabbitmq.client.ConsumerCancelledException;</span></div><div class="line"><span class="meta"><span class="meta-keyword">import</span> com.rabbitmq.client.QueueingConsumer;</span></div><div class="line"><span class="meta"><span class="meta-keyword">import</span> com.rabbitmq.client.ShutdownSignalException;</span></div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReceiveLogs</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String EXCHANGE_NAME = <span class="string">"logs"</span>;</div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) throws IOException, ShutdownSignalException, ConsumerCancelledException, InterruptedException &#123;</div><div class="line"></div><div class="line">		<span class="comment">//创建链接工厂</span></div><div class="line">		ConnectionFactory factory = <span class="keyword">new</span> ConnectionFactory();</div><div class="line">		factory.setHost(<span class="string">"localhost"</span>);</div><div class="line">		<span class="comment">//创建链接</span></div><div class="line">		Connection connection = factory.newConnection();</div><div class="line"></div><div class="line">		<span class="comment">//创建消息管道</span></div><div class="line">		Channel channel = connection.createChannel();</div><div class="line"></div><div class="line">		<span class="comment">//声明Exchange</span></div><div class="line">		channel.exchangeDeclare(EXCHANGE_NAME, <span class="string">"fanout"</span>);</div><div class="line"></div><div class="line">		<span class="comment">//利用系统自动声明一个非持久化的消息队列，并返回唯一的队列名称</span></div><div class="line">		String queueName = channel.queueDeclare().getQueue();</div><div class="line"></div><div class="line">		<span class="comment">//将消息队列绑定到Exchange</span></div><div class="line">		channel.queueBind(queueName, EXCHANGE_NAME, <span class="string">""</span>);</div><div class="line"></div><div class="line">		System.out.println(<span class="string">" [*] Waiting for messages. To exit press CTRL+C"</span>);</div><div class="line"></div><div class="line">		<span class="comment">//声明一个消费者</span></div><div class="line">		QueueingConsumer consumer = <span class="keyword">new</span> QueueingConsumer(channel);</div><div class="line">		channel.basicConsume(queueName, <span class="literal">true</span>, consumer);</div><div class="line"></div><div class="line">		<span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line"></div><div class="line">			<span class="comment">//循环获取信息</span></div><div class="line">			QueueingConsumer.Delivery delivery = consumer.nextDelivery();</div><div class="line">			String message = <span class="keyword">new</span> String(delivery.getBody());</div><div class="line">			System.out.println(<span class="string">" [x] Received '"</span> + message + <span class="string">"'"</span>);</div><div class="line"></div><div class="line">		&#125;</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> 运行时启动一个EmitLog.java多个ReceiveLogs.java则可以看到发布者每次发布信息，只要绑定到了相应Exchange的消费者都可以获取到信息。</p>
+<h2 id="RabbitMQ信息持久化技术"><a href="#RabbitMQ信息持久化技术" class="headerlink" title="RabbitMQ信息持久化技术"></a>RabbitMQ信息持久化技术</h2><p>上面的例子中我们实现了Publisher/Subscribe的消息分发方式，但是其中存在一些问题。比如当我们运行一个ReceiveLog都对应了一个特定的消息队列，可以利用list_queues进行查看，同时这些消息队列是帮到到名为logs的Exchange中，这是发布消息每个消费者都可以接收到，可以当关闭ReceiveLog程序后这些消息队列就都会自动销毁，因为他们是非持久化的。同样对于EmitLog程序也一样，每次关闭后之前生命的Exchange也将自动销毁。</p>
+<p>这就产生了一些问题。如果当ReceiveLog为运行时，此时就并没有一个消息队列是绑定到Exchange上的，在发布消息后再启动ReceiveLog程序是无法接受到之前发布的信息。这就是为什么要进行消息的持久化。</p>
+<p>通过持久化技术，我们可以生命一个持久化的Exchange，以及持久化的Queue这样，在把Queue绑定到Exchange后，即使没有消费者程序运行，信息依然能保存在Queue当中，当下次启动消费者程序时依然能获取到发布的所有信息。就好比当一个消费者程序在执行消息序列中的任务时，如果突然出现了异常那么重新启动后，依然能从上一次发生错误的位置继续运行，对于某些需要一个有序性和连续性的操作，这点显的尤为重要。</p>
+<p>下面还是给出一个例子，在持久化过程中，可以借助list_exchanges,list_bindings,list_queues来查看服务器中相关信息来帮组分析过程。</p>
+<p>Publisher.java</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> com.rabbitmq.client.Channel;</div><div class="line"><span class="keyword">import</span> com.rabbitmq.client.Connection;</div><div class="line"><span class="keyword">import</span> com.rabbitmq.client.ConnectionFactory;</div><div class="line"><span class="keyword">import</span> com.rabbitmq.client.MessageProperties;</div><div class="line"></div><div class="line"><span class="keyword">public</span> class Publisher &#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">String</span>  EXCHANGE_NAME=<span class="string">"persi"</span>;<span class="comment">//定义Exchange名称</span></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="built_in">boolean</span> durable = <span class="keyword">true</span>;<span class="comment">//消息队列持久化</span></div><div class="line"></div><div class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="keyword">String</span>[] args) <span class="keyword">throws</span> java.io.IOException &#123;</div><div class="line"></div><div class="line">		ConnectionFactory factory = <span class="keyword">new</span> ConnectionFactory();<span class="comment">//创建链接工厂</span></div><div class="line">		factory.setHost(<span class="string">"localhost"</span>);</div><div class="line">		Connection connection = factory.newConnection();<span class="comment">//创建链接</span></div><div class="line">		Channel channel = connection.createChannel();<span class="comment">//创建信息通道</span></div><div class="line"></div><div class="line">		channel.exchangeDeclare(EXCHANGE_NAME, <span class="string">"fanout"</span>, durable);<span class="comment">//创建交换机并生命持久化</span></div><div class="line"></div><div class="line">		<span class="keyword">String</span> message = <span class="string">"Hello Wrold "</span>+Math.<span class="built_in">random</span>();</div><div class="line">                <span class="comment">//消息的持久化</span></div><div class="line">		channel.basicPublish(EXCHANGE_NAME, <span class="string">""</span>, MessageProperties.PERSISTENT_TEXT_PLAIN, message.getBytes());</div><div class="line"></div><div class="line">		System.out.<span class="built_in">println</span>(<span class="string">"[x] Sent '"</span> + message + <span class="string">"'"</span>);</div><div class="line"></div><div class="line">		channel.close();</div><div class="line">		connection.close();</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Subscriber.java</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class Subscriber &#123;</div><div class="line"></div><div class="line"></div><div class="line">	<span class="regexp">//private</span> static final String[] QUEUE_NAMES= &#123;<span class="string">"que_001"</span>,<span class="string">"que_002"</span>,<span class="string">"que_003"</span>,<span class="string">"que_004"</span>,<span class="string">"que_005"</span>&#125;;</div><div class="line">	private static final String[] QUEUE_NAMES= &#123;<span class="string">"que_006"</span>,<span class="string">"que_007"</span>,<span class="string">"que_008"</span>,<span class="string">"que_009"</span>,<span class="string">"que_0010"</span>&#125;;</div><div class="line"></div><div class="line">	public static void main(String[] args)&#123;</div><div class="line"></div><div class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;QUEUE_NAMES.length;i++)&#123;</div><div class="line"></div><div class="line">			SubscriberThead <span class="function"><span class="keyword">sub</span> = <span class="title">new</span> <span class="title">SubscriberThead</span></span>(QUEUE_NAMES[i]);</div><div class="line">			Thread t = new Thread(<span class="function"><span class="keyword">sub</span>)</span>;</div><div class="line">			t.start();</div><div class="line"></div><div class="line">		&#125;</div><div class="line"></div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>SubscriberThead.java</p>
+<figure class="highlight haxe"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> com.rabbitmq.client.Channel;</div><div class="line"><span class="keyword">import</span> com.rabbitmq.client.Connection;</div><div class="line"><span class="keyword">import</span> com.rabbitmq.client.ConnectionFactory;</div><div class="line"><span class="keyword">import</span> com.rabbitmq.client.QueueingConsumer;</div><div class="line"><span class="keyword">import</span> com.rabbitmq.client.AMQP.Queue.DeclareOk;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SubscriberThead</span> <span class="keyword"><span class="keyword">implements</span> <span class="type">Runnable</span></span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">String</span> queue_name = <span class="literal">null</span>;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> final <span class="keyword">String</span> EXCHANGE_NAME = <span class="string">"persi"</span>;<span class="comment">// 定义交换机名称</span></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> final boolean durable = <span class="literal">true</span>;<span class="comment">//消息队列持久化</span></div><div class="line"></div><div class="line">	<span class="keyword">public</span> SubscriberThead(<span class="keyword">String</span> queue_name) &#123;</div><div class="line"></div><div class="line">		<span class="built_in">this</span>.queue_name = queue_name;</div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	<span class="keyword">public</span> void run() &#123;</div><div class="line"></div><div class="line">		<span class="keyword">try</span>&#123;</div><div class="line"></div><div class="line">		ConnectionFactory factory = <span class="keyword">new</span> <span class="type">ConnectionFactory</span>();</div><div class="line">		factory.setHost(<span class="string">"localhost"</span>);</div><div class="line">		Connection connection = factory.<span class="keyword">new</span><span class="type">Connection</span>();</div><div class="line">		Channel channel = connection.createChannel();</div><div class="line"></div><div class="line">		channel.exchangeDeclare(EXCHANGE_NAME, <span class="string">"fanout"</span>, durable);</div><div class="line"></div><div class="line">		DeclareOk ok = channel.queueDeclare(queue_name, durable, <span class="literal">false</span>,</div><div class="line">				<span class="literal">false</span>, <span class="literal">null</span>);</div><div class="line">		<span class="keyword">String</span> queueName = ok.getQueue();</div><div class="line"></div><div class="line"></div><div class="line">		channel.queueBind(queueName, EXCHANGE_NAME, <span class="string">""</span>);</div><div class="line"></div><div class="line">		System.out.println(<span class="string">" ["</span>+queue_name+<span class="string">"] Waiting for messages. To exit press CTRL+C"</span>);</div><div class="line"></div><div class="line">		channel.basicQos(<span class="number">1</span>);<span class="comment">//消息分发处理</span></div><div class="line">		QueueingConsumer consumer = <span class="keyword">new</span> <span class="type">QueueingConsumer</span>(channel);</div><div class="line">		channel.basicConsume(queueName, <span class="literal">false</span>, consumer);</div><div class="line"></div><div class="line">		<span class="keyword">while</span> (<span class="literal">true</span>) &#123;</div><div class="line"></div><div class="line">			Thread.sleep(<span class="number">2000</span>);</div><div class="line">			QueueingConsumer.Delivery delivery = consumer.nextDelivery();</div><div class="line">			<span class="keyword">String</span> message = <span class="keyword">new</span> <span class="type">String</span>(delivery.getBody());</div><div class="line">			System.out.println(<span class="string">" ["</span>+queue_name+<span class="string">"] Received '"</span> + message + <span class="string">"'"</span>);</div><div class="line">			channel.basicAck(delivery.getEnvelope().getDeliveryTag(), <span class="literal">false</span>);</div><div class="line"></div><div class="line">		&#125;</div><div class="line">		&#125;<span class="keyword">catch</span>(Exception e)&#123;</div><div class="line"></div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line"></div><div class="line"></div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> 通过持久化处理后rabbitMQ将保存Exchange信息以及Queue信息，甚至在rabbitMQ服务器关闭后信息依然能保存，这样就提供了消息传递的可靠性</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

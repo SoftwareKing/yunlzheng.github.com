@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="这篇文章主要记录一下在使用和配置OpenStack时遇到的那些问题">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="OpenStack之Trouble shot"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>OpenStack之Trouble shot - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>OpenStack之Trouble shot</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2015-01-02
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/openstack/">#openstack</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>这篇文章主要记录一下在使用和配置OpenStack时遇到的那些问题</p>
+<a id="more"></a>
+<h2 id="基本环境信息"><a href="#基本环境信息" class="headerlink" title="基本环境信息"></a>基本环境信息</h2><ul>
+<li>Ubuntu Server 14.04</li>
+<li>OpenStack Iceouse</li>
+</ul>
+<h2 id="Trouble-shot"><a href="#Trouble-shot" class="headerlink" title="Trouble shot"></a>Trouble shot</h2><h3 id="服务明明运行，OpenStack却告诉你找不到服务"><a href="#服务明明运行，OpenStack却告诉你找不到服务" class="headerlink" title="服务明明运行，OpenStack却告诉你找不到服务"></a>服务明明运行，OpenStack却告诉你找不到服务</h3><p>别看了，如果你确认你的安装基本上没有问题。 并且服务是正常运行的，那么恭喜你。 快去检查一下你的主机之间的时间是否同步吧。</p>
+<h3 id="使用ssh或scp时，网络节点挂掉"><a href="#使用ssh或scp时，网络节点挂掉" class="headerlink" title="使用ssh或scp时，网络节点挂掉"></a>使用ssh或scp时，网络节点挂掉</h3><p>关于这个问题，让我头痛了很久。因为在使用OpenStack虚拟机的时候，一旦准备往虚拟机上scp拷贝文件，网络节点就直接挂掉了，并且一直找不到任务原因。<br>主要是服务器挂掉以后连显示器都打不开，唯有直接重启服务器。 直到我直接在机房眼巴巴看着网络节点的现实器才看到类似于下面的kernel出错信息。</p>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Start Of syslog Trace ============================+</div><div class="line">ig-file=/etc/neutron/dhcp_agent.ini &gt;/dev/<span class="keyword">null</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span>; fi)</div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">00</span>:<span class="number">01</span> ts036945 CRON[<span class="number">3449</span>]: (neutron) CMD (<span class="keyword">if</span> [ -x /usr/bin/neutron-netns-cleanup ] ; <span class="keyword">then</span> /usr/bin/neutron-netns-cleanup --config-file=/etc/neutron/neutron.conf --config-file=/etc/neutron/l3_agent.ini &gt;/dev/<span class="keyword">null</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span>; fi)</div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">02</span>:<span class="number">07</span> ts036945 kernel: [<span class="number">55501.391556</span>] ------------[ cut here ]------------</div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">02</span>:<span class="number">07</span> ts036945 kernel: [<span class="number">55501.391643</span>] kernel BUG at /build/buildd/linux<span class="number">-3.13</span><span class="number">.0</span>/net/core/skbuff.c:<span class="number">2903</span>!</div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">02</span>:<span class="number">07</span> ts036945 kernel: [<span class="number">55501.391755</span>] invalid opcode: <span class="number">0000</span> [#<span class="number">1</span>] SMP</div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">02</span>:<span class="number">07</span> ts036945 kernel: [<span class="number">55501.391828</span>] Modules linked <span class="keyword">in</span>: xt_nat xt_conntrack xt_REDIRECT xt_tcpudp ip6table_filter ip6_tables iptable_filter iptable_nat nf_conntrack_ipv4 nf_defrag_ipv4 nf_nat_ipv4 nf_nat nf_conntrack ip_tables x_tables openvswitch gre vxlan ip_tunnel libcrc32c radeon ttm drm_kms_helper drm gpio_ich serio_raw lpc_ich hpwdt i2c_algo_bit coretemp kvm_intel kvm hpilo i5000_edac edac_core i5k_amb ipmi_si shpchp mac_hid lp parport hpsa hid_generic usbhid hid bnx2 cciss</div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">02</span>:<span class="number">07</span> ts036945 kernel: [<span class="number">55501.393060</span>] CPU: <span class="number">3</span> PID: <span class="number">0</span> Comm: swapper/<span class="number">3</span> Not tainted <span class="number">3.13</span><span class="number">.0</span><span class="number">-24</span>-generic #<span class="number">47</span>-Ubuntu</div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">02</span>:<span class="number">07</span> ts036945 kernel: [<span class="number">55501.393175</span>] Hardware name: HP ProLiant DL360 G5, BIOS P58 <span class="number">08</span>/<span class="number">03</span>/<span class="number">2008</span></div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">02</span>:<span class="number">07</span> ts036945 kernel: [<span class="number">55501.393277</span>] task: ffff8802245cc7d0 ti: ffff8802245d4000 task.ti: ffff8802245d4000</div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">02</span>:<span class="number">07</span> ts036945 kernel: [<span class="number">55501.393389</span>] RIP: <span class="number">0010</span>:<span class="meta">[&lt;ffffffff8160e9ba&gt;]</span>  <span class="meta">[&lt;ffffffff8160e9ba&gt;]</span> skb_segment+<span class="number">0x95a</span>/<span class="number">0x980</span></div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">02</span>:<span class="number">07</span> ts036945 kernel: [<span class="number">55501.393531</span>] RSP: <span class="number">0018</span>:ffff88022fac34f8  EFLAGS: <span class="number">00010206</span></div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">02</span>:<span class="number">07</span> ts036945 kernel: [<span class="number">55501.393618</span>] RAX: <span class="number">0000000000000000</span> RBX: ffff880221bdaa00 RCX: ffff8800cae7b4f0</div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">02</span>:<span class="number">07</span> ts036945 kernel: [<span class="number">55501.393715</span>] RDX: <span class="number">0000000000000050</span> RSI: ffff8800cae7b400 RDI: ffff8800cae7ae00</div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">02</span>:<span class="number">07</span> ts036945 kernel: [<span class="number">55501.393814</span>] RBP: ffff88022fac35c0 R08: <span class="number">0000000000000042</span> R09: <span class="number">0000000000000000</span></div><div class="line">May  <span class="number">8</span> <span class="number">18</span>:<span class="number">02</span> ...</div></pre></td></tr></table></figure>
+<p>这个问题，按照找到的资料的解释是Ubuntu自身的BUG. 修复方式如下:</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">ethtool</span> -K eth3 gro <span class="literal">off</span></div><div class="line">ethtool -K eth3 gso <span class="literal">off</span></div></pre></td></tr></table></figure>
+<p>这里的eth3是指网络节点的外部网络网卡</p>
+<h2 id="启动metadata-service"><a href="#启动metadata-service" class="headerlink" title="启动metadata-service"></a>启动metadata-service</h2><p>按照OpenStack安装文档部署完成OpenStack之后，会发现创建虚拟机时user-data无法使用。<br>跟踪虚拟机启动日志我们会发现，在虚拟机内部无法访问<a href="http://169.254.169.254" target="_blank" rel="external">http://169.254.169.254</a></p>
+<p>修复办法：</p>
+<p>编辑dhcp_agent.ini文件修改如下配置</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># The DHCP server can assist with providing metadata support on isolated</span></div><div class="line"><span class="comment"># networks. Setting this value to True will cause the DHCP server to append</span></div><div class="line"><span class="comment"># specific host routes to the DHCP request. The metadata service will only</span></div><div class="line"><span class="comment"># be activated when the subnet does not contain any router port. The guest</span></div><div class="line"><span class="comment"># instance must be configured to request host routes via DHCP (Option 121).</span></div><div class="line"><span class="attr">enable_isolated_metadata</span> = <span class="literal">True</span></div><div class="line"></div><div class="line"><span class="comment"># Allows for serving metadata requests coming from a dedicated metadata</span></div><div class="line"><span class="comment"># access network whose cidr is 169.254.169.254/16 (or larger prefix), and</span></div><div class="line"><span class="comment"># is connected to a Neutron router from which the VMs send metadata</span></div><div class="line"><span class="comment"># request. In this case DHCP Option 121 will not be injected in VMs, as</span></div><div class="line"><span class="comment"># they will be able to reach 169.254.169.254 through a router.</span></div><div class="line"><span class="comment"># This option requires enable_isolated_metadata = True</span></div><div class="line"><span class="attr">enable_metadata_network</span> = <span class="literal">True</span></div></pre></td></tr></table></figure>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

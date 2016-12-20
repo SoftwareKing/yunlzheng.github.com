@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Bind9简介BIND (Berkeley Internet Name Domain)是Domain Name System (DNS) 协议的一个实现，提供了DNS主要功能的开放实现，包括
+域名服务器 (named)DNS解析库函数DNS服务器运行调试所用的工具是一款开放源码的DNS服务器软件，由美国加州大学Berkeley分校开发和维护的，
+按照ISC的调查报告，BIND是世界上使用最多最广泛的域名服务系统。不论你的邮件服务器，WEB服务器或者其他的services如何的安全可靠，DNS的故障会给你带来用户根本无法访问这些服务。
+BIND，也是我们常说的named，由于多数网络应用程序使用其功能，所以在很多BIND的弱点及时被发现。主要分为三个版本：">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Ubuntu Bind9泛域名解析配置"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Ubuntu Bind9泛域名解析配置 - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Ubuntu Bind9泛域名解析配置</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2013-03-26
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/devops/">#devops</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h1 id="Bind9简介"><a href="#Bind9简介" class="headerlink" title="Bind9简介"></a>Bind9简介</h1><p>BIND (Berkeley Internet Name Domain)是Domain Name System (DNS) 协议的一个实现，提供了DNS主要功能的开放实现，包括</p>
+<p>域名服务器 (named)<br>DNS解析库函数<br>DNS服务器运行调试所用的工具<br>是一款开放源码的DNS服务器软件，由美国加州大学Berkeley分校开发和维护的，</p>
+<p>按照ISC的调查报告，BIND是世界上使用最多最广泛的域名服务系统。不论你的邮件服务器，WEB服务器或者其他的services如何的安全可靠，DNS的故障会给你带来用户根本无法访问这些服务。</p>
+<p>BIND，也是我们常说的named，由于多数网络应用程序使用其功能，所以在很多BIND的弱点及时被发现。主要分为三个版本：</p>
+<a id="more"></a>
+<h2 id="v4"><a href="#v4" class="headerlink" title="v4"></a>v4</h2><p>1998年多数UNIX捆绑的是BIND4，已经被多数厂商抛弃了，除了OpenBSD还在使用。OpenBSD核心人为BIND8过于复杂和不安全，所以继续使用BIND4。这样一来BIND8/9的很多优点都不包括在v4中。</p>
+<h2 id="v8"><a href="#v8" class="headerlink" title="v8"></a>v8</h2><p>就是如今使用最多最广的版本。</p>
+<h2 id="v9"><a href="#v9" class="headerlink" title="v9"></a>v9</h2><p>最新版本的BIND，全部重新写过，免费（但是由商业公司资助），也添加了许多新的功能（但是安全上也可能有更多的问题）。BIND9在2000年十月份推出，现在稳定版本是9.3.2。</p>
+<p>—————————————–废话的分割线———————————————–</p>
+<p>—————————————–主题的开始————————————————-</p>
+<h1 id="安装bind9"><a href="#安装bind9" class="headerlink" title="安装bind9"></a>安装bind9</h1><figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">sudo</span> apt-<span class="meta">get</span> install <span class="keyword">bind9 </span><span class="keyword">bind9-doc </span>dnsutils</div></pre></td></tr></table></figure>
+<p>bind9将默认安装在/etc/bind/目录下</p>
+<h2 id="rndc授权"><a href="#rndc授权" class="headerlink" title="rndc授权"></a>rndc授权</h2><p>修改/etc/bind/named.conf.options,在未授权的情况下，将会出现</p>
+<p>错误信息：rndc: connect failed: 127.0.0.1#953: connection</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo vim /etc/bind/named<span class="selector-class">.conf</span><span class="selector-class">.options</span></div></pre></td></tr></table></figure>
+<p>添加文件内容与/etc/bind/rndc.key相同<br>例如rnfc.key的文件内容为：</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">key <span class="string">"rndc-key"</span> &#123;</div><div class="line">        algorithm hmac-md5<span class="comment">;</span></div><div class="line">        secret <span class="string">"vfmD0+yvxhgW0wa8FQ54EQ=="</span><span class="comment">;</span></div><div class="line">&#125;<span class="comment">;</span></div></pre></td></tr></table></figure>
+<p>则在named.conf.options 中添加一下内容</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="type">key</span> <span class="string">"rndc-key"</span> &#123;</div><div class="line">        algorithm hmac-md5;</div><div class="line">        secret <span class="string">"vfmD0+yvxhgW0wa8FQ54EQ=="</span>;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">controls &#123;</div><div class="line">        inet <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> port <span class="number">953</span></div><div class="line">                allow &#123; <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>; &#125; keys &#123; <span class="string">"rndc-key"</span>; &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>到此为止Bind9的基本安装配置就算完成了。<br>接下来是如何配置域名解析的问题</p>
+<h2 id="添加本地区域文件"><a href="#添加本地区域文件" class="headerlink" title="添加本地区域文件"></a>添加本地区域文件</h2><p>创建文件 /etc/bind/zones.zheng</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">zone <span class="string">"zheng.dev"</span>  &#123; <span class="keyword">type</span> <span class="type">master; </span>file <span class="string">"/etc/bind/db.zheng.dev"</span>; &#125;;</div></pre></td></tr></table></figure>
+<p>这里master表示DNS为主服务器<br>file则是只想该域的具体配置文件</p>
+<p>创建文件/etc/bind/db.zheng.dev</p>
+<p>添加一下内容</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$TTL</span>    <span class="number">86400</span></div><div class="line">@   <span class="keyword">IN</span>  <span class="keyword">SOA</span> localhost. root.localhost. (</div><div class="line">                  <span class="number">1</span>     <span class="comment">; Serial</span></div><div class="line">             <span class="number">604800</span>     <span class="comment">; Refresh</span></div><div class="line">              <span class="number">86400</span>     <span class="comment">; Retry</span></div><div class="line">            <span class="number">2419200</span>     <span class="comment">; Expire</span></div><div class="line">              <span class="number">86400</span> )   <span class="comment">; Negative Cache TTL</span></div><div class="line"><span class="comment">;</span></div><div class="line">@   <span class="keyword">IN</span>  <span class="keyword">NS</span>  localhost.</div><div class="line">*.zheng.dev.    <span class="keyword">IN</span> <span class="keyword">A</span>    <span class="number">192.168.146.129</span></div></pre></td></tr></table></figure>
+<p>注意这里的 域名后缀也必须是与本地域配置文件中定义的zone相同。 *.zheng.dev. 表示匹配所有的以zheng.dev结尾的访问请求，这些请求都将会转发到192.168.146.129这台服务器。</p>
+<h2 id="重启bind9"><a href="#重启bind9" class="headerlink" title="重启bind9"></a>重启bind9</h2><figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">sudo</span> /etc/init.d/<span class="keyword">bind9 </span>restart</div></pre></td></tr></table></figure>
+<p>这样一个最基本的基于bind9的泛域名配置即可完成</p>
+<p>—————————————–再次废话的分割线———————————————</p>
+<p>感觉已经好久没写博客了。不负责任的讲是工作太多没时间，自己偷懒</p>
+<p>马上就到毕业设计了，毕业设计没完，老是觉得有道坎。老是有种只有毕业设计搞完，自己才可以毫无负担的凭爱好学习各种东西。悲催的是之前工作确实太忙了。还有差不多只有一个月的时间来准备毕业设计。 而我却基本才开始整理架构设计。</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

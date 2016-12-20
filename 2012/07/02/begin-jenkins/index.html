@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Jenkins安装与配置
+安装jenkins
+地址http://mirrors.jenkins-ci.org/war/选择合适的Jenkins版本下载
+将下载的jenkins.war包直接放到tomcat下，启动tomcat即可安装完成">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Jenkins安装与配置"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Jenkins安装与配置 - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Jenkins安装与配置</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2012-07-02
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/jenkins/">#jenkins</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>Jenkins安装与配置</p>
+<p>安装jenkins</p>
+<p>地址<a href="http://mirrors.jenkins-ci.org/war/选择合适的Jenkins版本下载" target="_blank" rel="external">http://mirrors.jenkins-ci.org/war/选择合适的Jenkins版本下载</a></p>
+<p>将下载的jenkins.war包直接放到tomcat下，启动tomcat即可安装完成</p>
+<a id="more"></a>
+<p><img src="http://static.oschina.net/uploads/space/2012/0702/174713_juh7_553747.jpg" alt=""><br>图表 1 Jenkins初始化界面</p>
+<p>配置Jenkins</p>
+<p>插件安装</p>
+<p>在jenkins界面中选择“系统管理——插件管理”进入jenkins插件管理界面。代码仓库我们机可能需要使用SVN也可能使用git作为代码仓库，这里安装git plugin</p>
+<p>安装完成插件后我们还需要去jenkins进行全局配置：“系统管理——系统设置”</p>
+<p>Git配置</p>
+<p><img src="http://static.oschina.net/uploads/space/2012/0702/174728_BPlJ_553747.jpg" alt=""></p>
+<p>图表 2 Git配置</p>
+<p>Name我们采用默认设置即可</p>
+<p>Path to Git executable是执行git的程序路径，根据git安装目录即可，这里注意目录分隔符使用”/”</p>
+<p>Maven配置</p>
+<p><img src="http://static.oschina.net/uploads/space/2012/0702/174739_UNw4_553747.jpg" alt=""><br>图表 3 Maven配置</p>
+<p>Name：自己随便取一个名字即可</p>
+<p>MAVEN_HOME：就是你本机Maven的安装路径，根据实际情况配置即可</p>
+<p>全局MAVEN_OPTS：设置Maven运行时参数</p>
+<p>Local Maven Repository：Maven的本地仓库默认即可</p>
+<p>新建Job</p>
+<p>在安装插件以及配置好Jenkins参数后即可新建Job测试配置效果，由于暂时未安装git服务器所以就直接使用github做测试，这里提供一个maven的java-web项目作为例子地址：<a href="https://github.com/yunlzheng/Hello-World" target="_blank" rel="external">https://github.com/yunlzheng/Hello-World</a></p>
+<p>点击”新Job”</p>
+<p><img src="http://static.oschina.net/uploads/space/2012/0702/174759_DTik_553747.jpg" alt=""><br>图表 4 新建Job 步骤1</p>
+<p>任务名字根据实际情况输入即可，这里我输入的是”TestJob”，选择构建一个maven2/3项目单击OK即可进入Job的详细配置页面</p>
+<p><img src="http://static.oschina.net/uploads/space/2012/0702/174810_87jE_553747.jpg" alt=""><br>源码管理</p>
+<p>即配置编译时的源码仓库</p>
+<p><img src="http://static.oschina.net/uploads/space/2012/0702/174838_nfXw_553747.jpg" alt=""></p>
+<p>这里我们选择Git作为源码管理，在Repository URL中输入对应的git仓库地址即可<a href="https://github.com/yunlzheng/Hello-World.git" target="_blank" rel="external">https://github.com/yunlzheng/Hello-World.git</a></p>
+<p>构建触发器<br>Jenkins支持基于事件的构建代码机制，如按照时间周期构建，也可选择当检测到代码仓库发生变化时进行构建</p>
+<p><img src="http://static.oschina.net/uploads/space/2012/0702/174854_XFJ9_553747.jpg" alt=""></p>
+<p>这里作为测试默认选择即可。</p>
+<p>Pre Steps</p>
+<p>即构建前需要执行的工作这里不需要配置</p>
+<p>Build</p>
+<p>由于测试时建立的是Maven2/3项目所以这里需要告诉Jenkins服务器构建maven项目所需的pom.xml文件所在的位置即项目项目根路径位置,根据项目实际情况设置即可</p>
+<p><img src="http://static.oschina.net/uploads/space/2012/0702/174902_3qp1_553747.jpg" alt=""></p>
+<p>现在单击保存即可。保存后页面将跳转到Job页面点击立即构建即可</p>
+<p><img src="http://static.oschina.net/uploads/space/2012/0702/174910_IBDC_553747.jpg" alt=""></p>
+<p>图表 5 Jenkins构建控制台输出</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

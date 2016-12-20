@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="1原文最初写与我的[OSCHINA博客](http://my.oschina.net/fhck/blog/77091)
+JavaScript基于原型的编程语言，本身并不包含内置的类实现。但是可以通过Javascript模拟出类
+类JavaScript中有构造函数和New运算符。构造函数用来实例对象和初始化属性。任何JavaScript函数都可以用作构造函数，构造函数必须使用new运算符作为前缀来创建新的实例
+JavaScript要模拟一个类可以直接使用函数function
+12345678var Person = function(name)&amp;#123;   this.name = name;&amp;#125;//实例化Personvar alice = new Person(&#39;alice&#39;);console.log(alice.name);
+这里需要注意的this关键字， new运算符会改变函数的执行上下文，同时改变return的行为。当使用new运算符来调用构造函数时，执行上下文this从全局对象编程一个空的上下文，这个上下文代表新生成的实例。因此this指向当前创建的实例。
+所以一下代码执行会出现undefined
+12var bob = Person(&#39;bob&#39;);console.log(bob.name);">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="JavaScript学习笔记-原型继承"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>JavaScript学习笔记-原型继承 - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>JavaScript学习笔记-原型继承</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2012-09-06
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/javascript/">#javascript</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">原文最初写与我的[<span class="string">OSCHINA博客</span>](<span class="link">http://my.oschina.net/fhck/blog/77091</span>)</div></pre></td></tr></table></figure>
+<p>JavaScript基于原型的编程语言，本身并不包含内置的类实现。但是可以通过Javascript模拟出类</p>
+<h1 id="类"><a href="#类" class="headerlink" title="类"></a>类</h1><p>JavaScript中有构造函数和New运算符。构造函数用来实例对象和初始化属性。任何JavaScript函数都可以用作构造函数，构造函数必须使用new运算符作为前缀来创建新的实例</p>
+<p>JavaScript要模拟一个类可以直接使用函数function</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">var</span> Person = <span class="function"><span class="keyword">function</span>(<span class="params">name</span>)</span>&#123;</div><div class="line">   <span class="keyword">this</span>.name = name;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//实例化Person</span></div><div class="line"><span class="keyword">var</span> alice = <span class="keyword">new</span> Person(<span class="string">'alice'</span>);</div><div class="line"><span class="built_in">console</span>.log(alice.name);</div></pre></td></tr></table></figure>
+<p>这里需要注意的this关键字， new运算符会改变函数的执行上下文，同时改变return的行为。当使用new运算符来调用构造函数时，执行上下文this从全局对象编程一个空的上下文，这个上下文代表新生成的实例。因此this指向当前创建的实例。</p>
+<p>所以一下代码执行会出现undefined</p>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> bob = Person(<span class="string">'bob'</span>);</div><div class="line">console.log(bob.<span class="keyword">name</span>);</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h1 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h1><p>JavaScript本身是基于原型的编程语言，原型的作用:区别类和实例</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Animal = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</div><div class="line"></div><div class="line">Animal.run = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'Animal run'</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line">Animal.prototype.breath = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">   <span class="built_in">console</span>.log(<span class="string">'animal breath'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">Var Dog = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</div><div class="line"></div><div class="line"><span class="comment">//Dog继承自Animal</span></div><div class="line">Dog.prototype = <span class="keyword">new</span> Animal();</div><div class="line"></div><div class="line">Dog.prototype.wag = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">   <span class="built_in">console</span>.log(<span class="string">'dog wag'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> dog = <span class="keyword">new</span> Dog();</div><div class="line">dog.wag();</div><div class="line">dog.breath();<span class="comment">//继承的属性</span></div></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">dog wag</span></div><div class="line">animal breath</div></pre></td></tr></table></figure>
+<p>那么通过类的prototype定义的方法或者属性就可以叫做所有实例的方法或属性，而其他的方法和属性就是类本身的方法和属性类比java类中的静态变量</p>
+<p>这里对下面一些东西的叫法约定一下</p>
+<p>通常按照个人习惯</p>
+<p>构造函数/匿名函数</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Person = <span class="function"><span class="keyword">function</span><span class="params">(name)</span></span>&#123;</div><div class="line">  <span class="keyword">this</span>.name=name;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>函数/类</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span><span class="params">()</span></span>&#123;&#125;</div><div class="line">对象/实例</div><div class="line"></div><div class="line"><span class="keyword">var</span> person = &#123; name:<span class="string">'zhangsan'</span>,sex:<span class="string">'male'</span>&#125;</div></pre></td></tr></table></figure>
+<h1 id="原型继承继承是的什么？"><a href="#原型继承继承是的什么？" class="headerlink" title="原型继承继承是的什么？"></a>原型继承继承是的什么？</h1><p>还是上面关于Animal和Dog的例子，我们做一些改造</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span>  animal = &#123;</div><div class="line">        <span class="attr">breath</span>:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;<span class="built_in">console</span>.log(<span class="string">'animal breath!'</span>)&#125;,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> Dog = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;</div><div class="line"></div><div class="line"><span class="comment">//Dog继承自animal</span></div><div class="line">Dog.prototype = animal;</div><div class="line"></div><div class="line">Dog.prototype.wag = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">   <span class="built_in">console</span>.log(<span class="string">'dog wag'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> dog = <span class="keyword">new</span> Dog();</div><div class="line">dog.wag();</div><div class="line">dog.breath();<span class="comment">//继承的属性</span></div></pre></td></tr></table></figure>
+<p>结果和上面的一样</p>
+<p>在一个例子中我们使用 Dog.prototype = new Animail;   这个例子中我们使用的是Dog.prototype = animal</p>
+<p>区别在于第一个例子中的Animal是一个匿名类，通过调用new运算符调用其构造函数返回了一个animal实例，而第二个例子中animal本身就已经是一个实例/对象。这就是之前提到的new运算符的作用。</p>
+<p>所以一个类的如果要继承另一个类那么就需要继承那个类的实例而不是类本身（Function），当然我们可以试一下直接使用Dog.prototype=Animal，结果就是当调用dog.breath();时直接返回的是一个Function对象，无法达到共享属性的意义。</p>
+<p>原型对象就是一个“模板”，定义在原型上的属性被用来初始化一个新的对象。任何对象都可以作为一个对象的原型对象，以此来共享属性。</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

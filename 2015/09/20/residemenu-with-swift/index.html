@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="主要内容RESideMenu是github上开源的一个Objective-c实现IOS侧滑菜单的组件库. 本文简单介绍一下如何在Swift中集成并且使用该第三发库
+添加RESideMenu依赖在Podfile中添加一下内容
+1pod &#39;RESideMenu&#39;, &#39;~&amp;gt; 4.0.7&#39;
+运行ins">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Swift中使用RESideMenu"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Swift中使用RESideMenu - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Swift中使用RESideMenu</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2015-09-20
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/swift/">#swift</a> <a href="/tags/ios/">#ios</a> <a href="/tags/xcode/">#xcode</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>RESideMenu是github上开源的一个Objective-c实现IOS侧滑菜单的组件库. 本文简单介绍一下如何在Swift中集成并且使用该第三发库</p>
+<h2 id="添加RESideMenu依赖"><a href="#添加RESideMenu依赖" class="headerlink" title="添加RESideMenu依赖"></a>添加RESideMenu依赖</h2><p>在Podfile中添加一下内容</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">pod</span> <span class="string">'RESideMenu'</span>, <span class="string">'~&gt; 4.0.7'</span></div></pre></td></tr></table></figure>
+<p>运行install命令即可下载并且编译依赖的第三方库</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">pod instal</span></div></pre></td></tr></table></figure>
+<p>由于podfile中定义use_frameworks!，对于Objective-c实现的第三方库，我们不需要使用Header文件导入依赖，直接在Swift文件中import即可</p>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> RESideMenu</div></pre></td></tr></table></figure>
+<h2 id="添加根视图控制器"><a href="#添加根视图控制器" class="headerlink" title="添加根视图控制器"></a>添加根视图控制器</h2><p>RESideMenu实现方式为，创建了一个父容器。 当中包含了3个子视图控制器：contentViewController,leftMenuViewController,rightMenuViewController。</p>
+<p>并且提供了两个主要方法presendLeftMenuViewController和presendRightMenuViewController分别用户显示左菜单，以及显示右菜单</p>
+<p>由RESideMenu控制并且实现3个子视图之前的切换</p>
+<p>在Main.storyboard中添加相应的视图创建3个视图并且命名为Storyboard ID为LeftMenuViewController和ContentViewController</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/residemenu0.png" alt=""></p>
+<p>创建RootViewController.swift</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> UIKit</div><div class="line"><span class="keyword">import</span> RESideMenu</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">RootViewController</span>: <span class="title">RESideMenu</span>, <span class="title">RESideMenuDelegate</span></span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.viewDidLoad()</div><div class="line">        <span class="comment">// Do any additional setup after loading the view.</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">awakeFromNib</span><span class="params">()</span></span> &#123;</div><div class="line"></div><div class="line">        <span class="keyword">self</span>.menuPreferredStatusBarStyle = <span class="type">UIStatusBarStyle</span>.<span class="type">LightContent</span></div><div class="line">        <span class="keyword">self</span>.contentViewShadowColor = <span class="type">UIColor</span>.blackColor();</div><div class="line">        <span class="keyword">self</span>.contentViewShadowOffset = <span class="type">CGSizeMake</span>(<span class="number">0</span>, <span class="number">0</span>);</div><div class="line">        <span class="keyword">self</span>.contentViewShadowOpacity = <span class="number">0.6</span>;</div><div class="line">        <span class="keyword">self</span>.contentViewShadowRadius = <span class="number">12</span>;</div><div class="line">        <span class="keyword">self</span>.contentViewShadowEnabled = <span class="literal">true</span>;</div><div class="line"></div><div class="line">        <span class="keyword">self</span>.contentViewController = <span class="keyword">self</span>.storyboard?.instantiateViewControllerWithIdentifier(<span class="string">"ContentViewController"</span>) <span class="keyword">as</span>! <span class="type">UIViewController</span></div><div class="line">        <span class="keyword">self</span>.leftMenuViewController = <span class="keyword">self</span>.storyboard?.instantiateViewControllerWithIdentifier(<span class="string">"LeftMenuViewController"</span>) <span class="keyword">as</span>! <span class="type">UIViewController</span></div><div class="line"></div><div class="line">        <span class="keyword">self</span>.backgroundImage = <span class="type">UIImage</span>(named: <span class="string">"MenuBackground"</span>)</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/*</span></div><div class="line">    // MARK: - Navigation</div><div class="line"></div><div class="line">    // In a storyboard-based application, you will often want to do a little preparation before navigation</div><div class="line">    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) &#123;</div><div class="line">        // Get the new view controller using segue.destinationViewController.</div><div class="line">        // Pass the selected object to the new view controller.</div><div class="line">    &#125;</div><div class="line">    */</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="关联事件"><a href="#关联事件" class="headerlink" title="关联事件"></a>关联事件</h2><p>如下图所示，在ContentViewController中添加菜单按钮，并且右键关联点击事件即可</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/1.png" alt="http://7pn5d3.com1.z0.glb.clouddn.com/1.png"></p>
+<p>运行效果如下</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/residemenu22.png" alt="http://7pn5d3.com1.z0.glb.clouddn.com/residemenu22.png"></p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

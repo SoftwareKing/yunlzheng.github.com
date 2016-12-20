@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Introducation
+Function Programming has a long history
+List 1958
+Renaissance: F#, Haskell, Erlang…
+Used in industry
+Trading
+Algorithmic
+Telecommunicati">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Python函数式编程"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Python函数式编程 - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Python函数式编程</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2016-04-21
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="Introducation"><a href="#Introducation" class="headerlink" title="Introducation"></a>Introducation</h2><ul>
+<li>Function Programming has a long history</li>
+<li>List 1958</li>
+<li>Renaissance: F#, Haskell, Erlang…</li>
+<li>Used in industry<ul>
+<li>Trading</li>
+<li>Algorithmic</li>
+<li>Telecommunication(Concurrency)</li>
+</ul>
+</li>
+</ul>
+<h2 id="Features-Of-Functional-Programming"><a href="#Features-Of-Functional-Programming" class="headerlink" title="Features Of Functional Programming"></a>Features Of Functional Programming</h2><ul>
+<li>Everything is a function</li>
+<li>Pure functions without side effects</li>
+<li>Immutable data structures</li>
+<li>Preserve state in functions</li>
+<li>Recursion instead of loops / iteration</li>
+</ul>
+<h2 id="Advantages-of-Functional-Programming"><a href="#Advantages-of-Functional-Programming" class="headerlink" title="Advantages of Functional Programming"></a>Advantages of Functional Programming</h2><ul>
+<li>Absence of side effects can make your programs more robust</li>
+<li>Programs tend to be more modular come and typically in smaller building blocks</li>
+<li>Better testable - call with same parameters always return same result</li>
+<li>Focus on algorithms</li>
+<li>Conceptional fit with parallel / concurrent programming</li>
+<li>Live updates - Install new release while running</li>
+</ul>
+<h2 id="Disadvantages-of-Functional-Programming"><a href="#Disadvantages-of-Functional-Programming" class="headerlink" title="Disadvantages of Functional Programming"></a>Disadvantages of Functional Programming</h2><ul>
+<li>Solutions to the same problem can look very different than procedural / object-oriented ones</li>
+<li>Find good developers can be hard</li>
+<li>Not equally useful for all types of problems</li>
+<li>Input/output are side effects and need special treatment</li>
+<li>Recursion is “an order of magnitude more complex” than loops/iteration</li>
+<li>Immutable data structures may increase run times</li>
+</ul>
+<h2 id="Python’s-Functional-Features-Overview"><a href="#Python’s-Functional-Features-Overview" class="headerlink" title="Python’s Functional Features - Overview"></a>Python’s Functional Features - Overview</h2><ul>
+<li>Pure functions (sort of)</li>
+<li>Closures - hold state in functions</li>
+<li>Functions as object and decorators</li>
+<li>Immutable data types</li>
+<li>Lazy evaluation - generators</li>
+<li>List(dictionary, set) comprehensions</li>
+<li>functions, itertools, lambda, map, filter</li>
+<li>Recursion - try to avoid, recursion limit has a reason</li>
+</ul>
+<h1 id="Pure-Functions-No-Side-Effects"><a href="#Pure-Functions-No-Side-Effects" class="headerlink" title="Pure Functions - No Side Effects"></a>Pure Functions - No Side Effects</h1><ul>
+<li>No side effect, return value only</li>
+<li>“Shallow copy” problem</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">dp_pure</span><span class="params">(data)</span>:</span></div><div class="line">  <span class="string">"""</span></div><div class="line">  Returen copty times two.</div><div class="line">  """</div><div class="line">  <span class="keyword">return</span> data * <span class="number">2</span></div></pre></td></tr></table></figure>
+<ul>
+<li>An ooverloaded * that modifies data or causes other side effects would make the function un-pure</li>
+<li>No guarantee of pureness</li>
+<li>Pure functions by convention</li>
+</ul>
+<h2 id="Side-effects"><a href="#Side-effects" class="headerlink" title="Side effects"></a>Side effects</h2><ul>
+<li>Side effects are common</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">do_side_effect</span><span class="params">(my_list)</span>:</span></div><div class="line">  <span class="string">"""</span></div><div class="line">  Modify list appending 100.</div><div class="line">  """</div><div class="line">  my_list.append(<span class="number">100</span>)</div></pre></td></tr></table></figure>
+<h2 id="Functions-are-Objects"><a href="#Functions-are-Objects" class="headerlink" title="Functions are Objects"></a>Functions are Objects</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">()</span></span>:</div><div class="line">  <span class="keyword">return</span> <span class="number">1</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">func2</span><span class="params">()</span></span>:</div><div class="line">  <span class="keyword">return</span> <span class="number">2</span></div></pre></td></tr></table></figure>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt;&gt; my_funcs = &#123;'a': func1, 'b': func2&#125;</div><div class="line">&gt;&gt;&gt;&gt; my_funcs[<span class="string">'a'</span>](<span class="link"></span>)</div><div class="line">&gt;&gt;&gt;&gt; my_funcs[<span class="string">'b'</span>](<span class="link"></span>)</div></pre></td></tr></table></figure>
+<ul>
+<li>Everything is an object</li>
+</ul>
+<h2 id="Closures-and-“Currying”"><a href="#Closures-and-“Currying”" class="headerlink" title="Closures and “Currying”"></a>Closures and “Currying”</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">outer</span><span class="params">(outer_arg)</span></span>:</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(inner_arg)</span></span>:</div><div class="line">    <span class="keyword">return</span> inner_arg * outer_arg</div><div class="line">  <span class="keyword">return</span> inner</div><div class="line"></div><div class="line"><span class="meta">&gt;&gt;</span>&gt;&gt; func = outer[<span class="number">10</span>]</div><div class="line"><span class="meta">&gt;&gt;</span>&gt;&gt; func(<span class="number">5</span>）</div><div class="line"><span class="meta">&gt;&gt;</span>&gt;&gt; func.__closure_<span class="number">_</span></div><div class="line"><span class="meta">&gt;&gt;</span>&gt;&gt; func.__closure_<span class="number">_</span>[<span class="number">0</span>]</div><div class="line"><span class="meta">&gt;&gt;</span>&gt;&gt; func.__closure_<span class="number">_</span>[<span class="number">0</span>].cell_contents</div></pre></td></tr></table></figure>
+<h2 id="Partail-Functions"><a href="#Partail-Functions" class="headerlink" title="Partail Functions"></a>Partail Functions</h2><ul>
+<li>Module functools offers some tools for the Functional approach</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> functools</div><div class="line">def <span class="function"><span class="keyword">func</span><span class="params">(a, b, <span class="built_in">c</span>)</span></span>:</div><div class="line">  <span class="keyword">return</span> a,b,<span class="built_in">c</span></div><div class="line"></div><div class="line">&gt;&gt;&gt;&gt; p_func = functools.partial(<span class="function"><span class="keyword">func</span>, 10)</span></div><div class="line">&gt;&gt;&gt;&gt; <span class="title">p_func</span><span class="params">(<span class="number">3</span>, <span class="number">4</span>)</span></div><div class="line"><span class="number">10</span> <span class="number">3</span> <span class="number">4</span></div><div class="line">&gt;&gt;&gt;&gt; p_func = functools.partial(<span class="function"><span class="keyword">func</span>, 10, 12)</span></div><div class="line">&gt;&gt;&gt;&gt; <span class="title">p_func</span><span class="params">(<span class="number">3</span>)</span></div><div class="line"><span class="number">10</span> <span class="number">12</span> <span class="number">3</span></div></pre></td></tr></table></figure>
+<h2 id="Recursion"><a href="#Recursion" class="headerlink" title="Recursion"></a>Recursion</h2><figure class="highlight aspectj"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">def loop(n):</div><div class="line">  <span class="keyword">for</span> x in xrange(<span class="keyword">int</span>(n)):</div><div class="line">    a = 1+1</div><div class="line"></div><div class="line">def recures(a):</div><div class="line">  <span class="keyword">if</span> a &lt;= 0:</div><div class="line">    <span class="keyword">return</span></div><div class="line">  a = 1 + 1</div><div class="line">  recurse(<span class="keyword">int</span>(n) - 1)</div></pre></td></tr></table></figure>
+<h2 id="Recursion-Time-it-in-IPython"><a href="#Recursion-Time-it-in-IPython" class="headerlink" title="Recursion - Time it in IPython"></a>Recursion - Time it in IPython</h2><figure class="highlight ada"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">%timeit <span class="keyword">loop</span>(le3)</div><div class="line"><span class="number">10000</span> loops, best <span class="keyword">of</span> <span class="number">3</span>:<span class="number">48</span> us per <span class="keyword">loop</span></div><div class="line"></div><div class="line">%timeit recurse(le3)</div><div class="line"><span class="number">1000</span> loops, best <span class="keyword">of</span> <span class="number">3</span>: <span class="number">687</span> us per <span class="keyword">loop</span></div></pre></td></tr></table></figure>
+<ul>
+<li>sys.setrecursionalimit(int(le6)) and %timeit recurse(le5) segfaulted my IPython kernel</li>
+</ul>
+<h2 id="Lambda"><a href="#Lambda" class="headerlink" title="Lambda"></a>Lambda</h2><ul>
+<li>Allow versy limited anonymous functions</li>
+<li>Expressions only, no statements</li>
+<li>Past discussion to exclude it from Python 3</li>
+<li>Useful for callbacks</li>
+</ul>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">use_callback</span><span class="params">(callback, arg)</span></span>:</div><div class="line">  <span class="keyword">return</span> callback(arg)</div><div class="line"><span class="meta">&gt;&gt;</span>&gt; use_callback(lambda <span class="symbol">arg:</span> arg * <span class="number">2</span>, <span class="number">10</span>)</div><div class="line"><span class="number">20</span></div></pre></td></tr></table></figure>
+<h2 id="Lambda-Not-Essential"><a href="#Lambda-Not-Essential" class="headerlink" title="Lambda - Not Essential"></a>Lambda - Not Essential</h2><ul>
+<li>Always possible to add two extra lines</li>
+<li>Write a function with name and docstring</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">double</span><span class="params">(arg)</span>:</span></div><div class="line">  <span class="string">"""</span></div><div class="line">  Double the argument.</div><div class="line">  """</div><div class="line">  <span class="keyword">return</span> arg * <span class="number">2</span></div><div class="line"></div><div class="line">&gt;&gt;&gt;&gt; use_callback(double, <span class="number">10</span>)</div></pre></td></tr></table></figure>
+<h2 id="List-Comprehensions-instead-of-map"><a href="#List-Comprehensions-instead-of-map" class="headerlink" title="List Comprehensions instead of map"></a>List Comprehensions instead of map</h2><ul>
+<li>Typical use of map</li>
+</ul>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; <span class="keyword">map</span>(lambda <span class="keyword">ar</span><span class="variable">g:</span> arg * <span class="number">2</span>, <span class="built_in">range</span>(<span class="number">2</span>, <span class="number">6</span>))</div><div class="line">[<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">10</span>]</div></pre></td></tr></table></figure>
+<ul>
+<li>Replace with list comprehension</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[x * <span class="number">2</span> for x in range(<span class="number">2</span>, <span class="number">6</span>)]</div><div class="line">[<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">10</span>]</div></pre></td></tr></table></figure>
+<h2 id="List-Comprehensions-instead-of-filter"><a href="#List-Comprehensions-instead-of-filter" class="headerlink" title="List Comprehensions instead of filter"></a>List Comprehensions instead of filter</h2><ul>
+<li>Typical use of filter</li>
+</ul>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; filter(<span class="name">lambda</span> x: x &gt; <span class="number">10</span>, range(<span class="number">5</span>, <span class="number">16</span>))</div></pre></td></tr></table></figure>
+<ul>
+<li>Replace with list comprehension</li>
+</ul>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; [x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="keyword">range</span>(<span class="number">5</span>, <span class="number">16</span>) <span class="keyword">if</span> x &gt; <span class="number">10</span>]</div></pre></td></tr></table></figure>
+<h2 id="Decorators"><a href="#Decorators" class="headerlink" title="Decorators"></a>Decorators</h2><ul>
+<li>Application of closures</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> functools</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decorator</span><span class="params">(func)</span>:</span></div><div class="line"><span class="meta">  @functools.wraps(func)</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">new_func</span><span class="params">(*args, **kwargs)</span>:</span></div><div class="line">    <span class="keyword">print</span> <span class="string">'decorator was here'</span></div><div class="line">    <span class="keyword">return</span> func(*args, **kwargs)</div><div class="line">  <span class="keyword">return</span> new_func</div><div class="line"></div><div class="line"><span class="meta">@decorator</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(a, b)</span>:</span></div><div class="line">  <span class="keyword">return</span> a + b</div><div class="line"></div><div class="line">add(<span class="number">2</span>, <span class="number">3</span>)</div></pre></td></tr></table></figure>
+<h2 id="Immutable-Data-Types-Tuples-Instead-of-Lists"><a href="#Immutable-Data-Types-Tuples-Instead-of-Lists" class="headerlink" title="Immutable Data Types - Tuples Instead of Lists"></a>Immutable Data Types - Tuples Instead of Lists</h2><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">my_list = range(<span class="number">10</span>)</div><div class="line">my_list</div><div class="line">[<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>]</div><div class="line">my_tuple = tuple(my_list)</div><div class="line">my_tuple</div><div class="line">(<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>)</div></pre></td></tr></table></figure>
+<ul>
+<li>Contradicts the usage recommendation<ul>
+<li>Lists == elements of the same kind</li>
+<li>Tuple == “named” elements</li>
+</ul>
+</li>
+</ul>
+<h2 id="Immutable-Data-Types-Freeze-Sets"><a href="#Immutable-Data-Types-Freeze-Sets" class="headerlink" title="Immutable Data Types - Freeze Sets"></a>Immutable Data Types - Freeze Sets</h2><figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">my_set = set(range(<span class="number">5</span>))</div><div class="line">my_set</div><div class="line">set([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</div><div class="line">my_frozenset = frozenset(my_set)</div><div class="line">my_frozenset</div><div class="line">forzenset([<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>])</div></pre></td></tr></table></figure>
+<ul>
+<li>Can be used as dictionary keys</li>
+</ul>
+<h2 id="Not-Only-Functional"><a href="#Not-Only-Functional" class="headerlink" title="Not Only Functional"></a>Not Only Functional</h2><ul>
+<li>Pure functional programs can be difficult to implement</li>
+<li>Combine with procedural and object-oriented program parts</li>
+<li>Choose right tool, for the task at hand</li>
+<li>Develop a feeling where a functional approach can be beneficial</li>
+</ul>
+<h2 id="Avoid-Side-effects"><a href="#Avoid-Side-effects" class="headerlink" title="Avoid Side effects"></a>Avoid Side effects</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span><span class="params">(object)</span>:</span></div><div class="line">  <span class="string">"""</span></div><div class="line">  Example for init-only definitions</div><div class="line">  """</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></div><div class="line">    self.attr1 = self._make_attr1()</div><div class="line">    self.attr2 = self._make_attr2()</div><div class="line"></div><div class="line"><span class="meta">  @staticmethod</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_make_sttr1</span><span class="params">()</span>:</span></div><div class="line">    <span class="string">"""</span></div><div class="line">    Do mant things to create att1</div><div class="line">    """</div><div class="line">    attr1 = []</div><div class="line">    <span class="keyword">return</span> attr1</div></pre></td></tr></table></figure>
+<ul>
+<li>Set all attributes in <strong>init</strong> (Pylint will remind you)</li>
+<li>Actual useful application of static methods</li>
+<li>Fewer side effects than setting attributes outside <strong>init</strong></li>
+<li>Your beloved classes and instances are still here</li>
+<li>Inheritance without overriding <strong>init</strong> and use super,child class implements own <strong>make_attr1()</strong></li>
+</ul>
+<h2 id="Freeze-Classes"><a href="#Freeze-Classes" class="headerlink" title="Freeze Classes"></a>Freeze Classes</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Reader</span>(<span class="title">object</span>):</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(<span class="keyword">self</span>)</span></span>:</div><div class="line">    <span class="keyword">self</span>.data = <span class="keyword">self</span>._read()</div><div class="line"></div><div class="line">  @staticmethod</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_read</span><span class="params">()</span></span>:</div><div class="line">    data = []</div><div class="line">    with open(<span class="string">'data.txt'</span>) as <span class="symbol">fobj:</span></div><div class="line">      <span class="keyword">for</span> line <span class="keyword">in</span> <span class="symbol">fobj:</span></div><div class="line">        data.append(tuple(line.split()))</div><div class="line">    <span class="keyword">return</span> tuple(data)</div></pre></td></tr></table></figure>
+<ul>
+<li>Mutable data structures are useful for reading data</li>
+<li>“Freeze” to get read-only version</li>
+<li>No future, unwanted modifications possible</li>
+</ul>
+<h2 id="Freeze-Classes-One-Liner-Version"><a href="#Freeze-Classes-One-Liner-Version" class="headerlink" title="Freeze Classes - One Liner Version"></a>Freeze Classes - One Liner Version</h2><ul>
+<li>Still kind of readable</li>
+</ul>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Reader</span>(<span class="title">object</span>):</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(<span class="keyword">self</span>)</span></span>:</div><div class="line">    <span class="keyword">self</span>.data = <span class="keyword">self</span>._read()</div><div class="line"></div><div class="line">  @staticmethod</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">_read</span><span class="params">()</span></span>:</div><div class="line">    <span class="keyword">return</span> tuple(tuple(line.split()) <span class="keyword">for</span> line <span class="keyword">in</span> open(<span class="string">'data.txt'</span>))</div></pre></td></tr></table></figure>
+<h2 id="Stepwise-Freezing-and-Thawing-I"><a href="#Stepwise-Freezing-and-Thawing-I" class="headerlink" title="Stepwise Freezing and Thawing I"></a>Stepwise Freezing and Thawing I</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">FrozenUnFrozen</span>(<span class="title">object</span>):</span></div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(<span class="keyword">self</span>)</span></span>:</div><div class="line">    <span class="keyword">self</span>.__repr = &#123;&#125;</div><div class="line">    <span class="keyword">self</span>.__frozen = False</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(<span class="keyword">self</span>, key)</span></span>:</div><div class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.__repr[key]</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__setitem__</span><span class="params">(<span class="keyword">self</span>, key, value)</span></span>:</div><div class="line">    <span class="keyword">if</span> <span class="keyword">self</span>.<span class="symbol">__frozen:</span></div><div class="line">      raise KeyError(<span class="string">'Cannot change key %r'</span> % key)</div><div class="line">    <span class="keyword">self</span>.__repr[key] = value</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">freeze</span><span class="params">(<span class="keyword">self</span>)</span></span>:</div><div class="line">    <span class="keyword">self</span>.__frozen = True</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">unfreeze</span><span class="params">(<span class="keyword">self</span>)</span></span>:</div><div class="line">    <span class="keyword">self</span>.__forzen = False</div></pre></td></tr></table></figure>
+<h2 id="Stepwise-Freezing-and-Thawing-II"><a href="#Stepwise-Freezing-and-Thawing-II" class="headerlink" title="Stepwise Freezing and Thawing II"></a>Stepwise Freezing and Thawing II</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;</span>&gt;&gt; fuf = FrozenUnFrozen()</div><div class="line"><span class="meta">&gt;&gt;</span>&gt;&gt; fuf[<span class="string">'a'</span>] = <span class="number">100</span></div><div class="line"><span class="meta">&gt;&gt;</span>&gt;&gt; fuf[<span class="string">'a'</span>]</div><div class="line"><span class="number">100</span></div><div class="line"><span class="meta">&gt;&gt;</span>&gt;&gt; fuf.freeze()</div><div class="line"><span class="meta">&gt;&gt;</span>&gt;&gt; fuf[<span class="string">'a'</span>] = <span class="number">100</span></div><div class="line">Traceback (most recent cell lest):</div><div class="line"><span class="symbol">KeyError:</span> Cannot change key <span class="string">'a'</span><span class="string">"</span></div><div class="line">&gt;&gt;&gt;&gt; fuf['a']</div><div class="line">100</div><div class="line">&gt;&gt;&gt;&gt; fuf.unfreeze()</div><div class="line">&gt;&gt;&gt;&gt; fuf['a'] = 100</div></pre></td></tr></table></figure>
+<h2 id="Use-Case-for-Freezing"><a href="#Use-Case-for-Freezing" class="headerlink" title="Use Case for Freezing"></a>Use Case for Freezing</h2><ul>
+<li>Legacy code: Where are data modified?</li>
+<li>Complex systems: Detect unwanted modifications</li>
+</ul>
+<h2 id="Immutable-Data-Structures-Counter-Arguments"><a href="#Immutable-Data-Structures-Counter-Arguments" class="headerlink" title="Immutable Data Structures - Counter Arguments"></a>Immutable Data Structures - Counter Arguments</h2><ul>
+<li>Some algorithms maybe diffcult to implement</li>
+<li>Can be rather inefficient - repeated re-allocation of memory<ul>
+<li>Antipattern string concatanation</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;</span>&gt;&gt; s += <span class="string">'text'</span></div></pre></td></tr></table></figure>
+<ul>
+<li>Try this in Jypthon and (standrad-)PyPy</li>
+</ul>
+<h2 id="Lazy-Evaluation"><a href="#Lazy-Evaluation" class="headerlink" title="Lazy Evaluation"></a>Lazy Evaluation</h2><ul>
+<li>Iterators and generators</li>
+</ul>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; [ x * <span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">xrange</span>(<span class="number">5</span>)]</div><div class="line">&gt;&gt;&gt; ( x * <span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">xrange</span>(<span class="number">5</span>))</div><div class="line"></div><div class="line">&gt;&gt;&gt; <span class="built_in">sum</span>(x * x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">xrange</span>(<span class="number">10</span>))</div></pre></td></tr></table></figure>
+<ul>
+<li>Saves memory and possibly CPU time</li>
+</ul>
+<h2 id="Itertools-“Lazy-Programmers-are-Good-Programmers”"><a href="#Itertools-“Lazy-Programmers-are-Good-Programmers”" class="headerlink" title="Itertools - “Lazy Programmers are Good Programmers”"></a>Itertools - “Lazy Programmers are Good Programmers”</h2><ul>
+<li>Module itertools offers tools for the work with iteratoes</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">it.izip(<span class="string">'abc'</span>, <span class="string">'xyz'</span>)</div><div class="line">&lt;itertools<span class="selector-class">.izp</span> <span class="selector-tag">object</span> at <span class="number">0</span>x00FA9FS0&gt;</div><div class="line"><span class="function"><span class="title">list</span><span class="params">(it.izip(<span class="string">'abc'</span>, <span class="string">'xyz'</span>)</span></span>)</div><div class="line">[(<span class="string">'a'</span>, <span class="string">'x'</span>), (<span class="string">'b'</span>,<span class="string">'y'</span>,(<span class="string">'c'</span>,<span class="string">'z'</span>))]</div></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">list</span><span class="params">(it.islice(iter(range(<span class="number">10</span>)</span></span>), None, <span class="number">8</span>, <span class="number">2</span>))</div><div class="line">[<span class="number">0</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>]</div><div class="line"><span class="function"><span class="title">range</span><span class="params">(<span class="number">10</span>)</span></span>[:<span class="number">8</span>:<span class="number">2</span>]</div><div class="line">[<span class="number">0</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>]</div></pre></td></tr></table></figure>
+<h2 id="Pipelining-Chaining-Commands"><a href="#Pipelining-Chaining-Commands" class="headerlink" title="Pipelining -Chaining Commands"></a>Pipelining -Chaining Commands</h2><ul>
+<li>Generators make good pipelines</li>
+<li>Useful for workflow problems</li>
+<li>Example parsing of a log file</li>
+</ul>
+<h2 id="Generators-Pull"><a href="#Generators-Pull" class="headerlink" title="Generators - Pull"></a>Generators - Pull</h2><ul>
+<li>Log file:</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="number">35</span></div><div class="line"><span class="number">29</span></div><div class="line"><span class="number">75</span></div><div class="line"><span class="number">36</span></div><div class="line"><span class="number">28</span></div><div class="line"><span class="number">54</span></div><div class="line"># comment</div><div class="line"><span class="number">54</span></div><div class="line"><span class="number">56</span></div></pre></td></tr></table></figure>
+<h2 id="Generators-Pull-Import"><a href="#Generators-Pull-Import" class="headerlink" title="Generators - Pull - Import"></a>Generators - Pull - Import</h2><figure class="highlight xl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> <span class="built_in">time</span></div></pre></td></tr></table></figure>
+<h2 id="Generators-Pull-Read-File"><a href="#Generators-Pull-Read-File" class="headerlink" title="Generators - Pull - Read File"></a>Generators - Pull - Read File</h2><figure class="highlight gauss"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">def read_forever(fobj):</div><div class="line">  counter = <span class="number">0</span></div><div class="line">  <span class="keyword">while</span> True:</div><div class="line">    <span class="keyword">line</span> = fobj.readLine()</div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">line</span>:</div><div class="line">      <span class="built_in">time</span>.<span class="built_in">sleep</span>(<span class="number">0.1</span>)</div><div class="line">      <span class="keyword">continue</span></div><div class="line">    yield <span class="keyword">line</span></div></pre></td></tr></table></figure>
+<h2 id="Generators-Pull-Filter-Out-Comment-lines"><a href="#Generators-Pull-Filter-Out-Comment-lines" class="headerlink" title="Generators - Pull - Filter Out Comment lines"></a>Generators - Pull - Filter Out Comment lines</h2><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">def filter_comments(<span class="keyword">lines</span>):</div><div class="line">  <span class="keyword">for</span> <span class="built_in">line</span> <span class="keyword">in</span> <span class="keyword">lines</span>:</div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">line</span>.strip().startwith(<span class="string">"#"</span>):</div><div class="line">      yield <span class="built_in">line</span></div></pre></td></tr></table></figure>
+<h2 id="Generators-Pull-Convert-Numbers"><a href="#Generators-Pull-Convert-Numbers" class="headerlink" title="Generators - Pull - Convert Numbers"></a>Generators - Pull - Convert Numbers</h2><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">def get_number(<span class="keyword">lines</span>):</div><div class="line">  <span class="keyword">for</span> <span class="built_in">line</span> <span class="keyword">in</span> <span class="keyword">lines</span>:</div><div class="line">    yield int(<span class="built_in">line</span>.<span class="built_in">split</span>()[<span class="number">-1</span>])</div></pre></td></tr></table></figure>
+<h2 id="Generators-Pull-Initialize-the-Process-I"><a href="#Generators-Pull-Initialize-the-Process-I" class="headerlink" title="Generators - Pull - Initialize  the Process I"></a>Generators - Pull - Initialize  the Process I</h2><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">def show_sum(file_name = <span class="string">'oyr.txt'</span>):</div><div class="line">  <span class="keyword">lines</span> = read_forevery(<span class="built_in">open</span>(file_name))</div><div class="line">  filtered_lines = filter_comments(<span class="keyword">lines</span>)</div><div class="line">  numbers = get_number(filtered_lines)</div><div class="line">  sum_ = <span class="number">0</span></div><div class="line">  <span class="keyword">try</span>:</div><div class="line">    <span class="keyword">for</span> <span class="built_in">number</span> <span class="keyword">in</span> numbers:</div><div class="line">      sum_ += <span class="built_in">number</span></div><div class="line">      sys.<span class="keyword">stdout</span>.<span class="built_in">write</span>(<span class="string">'sum: %d\r'</span> % sum_)</div><div class="line">      sys.<span class="keyword">stdout</span>.flush</div><div class="line">  except KeyboardInterrupt:</div><div class="line">    print <span class="string">'Sum:'</span>, sum_</div></pre></td></tr></table></figure>
+<h2 id="Coroutines-Push"><a href="#Coroutines-Push" class="headerlink" title="Coroutines - Push"></a>Coroutines - Push</h2><ul>
+<li>Log file:<figure class="highlight subunit"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">Error: </span>78</div><div class="line">DEBUG: 72</div><div class="line">WAN: 99</div><div class="line">CRITICAL: 97</div><div class="line"><span class="keyword">Error: </span>78</div><div class="line"><span class="keyword">Error: </span>89</div><div class="line"><span class="keyword">Error: </span>46</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="Coroutines-Push-Initialize-with-a-Decorator"><a href="#Coroutines-Push-Initialize-with-a-Decorator" class="headerlink" title="Coroutines - Push -Initialize with a Decorator"></a>Coroutines - Push -Initialize with a Decorator</h2><figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">def init_coroutine(<span class="function"><span class="keyword">func</span>):</span></div><div class="line">  <span class="title">functools</span>.<span class="title">wraps</span><span class="params">(<span class="keyword">func</span>)</span></div><div class="line">  def <span class="keyword">init</span>(*args, **kwargs):</div><div class="line">    gen = <span class="function"><span class="keyword">func</span><span class="params">(*args, **kwargs)</span></span></div><div class="line">    next(gen)</div><div class="line">    <span class="keyword">return</span> gen</div><div class="line">  <span class="keyword">return</span> <span class="keyword">init</span></div></pre></td></tr></table></figure>
+<h2 id="Coroutines-Push-Read-the-File"><a href="#Coroutines-Push-Read-the-File" class="headerlink" title="Coroutines - Push - Read the File"></a>Coroutines - Push - Read the File</h2><p>def read_forever(fobj, target):<br>  counter = 0<br>  while True:<br>    line = fobj.readline()<br>    if not line:<br>      time.sleep(0.1)<br>      continue<br>    target.send(line)</p>
+<h2 id="Coroutines-Push-Filter-Out-Comments"><a href="#Coroutines-Push-Filter-Out-Comments" class="headerlink" title="Coroutines - Push - Filter Out Comments"></a>Coroutines - Push - Filter Out Comments</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@init_coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">filter_comments</span><span class="params">(target)</span>:</span></div><div class="line">  <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    line = <span class="keyword">yield</span></div><div class="line">    <span class="keyword">if</span> <span class="keyword">not</span> line.strip().startwith(<span class="string">'#'</span>):</div><div class="line">      target.send(line)</div></pre></td></tr></table></figure>
+<h2 id="Coroutines-Push-Convert-Numbers"><a href="#Coroutines-Push-Convert-Numbers" class="headerlink" title="Coroutines - Push - Convert Numbers"></a>Coroutines - Push - Convert Numbers</h2><figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">@init_coroutine</span></div><div class="line">def get_number(targets):</div><div class="line">  <span class="keyword">while</span> <span class="literal">True</span>:</div><div class="line">    line = yield</div><div class="line">    level, <span class="built_in">number</span> = line.split(<span class="string">':'</span>)</div><div class="line">    <span class="built_in">number</span> = <span class="built_in">int</span>(<span class="built_in">number</span>)</div><div class="line">    tagets[level].<span class="built_in">send</span>(<span class="built_in">number</span>)</div></pre></td></tr></table></figure>
+<h2 id="Coroutines-Push-Consumer-I"><a href="#Coroutines-Push-Consumer-I" class="headerlink" title="Coroutines - Push - Consumer I"></a>Coroutines - Push - Consumer I</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@init_coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fatal</span><span class="params">()</span>:</span></div><div class="line">  sum_ = <span class="number">0</span></div><div class="line">  <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    value = <span class="keyword">yield</span></div><div class="line">    sum_ += value</div><div class="line">    sys.stdout.write(<span class="string">'FATAL  sum:%7d\s'</span> % sum_)</div><div class="line">    sys.stdout.flush()</div></pre></td></tr></table></figure>
+<h2 id="Coroutines-Push-Consumer-II"><a href="#Coroutines-Push-Consumer-II" class="headerlink" title="Coroutines - Push - Consumer II"></a>Coroutines - Push - Consumer II</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@init_coroutine</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">fatal</span><span class="params">()</span>:</span></div><div class="line">  sum_ = <span class="number">0</span></div><div class="line">  <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">    value = <span class="keyword">yield</span></div><div class="line">    sum_ += value</div><div class="line">    sys.stdout.write(<span class="string">'CRITICAL  sum:%7d\s'</span> % sum_)</div></pre></td></tr></table></figure>
+<h2 id="Coroutines-Push-All-Consumers"><a href="#Coroutines-Push-All-Consumers" class="headerlink" title="Coroutines - Push - All Consumers"></a>Coroutines - Push - All Consumers</h2><figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">TARGETS = &#123;</div><div class="line">  <span class="string">'CRITICAL'</span>: critical<span class="comment">()</span>,</div><div class="line">  <span class="string">'DEBUG'</span>: debug<span class="comment">()</span>,</div><div class="line">  <span class="string">'FATAL'</span>: fatal<span class="comment">()</span>,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Conroutines-Push-Initialize"><a href="#Conroutines-Push-Initialize" class="headerlink" title="Conroutines - Push - Initialize"></a>Conroutines - Push - Initialize</h2><figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">show_sum</span><span class="params">(file_name=<span class="string">'out.txt'</span>)</span></span>:</div><div class="line">  read_forever(open(file_name), filter_comments(get_number(TARGETS)))</div><div class="line"></div><div class="line"><span class="keyword">if</span> __name_<span class="number">_</span> == <span class="string">'__main__'</span>:</div><div class="line">  show_sum(sys.argv[<span class="number">1</span>])</div><div class="line"><span class="string">``</span></div><div class="line"></div><div class="line"><span class="comment">## Conroutines - Push - Initialize</span></div></pre></td></tr></table></figure>
+<p>def show_sum(file_name=’out.txt’):<br>  read_forever(open(file_name), filter_comments(get_number(TARGETS)))</p>
+<p>if <strong>name</strong> == ‘<strong>main</strong>‘:<br>  show_sum(sys.argv[1])<br>``</p>
+<h2 id="Conclusions"><a href="#Conclusions" class="headerlink" title="Conclusions"></a>Conclusions</h2><ul>
+<li>Python offers useful functional features</li>
+<li>But it is no pure functional language</li>
+<li>For some tasks the functional approach works veru well</li>
+<li>For some others much less</li>
+<li>Combine and switch back and forth with oo and procedural style<br>&amp; “Stay pythonic, be pragmatic”</li>
+</ul>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

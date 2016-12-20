@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="代码审查，作为一个团队的日常质量活动扮演着重要的作用。但是作为一个群体活动，必然需要参与者都遵守一套行为准则，避免将Code Review变成一场争论。得不偿失。本文翻译自thoughtbot关于Code Review Guide">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Code Review Guide"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Code Review Guide - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Code Review Guide</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2015-06-15
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/翻译/">#翻译</a> <a href="/tags/Agile/">#Agile</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>代码审查，作为一个团队的日常质量活动扮演着重要的作用。但是作为一个群体活动，必然需要参与者都遵守一套行为准则，避免将Code Review变成一场争论。得不偿失。<br>本文翻译自thoughtbot关于<a href="https://github.com/thoughtbot/guides/blob/master/code-review/README.md" target="_blank" rel="external">Code Review Guide</a></p>
+<a id="more"></a>
+<h2 id="作为参与者"><a href="#作为参与者" class="headerlink" title="作为参与者"></a>作为参与者</h2><ul>
+<li>能够理解多种程序设计方案是可选的，需要讨论并且权衡你更喜欢哪一种，并且能够快速达成一致。</li>
+<li>问问题，你为什么这么做？而不是你应该怎么做. (“你觉得 <code>:user_id</code>的命名怎么样?”)</li>
+<li>要求澄清问题. (“我还不太明白，你能再讲清楚一点吗?”)</li>
+<li>避免出现代码所有权的词汇 (“我的”, “不是我的”, “你的”)</li>
+<li>假设每个人都是聪明的，善良的；避免使用指代人格相关的词汇(“笨蛋”，“愚蠢”)。</li>
+<li>并不是每个人都能随时理解你的意图，表达经量明确不含糊。</li>
+<li>要谦虚。</li>
+<li>不要使用夸张性的词语. (“总是”, “从来”, “无休止的”, “绝不”)。</li>
+<li>不要嘲讽。</li>
+<li>表达你的真实意见。</li>
+<li>面对面沟通，如果在沟通过程中出现太多“不明白”。</li>
+</ul>
+<h2 id="作为被审查者"><a href="#作为被审查者" class="headerlink" title="作为被审查者"></a>作为被审查者</h2><ul>
+<li>感谢别人的意见。</li>
+<li>对事不对人，审核的是代码而不是人。</li>
+<li>解释那段代码为什么需要存在. (“It’s like that because of these reasons. Would it be more clear if I rename this class/file/method/variable?”)。</li>
+<li>提取一些修改和重构的事作为故事卡来做。</li>
+<li>把代码审查关联到Story。</li>
+<li>Push commits based on earlier rounds of feedback as isolated commits to the<br>branch. Do not squash until the branch is ready to merge. Reviewers should be<br>able to read individual updates based on their earlier feedback.</li>
+<li>尝试理解Reviewer的立场和意图。</li>
+<li>经量对所有的评论做出回应。</li>
+<li>等待，直到CI编译成功，并且单元测试通过才合并代码。</li>
+</ul>
+<h2 id="如何进行代码审核"><a href="#如何进行代码审核" class="headerlink" title="如何进行代码审核"></a>如何进行代码审核</h2><p>在理解这段代码为什么需要的基础上 (bug, user experience, refactoring). 再:</p>
+<ul>
+<li>Communicate which ideas you feel strongly about and those you don’t.</li>
+<li>确定在简化代码的同时能够解决问题</li>
+<li>如果讨论变得太抽象，就把这个问题挪到线下讨论，期间，让作者决定最终的实现方式</li>
+<li>即使作者已经考虑过的问题，我们也可以提出不同的实现方式</li>
+<li>尝试理解作者的立场和意图.</li>
+<li>关闭pull request时使用”Ready to merge”的评论.</li>
+</ul>
+<blockquote>
+<p>参考：<a href="https://github.com/thoughtbot/guides/blob/master/code-review/README.md" target="_blank" rel="external">https://github.com/thoughtbot/guides/blob/master/code-review/README.md</a></p>
+</blockquote>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

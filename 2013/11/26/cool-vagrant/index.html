@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Vargant一个属于程序猿的虚拟机。
+“这段程序明明在我的机器上运行的好好的，怎么到这就没法运行的”，
+“我这儿都能运行，肯定是你机器的问题”。
+在软件开发过程中往往由于开发环境不一致导致各种各样奇怪的问题，而是用Vagrant就可以很好的解决这种问题Vagrant是用Ruby开发的，对虚拟机操作进行封装和简化，从而可以很方便的创建用于开发的虚拟机环境，Vagrant中的虚拟机都可以使用一个名叫BOX的东西来进行分发，下面主要记录一些Vagrant的基本使用方式和方法">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Vargant一个属于程序员的虚拟机"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Vargant一个属于程序员的虚拟机 - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Vargant一个属于程序员的虚拟机</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2013-11-26
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/devops/">#devops</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>Vargant一个属于程序猿的虚拟机。</p>
+<p>“这段程序明明在我的机器上运行的好好的，怎么到这就没法运行的”，</p>
+<p>“我这儿都能运行，肯定是你机器的问题”。</p>
+<p>在软件开发过程中往往由于开发环境不一致导致各种各样奇怪的问题，而是用Vagrant就可以很好的解决这种问题<br>Vagrant是用Ruby开发的，对虚拟机操作进行封装和简化，从而可以很方便的创建用于开发的虚拟机环境，Vagrant中的虚拟机都可以使用一个名叫BOX的东西来进行分发，下面主要记录一些Vagrant的基本使用方式和方法</p>
+<a id="more"></a>
+<h2 id="安装Vargant"><a href="#安装Vargant" class="headerlink" title="安装Vargant"></a>安装Vargant</h2><p><a href="http://hc-vagrant-files.s3.amazonaws.com/packages/a40522f5fabccb9ddabad03d836e120ff5d14093/Vagrant_1.3.5.msi" target="_blank" rel="external">下载地址</a></p>
+<h2 id="初始化工作目录"><a href="#初始化工作目录" class="headerlink" title="初始化工作目录"></a>初始化工作目录</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="built_in">cd</span> WORKSPACE</div></pre></td></tr></table></figure>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="attribute">vagrant init</span></div></pre></td></tr></table></figure>
+<p><img src="/vagrant/03.png" alt=""></p>
+<p>完成初始化后将在工作目录创建Vagrantfile文件</p>
+<h2 id="BOXES"><a href="#BOXES" class="headerlink" title="BOXES"></a>BOXES</h2><ul>
+<li>添加BOX <strong>vargant box add</strong></li>
+</ul>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vagrant box <span class="built_in">add</span> precise32  <span class="keyword">http</span>://<span class="built_in">files</span>.vagrantup.com/precise32.box</div></pre></td></tr></table></figure>
+<p><img src="/vagrant/04.png" alt=""></p>
+<ul>
+<li>使用BOX</li>
+</ul>
+<p>查看Vagrant文件如下，Vagrant默认使用名为base的BOX</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Vagrant.configure(VAGRANTFILE_API_VERSION) <span class="built_in">do</span> |<span class="built_in">config</span>|</div><div class="line"></div><div class="line">    <span class="built_in">config</span>.vm.box = <span class="string">"base"</span></div><div class="line"></div><div class="line"><span class="built_in">end</span></div></pre></td></tr></table></figure>
+<p>修改<strong>config.vm.box</strong>,让vagrant使用新添加的BOX</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Vagrant.configure(VAGRANTFILE_API_VERSION) <span class="built_in">do</span> |<span class="built_in">config</span>|</div><div class="line"></div><div class="line">    <span class="built_in">config</span>.vm.box = <span class="string">"precise32"</span></div><div class="line"></div><div class="line"><span class="built_in">end</span></div></pre></td></tr></table></figure>
+<h2 id="启动和SSH登录"><a href="#启动和SSH登录" class="headerlink" title="启动和SSH登录"></a>启动和SSH登录</h2><ul>
+<li>启动Vargant</li>
+</ul>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">vagrant up</span></div></pre></td></tr></table></figure>
+<p><img src="vagrant/05.png" alt=""></p>
+<ul>
+<li>SSH登录Vagrant虚拟机</li>
+</ul>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">vargant ssh</span></div></pre></td></tr></table></figure>
+<p>windows下直接使用cmd会报错如下</p>
+<p><img src="/vagrant/06.png" alt=""></p>
+<p>如果windows本机安装了git客户端，可以在git-bash中使用<strong>vagrant ssh</strong>,也可以使用Putty等SSH客户端,链接地址如下</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">Host:</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></div><div class="line"><span class="symbol">Port:</span> <span class="number">2222</span></div><div class="line"><span class="symbol">Username:</span> vagrant</div></pre></td></tr></table></figure>
+<ul>
+<li>文件同步</li>
+</ul>
+<p>默认情况下虚拟机 /vagrant目录下则自动同步了当前工作区下的所有内容</p>
+<h2 id="自动化部署"><a href="#自动化部署" class="headerlink" title="自动化部署"></a>自动化部署</h2><p>vagrant内置对自动化部署的支持，使用该特性可以在<strong>vagrant up</strong>时自动安装所需要的软件</p>
+<ul>
+<li>安装软件</li>
+</ul>
+<p>在<strong>WORKSPACE</strong>目录下新建<strong>bootstrap.sh</strong>文件</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#/usr/<span class="keyword">bin/env </span><span class="keyword">bash</span></div><div class="line"></div><div class="line"><span class="symbol">apt</span>-<span class="meta">get</span> update</div><div class="line"><span class="symbol">apt</span>-<span class="meta">get</span> install vim</div></pre></td></tr></table></figure>
+<p>修改<strong>WORKSPACE/Vagrantfile</strong>文件</p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Vagrant.configure(VAGRANTFILE_API_VERSION) <span class="built_in">do</span> |<span class="built_in">config</span>|</div><div class="line"></div><div class="line">    <span class="built_in">config</span>.vm.box = <span class="string">"precise32"</span></div><div class="line">    <span class="built_in">config</span>.vm.provision :shell, :path =&gt; <span class="string">"bootstrap.sh"</span></div><div class="line"></div><div class="line"><span class="built_in">end</span></div></pre></td></tr></table></figure>
+<p>该配置让Vagrant知道在虚拟机启动时，运行<strong>bootstrap.sh</strong>文件<br>文件路径<strong>$WORKSPACE</strong>目录的相对路径</p>
+<h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><ul>
+<li>端口转发</li>
+</ul>
+<p>使用该特性， 可以将虚拟机的端口映射到主机的特定端口上。</p>
+<p>使用该特性需要修改<strong>WORKSPACE/Vagrantfile</strong>文件</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Vagrant.configure(VAGRANTFILE_API_VERSION) <span class="keyword">do</span> |config|</div><div class="line"></div><div class="line">    config.<span class="keyword">vm</span>.box = <span class="string">"precise32"</span></div><div class="line">    config.<span class="keyword">vm</span>.provision :<span class="keyword">shell</span>, :path =&gt; <span class="string">"bootstrap.sh"</span></div><div class="line">    config.<span class="keyword">vm</span>.network :forwarded_port, gues<span class="variable">t:</span> <span class="number">80</span>, hos<span class="variable">t:</span> <span class="number">8080</span></div><div class="line"></div><div class="line">end</div></pre></td></tr></table></figure>
+<p>修改文件后重新启动<strong>Vagrant</strong> 重新启动虚拟机</p>
+<p><img src="/vagrant/07.png" alt=""></p>
+<p>如图所示对本机8080端口的请求都将转发到虚拟机的80端口</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

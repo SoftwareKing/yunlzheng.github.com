@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="最近苦于云梯的各种不稳定，在经历了几天无法正常上网的情况下，还是决定在digitalocean部署一个Shadowsocks的服务实例。
+大致过程很简单：
+在Digitalocean创建一台Ubuntu的实例：
+
+安装毕竟启动shadowsocks即可
+12apt-get install pytho">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="上网的正确姿势"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>上网的正确姿势 - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>上网的正确姿势</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2016-05-20
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/Others/">#Others</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>最近苦于云梯的各种不稳定，在经历了几天无法正常上网的情况下，还是决定在digitalocean部署一个Shadowsocks的服务实例。</p>
+<p>大致过程很简单：</p>
+<p>在Digitalocean创建一台Ubuntu的实例：</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/digitalocean.png" alt=""></p>
+<p>安装毕竟启动shadowsocks即可</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">apt-get <span class="keyword">install</span> python-pip</div><div class="line">pip <span class="keyword">install</span> shadowsocks</div></pre></td></tr></table></figure>
+<p>添加配置文件/etc/shadowsocks.json</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"server"</span>:<span class="string">"my_server_ip"</span>,</div><div class="line">    <span class="attr">"server_port"</span>:<span class="number">8388</span>,</div><div class="line">    <span class="attr">"local_port"</span>:<span class="number">1080</span>,</div><div class="line">    <span class="attr">"password"</span>:<span class="string">"barfoo!"</span>,</div><div class="line">    <span class="attr">"timeout"</span>:<span class="number">600</span>,</div><div class="line">    <span class="attr">"method"</span>:<span class="string">"table"</span>,</div><div class="line">    <span class="attr">"auth"</span>: <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>启动服务或停止服务</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ssserver -c <span class="regexp">/etc/</span>shadowsocks.json -d start</div><div class="line"><span class="comment"># or</span></div><div class="line">ssserver -c <span class="regexp">/etc/</span>shadowsocks.json -d stop</div></pre></td></tr></table></figure>
+<p>完成服务器启动之后，本机安装一个<a href="https://shadowsocks.org/en/download/clients.html" target="_blank" rel="external">ShadowsocksX客户端即可</a></p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/local_config.png" alt=""></p>
+<p>这里配置你的服务器IP地址，端口，以及密码即可。</p>
+<p>完成后ShadowsocksX默认在本地的1080端口建立代理服务，这个时候你就可以使用诸如chrome的SwitchySharp在浏览器中通过代理上网</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/SwitchySharp_config.png" alt=""></p>
+<p>另外通过在SwitchySharp配置切换规则我们可以自动完成对不同域名网站的访问方式切换。</p>
+<p>另外可以使用Github的<a href="https://github.com/gfwlist/gfwlist" target="_blank" rel="external">https://github.com/gfwlist/gfwlist</a>项目，该相互维护了一个官方的已被屏蔽的网站列表。</p>
+<p>添加Online Rule List可以避免大部分的手动规则设置</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/SwitchySharp_config2.png" alt=""></p>
+<p>大致如此。</p>
+<h3 id="科学上网"><a href="#科学上网" class="headerlink" title="科学上网"></a>科学上网</h3><blockquote>
+<p>另外关于DigitalOcean的计费模式</p>
+</blockquote>
+<p>另外关于DigitalOcean的计费模式的计费是按时计费，按照你开通的VPS使用时间来计费，当你删除VPS液滴后将会停止计费（关机还会照样计费）</p>
+<p>所以在科学上网的同时，我们还要进行一些简单的计划经济手段，方式很简单，无外乎通过自动化的手段去创建一个Shadowsocs的实例，按需创建/销毁即可.</p>
+<p>这里给一个例子，基于digitalocean api可以通过python创建和销毁实例。这里用fabric包装了一下，大致两个命令：</p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">fab create_droplet:<span class="built_in">token</span>=&lt;your digitalOcean <span class="built_in">token</span>&gt; <span class="meta"># 创建droplet并且安装运行shadowsocks</span></div><div class="line">fab destroy_all:<span class="built_in">token</span>=&lt;your digitalOcean <span class="built_in">token</span>&gt; <span class="meta"># 销毁所有的，所有的实例</span></div></pre></td></tr></table></figure>
+<p>实例代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> digitalocean</div><div class="line"><span class="keyword">from</span> fabric.api <span class="keyword">import</span> *</div><div class="line"></div><div class="line">env.use_ssh_config = <span class="keyword">True</span></div><div class="line">env.user = <span class="string">'root'</span></div><div class="line"></div><div class="line"><span class="meta">@task</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">create_droplet</span><span class="params">(token, name=<span class="string">"shadowsocks-instance"</span>, image=<span class="string">"ubuntu-14-04-x64"</span>, region=<span class="string">"nyc3"</span>)</span>:</span></div><div class="line"></div><div class="line">    droplet = digitalocean.Droplet(</div><div class="line">        token=token,</div><div class="line">        name=name,</div><div class="line">        region=region, <span class="comment"># New York 2</span></div><div class="line">        image=image, <span class="comment"># Ubuntu 14.04 x64</span></div><div class="line">        size_slug=<span class="string">'512mb'</span>,  <span class="comment"># 512MB</span></div><div class="line">        backups=<span class="keyword">False</span>,</div><div class="line">        ssh_keys=list_sshkeys(token))</div><div class="line">    droplet.create()</div><div class="line"></div><div class="line">    status = <span class="string">""</span></div><div class="line">    <span class="keyword">while</span> status != <span class="string">"completed"</span>:</div><div class="line">        actions = droplet.get_actions()</div><div class="line">        <span class="keyword">for</span> action <span class="keyword">in</span> actions:</div><div class="line">            action.load()</div><div class="line">            <span class="comment"># Once it shows complete, droplet is up and running</span></div><div class="line">            status = action.status</div><div class="line">            <span class="keyword">print</span> <span class="string">"&gt;&gt;&gt;&#123;0&#125;"</span>.format(action.status)</div><div class="line"></div><div class="line">    droplet.load()</div><div class="line">    ip_address = droplet.ip_address</div><div class="line">    <span class="keyword">print</span> <span class="string">"start provision shadowsocks instance in: &#123;0&#125;"</span>.format(ip_address)</div><div class="line">    execute(provision_shadownsocks, ip_address=ip_address, hosts=[ip_address])</div><div class="line"></div><div class="line"><span class="meta">@task</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">provision_shadownsocks</span><span class="params">(ip_address)</span>:</span></div><div class="line">    run(<span class="string">"echo start provision"</span>)</div><div class="line">    run(<span class="string">"apt-get update"</span>)</div><div class="line">    run(<span class="string">"apt-get install -y python-pip"</span>)</div><div class="line">    run(<span class="string">"pip install shadowsocks"</span>)</div><div class="line">    put(<span class="string">"shadowsocks.json"</span>, <span class="string">"/etc/shadowsocks.json"</span>)</div><div class="line">    run(<span class="string">"ssserver -c /etc/shadowsocks.json -d start"</span>)</div><div class="line"></div><div class="line"><span class="meta">@task</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">destroy_all</span><span class="params">(token)</span>:</span></div><div class="line">    <span class="keyword">for</span> droplet <span class="keyword">in</span> list_droplets(token):</div><div class="line">        droplet.destroy()</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">list_sshkeys</span><span class="params">(token)</span>:</span></div><div class="line">    manager = digitalocean.Manager(token=token)</div><div class="line">    <span class="keyword">return</span> [ssh_key.id <span class="keyword">for</span> ssh_key <span class="keyword">in</span> manager.get_all_sshkeys()]</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">list_droplets</span><span class="params">(token)</span>:</span></div><div class="line">    manager = digitalocean.Manager(token=token)</div><div class="line">    my_droplets = manager.get_all_droplets()</div><div class="line">    <span class="keyword">return</span> my_droplets</div></pre></td></tr></table></figure>
+<p>备注：如果要在本机运行这个代码需要将ssh的StrictHostKeyChecking禁用掉:</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#~/.ssh/config</span></div><div class="line"><span class="attribute">StrictHostKeyChecking</span> <span class="literal">no</span></div></pre></td></tr></table></figure>
+<p>另外shadowsocks.json是从本地上传，需要的代码相同的路径创建shadowsocks.json文件,例如</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"server"</span>:<span class="string">"0.0.0.0"</span>,</div><div class="line">  <span class="attr">"server_port"</span>:<span class="number">8388</span>,</div><div class="line">  <span class="attr">"local_port"</span>:<span class="number">1080</span>,</div><div class="line">  <span class="attr">"password"</span>:<span class="string">"barfoo!"</span>,</div><div class="line">  <span class="attr">"timeout"</span>:<span class="number">600</span>,</div><div class="line">  <span class="attr">"method"</span>:<span class="string">"table"</span>,</div><div class="line">  <span class="attr">"auth"</span>: <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

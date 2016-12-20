@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Background Info项目基本信息：
+
+MicroServices架构基于Spring Cloud框架实现；
+除了系统自身的4个核心服务外，还包含其他的第三方服务如Mysql, Mongo以及其它开源软件等
+当前系统部署方式基于Docker完成系统核心服务以及第三方服务的部署，配合使用Doc">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Consul In Practice 1 [概述]"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Consul In Practice 1 [概述] - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Consul In Practice 1 [概述]</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2016-04-21
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/consul/">#consul</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="Background-Info"><a href="#Background-Info" class="headerlink" title="Background Info"></a>Background Info</h2><p>项目基本信息：</p>
+<ul>
+<li>MicroServices架构基于Spring Cloud框架实现；</li>
+<li>除了系统自身的4个核心服务外，还包含其他的第三方服务如Mysql, Mongo以及其它开源软件等</li>
+<li>当前系统部署方式基于Docker完成系统核心服务以及第三方服务的部署，配合使用Docker Compose以及Ansible完成应用的自动化部署</li>
+<li>包含3个基本的环境Dev环境，UAT环境，Prod环境</li>
+</ul>
+<h2 id="Consul-In-Practice"><a href="#Consul-In-Practice" class="headerlink" title="Consul In Practice"></a>Consul In Practice</h2><h3 id="1-As-Service-Discovery"><a href="#1-As-Service-Discovery" class="headerlink" title="1, As Service Discovery"></a>1, As Service Discovery</h3><p>使用开发模式我们可以快速验证Consul提供的相关能力</p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">consul agent -dev -config-<span class="keyword">dir</span> /etc/consul.<span class="built_in">d</span></div></pre></td></tr></table></figure>
+<p>Consul中我们非常方便的创建和定义服务，例如通过在/etc/consul.d/中创建文件sonarqube.json</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"service"</span>: &#123;</div><div class="line">    <span class="attr">"name"</span>: <span class="string">"sonarqube"</span>,</div><div class="line">    <span class="attr">"tags"</span>: [<span class="string">"dev"</span>],</div><div class="line">    <span class="attr">"port"</span>: <span class="number">9000</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>完成服务定义之后：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">consul reload</span></div></pre></td></tr></table></figure>
+<p>可以重新加载服务配置文件，从Consul UI中我们可以查看到我们的服务实例</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/consul-ui.png" alt=""></p>
+<p>完成服务注册之后我们便可以通过Consul提供的API去查询服务实例</p>
+<p>例如我们可以通过<strong>HTTP API</strong>查询到sonarqube服务实例的相关信息：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">curl http:<span class="regexp">//</span>localhost:<span class="number">8500</span><span class="regexp">/v1/</span>catalog<span class="regexp">/service/</span>web</div><div class="line"></div><div class="line">[</div><div class="line">  &#123;</div><div class="line">    <span class="string">"Node"</span>:<span class="string">"agent-two"</span>,</div><div class="line">    <span class="string">"Address"</span>:<span class="string">"xxx.xxx.xxx"</span>,</div><div class="line">    <span class="string">"ServiceID"</span>:<span class="string">"web"</span>,</div><div class="line">    <span class="string">"ServiceName"</span>:<span class="string">"web"</span>,</div><div class="line">    <span class="string">"ServiceTags"</span>:[<span class="string">"dev"</span>],</div><div class="line">    <span class="string">"ServiceAddress"</span>:<span class="string">""</span>,</div><div class="line">    <span class="string">"ServicePort"</span>:<span class="number">9900</span>,</div><div class="line">    <span class="string">"ServiceEnableTagOverride"</span>:false,</div><div class="line">    <span class="string">"CreateIndex"</span>:<span class="number">515</span>,</div><div class="line">    <span class="string">"ModifyIndex"</span>:<span class="number">516</span></div><div class="line">  &#125;</div><div class="line">]</div></pre></td></tr></table></figure>
+<p>除此之外Consul还提供了内置的DNS服务，DNS服务的默认访问端口为8600，通过DNS服务我们可以通过域名’[serviceName].service.consul’的方式直接访问我们的服务实例:</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">dig</span> @<span class="keyword">127</span>.<span class="keyword">0</span>.<span class="keyword">0</span>.<span class="keyword">1</span> -p <span class="number">8600</span> sonarqube.service.consul</div><div class="line"></div><div class="line">; &lt;&lt;&gt;&gt; <span class="selector-tag">DiG</span> 9<span class="selector-class">.9</span><span class="selector-class">.4-RedHat-9</span><span class="selector-class">.9</span><span class="selector-class">.4-29</span><span class="selector-class">.el7_2</span><span class="selector-class">.1</span> &lt;&lt;&gt;&gt; @<span class="keyword">127</span>.<span class="keyword">0</span>.<span class="keyword">0</span>.<span class="keyword">1</span> -p <span class="number">8600</span> sonarqube.service.consul</div><div class="line">; (1 <span class="selector-tag">server</span> <span class="selector-tag">found</span>)</div><div class="line">;; <span class="selector-tag">global</span> <span class="selector-tag">options</span>: +<span class="selector-tag">cmd</span></div><div class="line">;; <span class="selector-tag">Got</span> <span class="selector-tag">answer</span>:</div><div class="line">;; <span class="selector-tag">-</span>&gt;&gt;<span class="selector-tag">HEADER</span>&lt;&lt;<span class="selector-tag">-</span> <span class="selector-tag">opcode</span>: <span class="selector-tag">QUERY</span>, <span class="selector-tag">status</span>: <span class="selector-tag">NOERROR</span>, <span class="selector-tag">id</span>: 21563</div><div class="line">;; <span class="selector-tag">flags</span>: <span class="selector-tag">qr</span> <span class="selector-tag">aa</span> <span class="selector-tag">rd</span>; <span class="selector-tag">QUERY</span>: 1, <span class="selector-tag">ANSWER</span>: 1, <span class="selector-tag">AUTHORITY</span>: 0, <span class="selector-tag">ADDITIONAL</span>: 0</div><div class="line">;; <span class="selector-tag">WARNING</span>: <span class="selector-tag">recursion</span> <span class="selector-tag">requested</span> <span class="selector-tag">but</span> <span class="selector-tag">not</span> <span class="selector-tag">available</span></div><div class="line"></div><div class="line">;; <span class="selector-tag">QUESTION</span> <span class="selector-tag">SECTION</span>:</div><div class="line">;<span class="selector-tag">sonarqube</span><span class="selector-class">.service</span><span class="selector-class">.consul</span>.	<span class="selector-tag">IN</span>	<span class="selector-tag">A</span></div><div class="line"></div><div class="line">;; <span class="selector-tag">ANSWER</span> <span class="selector-tag">SECTION</span>:</div><div class="line"><span class="selector-tag">sonarqube</span><span class="selector-class">.service</span><span class="selector-class">.consul</span>. 0	<span class="selector-tag">IN</span>	<span class="selector-tag">A</span>	10<span class="selector-class">.174</span><span class="selector-class">.231</span><span class="selector-class">.41</span></div><div class="line"></div><div class="line">;; <span class="selector-tag">Query</span> <span class="selector-tag">time</span>: 0 <span class="selector-tag">msec</span></div><div class="line">;; <span class="selector-tag">SERVER</span>: 127<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span><span class="selector-id">#8600</span>(127<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span>)</div><div class="line">;; <span class="selector-tag">WHEN</span>: <span class="selector-tag">Thu</span> <span class="selector-tag">Apr</span> 21 12<span class="selector-pseudo">:23</span><span class="selector-pseudo">:26</span> <span class="selector-tag">CST</span> 2016</div><div class="line">;; <span class="selector-tag">MSG</span> <span class="selector-tag">SIZE</span>  <span class="selector-tag">rcvd</span>: 82</div></pre></td></tr></table></figure>
+<p>或者结合使用服务的tag标签[tagName].[serviceName].service.consul的方式访问服务实例：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">dig</span> @<span class="keyword">127</span>.<span class="keyword">0</span>.<span class="keyword">0</span>.<span class="keyword">1</span> -p <span class="number">8600</span> dev.sonarqube.service.consul</div><div class="line"></div><div class="line">; &lt;&lt;&gt;&gt; <span class="selector-tag">DiG</span> 9<span class="selector-class">.9</span><span class="selector-class">.4-RedHat-9</span><span class="selector-class">.9</span><span class="selector-class">.4-29</span><span class="selector-class">.el7_2</span><span class="selector-class">.1</span> &lt;&lt;&gt;&gt; @<span class="keyword">127</span>.<span class="keyword">0</span>.<span class="keyword">0</span>.<span class="keyword">1</span> -p <span class="number">8600</span> dev.sonarqube.service.consul</div><div class="line">; (1 <span class="selector-tag">server</span> <span class="selector-tag">found</span>)</div><div class="line">;; <span class="selector-tag">global</span> <span class="selector-tag">options</span>: +<span class="selector-tag">cmd</span></div><div class="line">;; <span class="selector-tag">Got</span> <span class="selector-tag">answer</span>:</div><div class="line">;; <span class="selector-tag">-</span>&gt;&gt;<span class="selector-tag">HEADER</span>&lt;&lt;<span class="selector-tag">-</span> <span class="selector-tag">opcode</span>: <span class="selector-tag">QUERY</span>, <span class="selector-tag">status</span>: <span class="selector-tag">NXDOMAIN</span>, <span class="selector-tag">id</span>: 17333</div><div class="line">;; <span class="selector-tag">flags</span>: <span class="selector-tag">qr</span> <span class="selector-tag">aa</span> <span class="selector-tag">rd</span>; <span class="selector-tag">QUERY</span>: 1, <span class="selector-tag">ANSWER</span>: 0, <span class="selector-tag">AUTHORITY</span>: 1, <span class="selector-tag">ADDITIONAL</span>: 0</div><div class="line">;; <span class="selector-tag">WARNING</span>: <span class="selector-tag">recursion</span> <span class="selector-tag">requested</span> <span class="selector-tag">but</span> <span class="selector-tag">not</span> <span class="selector-tag">available</span></div><div class="line"></div><div class="line">;; <span class="selector-tag">QUESTION</span> <span class="selector-tag">SECTION</span>:</div><div class="line">;<span class="selector-tag">dev</span><span class="selector-class">.sonarqube</span><span class="selector-class">.service</span><span class="selector-class">.consul</span>. <span class="selector-tag">IN</span>	<span class="selector-tag">A</span></div><div class="line"></div><div class="line">;; <span class="selector-tag">AUTHORITY</span> <span class="selector-tag">SECTION</span>:</div><div class="line"><span class="selector-tag">consul</span>.			0	<span class="selector-tag">IN</span>	<span class="selector-tag">SOA</span>	<span class="selector-tag">ns</span><span class="selector-class">.consul</span>. <span class="selector-tag">postmaster</span><span class="selector-class">.consul</span>. 1461212746 3600 600 86400 0</div><div class="line"></div><div class="line">;; <span class="selector-tag">Query</span> <span class="selector-tag">time</span>: 0 <span class="selector-tag">msec</span></div><div class="line">;; <span class="selector-tag">SERVER</span>: 127<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span><span class="selector-id">#8600</span>(127<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span>)</div><div class="line">;; <span class="selector-tag">WHEN</span>: <span class="selector-tag">Thu</span> <span class="selector-tag">Apr</span> 21 12<span class="selector-pseudo">:25</span><span class="selector-pseudo">:46</span> <span class="selector-tag">CST</span> 2016</div><div class="line">;; <span class="selector-tag">MSG</span> <span class="selector-tag">SIZE</span>  <span class="selector-tag">rcvd</span>: 119</div></pre></td></tr></table></figure>
+<p>你还可以通过在启动consul是使用–domain参数设定域名规则</p>
+<h3 id="2-As-Service-Monitor"><a href="#2-As-Service-Monitor" class="headerlink" title="2, As Service Monitor"></a>2, As Service Monitor</h3><p>同时当应用以服务为单位向外部暴露接口之后，需要对各个服务的状态进行监控，Consul同样可以非常方便的让我们能够对服务状态进行监控.</p>
+<p>同样以sonarqube为例子，通过check属性我们可以自定义所需要的监控方式。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"service"</span>: &#123;</div><div class="line">    <span class="attr">"name"</span>: <span class="string">"sonarqube"</span>,</div><div class="line">    <span class="attr">"tags"</span>: [<span class="string">"server"</span>],</div><div class="line">    <span class="attr">"port"</span>: <span class="number">9000</span>,</div><div class="line">    <span class="attr">"check"</span>: &#123;<span class="attr">"script"</span>: <span class="string">"curl localhost:9000 &gt;/dev/null 2&gt;&amp;1"</span>, <span class="attr">"interval"</span>: <span class="string">"10s"</span>&#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>除了通过script脚本的形式进行服务的健康检查，Consule还支持一下方式：</p>
+<p>HTTP状态检查:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"check"</span>: &#123;</div><div class="line">    <span class="attr">"id"</span>: <span class="string">"api"</span>,</div><div class="line">    <span class="attr">"name"</span>: <span class="string">"HTTP API on port 5000"</span>,</div><div class="line">    <span class="attr">"http"</span>: <span class="string">"http://localhost:5000/health"</span>,</div><div class="line">    <span class="attr">"interval"</span>: <span class="string">"10s"</span>,</div><div class="line">    <span class="attr">"timeout"</span>: <span class="string">"1s"</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>TCP状态检查：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"check"</span>: &#123;</div><div class="line">    <span class="attr">"id"</span>: <span class="string">"ssh"</span>,</div><div class="line">    <span class="attr">"name"</span>: <span class="string">"SSH TCP on port 22"</span>,</div><div class="line">    <span class="attr">"tcp"</span>: <span class="string">"localhost:22"</span>,</div><div class="line">    <span class="attr">"interval"</span>: <span class="string">"10s"</span>,</div><div class="line">    <span class="attr">"timeout"</span>: <span class="string">"1s"</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>TTL检查:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"check"</span>: &#123;</div><div class="line">    <span class="attr">"id"</span>: <span class="string">"web-app"</span>,</div><div class="line">    <span class="attr">"name"</span>: <span class="string">"Web App Status"</span>,</div><div class="line">    <span class="attr">"notes"</span>: <span class="string">"Web app does a curl internally every 10 seconds"</span>,</div><div class="line">    <span class="attr">"ttl"</span>: <span class="string">"30s"</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Docker容器监控：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line"><span class="attr">"check"</span>: &#123;</div><div class="line">    <span class="attr">"id"</span>: <span class="string">"mem-util"</span>,</div><div class="line">    <span class="attr">"name"</span>: <span class="string">"Memory utilization"</span>,</div><div class="line">    <span class="attr">"docker_container_id"</span>: <span class="string">"f972c95ebf0e"</span>,</div><div class="line">    <span class="attr">"shell"</span>: <span class="string">"/bin/bash"</span>,</div><div class="line">    <span class="attr">"script"</span>: <span class="string">"/usr/local/bin/check_mem.py"</span>,</div><div class="line">    <span class="attr">"interval"</span>: <span class="string">"10s"</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="3-Key-Vale-Store"><a href="#3-Key-Vale-Store" class="headerlink" title="3, Key/Vale Store"></a>3, Key/Vale Store</h3><p>Consul支持开放的K/V存储，你可以用在动态配置，特性开关，调度， 集群等等任何你需要使用的地方，同时Consul提供的HTTP API可以让你非常易于使用</p>
+<blockquote>
+<p>本篇不详细说明该特性，后续会详细讨论在集中式配置管理中的应用</p>
+</blockquote>
+<h3 id="4-As-DataCenters"><a href="#4-As-DataCenters" class="headerlink" title="4, As DataCenters"></a>4, As DataCenters</h3><p>在实际软件交付过程中我们会涉及到另外一个问题，多环境的管理，以当前自己所在的项目为例，在交付过程中会涉及到3个基本的环境Dev, UAT以及Prod环境。各个环境独立部署了所有的服务，Cosul的多数据中心能力可以很好的对多个环境进行统一的管理和监控；</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/multi-data-center.png" alt=""></p>
+<p>以下我们假设以Dev和UAT两个DataCenter为例</p>
+<ul>
+<li>DEV DataCenter:</li>
+</ul>
+<p>在Node1上启动Consul Server</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">consul agent -server  -bootstrap-expect <span class="number">1</span>  -data-dir /tmp/consul -node=agent-one -config-dir /etc/consul.d -bind <span class="number">192.168</span><span class="number">.0</span><span class="number">.2</span>  -client <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span> -ui -dc=dev</div></pre></td></tr></table></figure>
+<p>在Node2上启动Consul Agent</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">consul agent -data-dir /tmp/consul -<span class="keyword">node</span><span class="title">=agent-two</span> -config-dir /etc/consul.d -<span class="attr">bind=</span><span class="number">192.168</span>.<span class="number">0.3</span> -<span class="attr">dc=</span>dev</div></pre></td></tr></table></figure>
+<p>加入到Consul Server</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">consul</span> <span class="selector-tag">join</span> 192<span class="selector-class">.168</span><span class="selector-class">.0</span><span class="selector-class">.2</span></div></pre></td></tr></table></figure>
+<p>此时在Node1或者Node2上检查当前集群信息</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">consul</span> <span class="selector-tag">members</span></div><div class="line"></div><div class="line"><span class="selector-tag">agent-one</span>  192<span class="selector-class">.168</span><span class="selector-class">.0</span><span class="selector-class">.2</span><span class="selector-pseudo">:8301</span>  <span class="selector-tag">alive</span>   <span class="selector-tag">server</span>  0<span class="selector-class">.6</span><span class="selector-class">.4</span>  2         <span class="selector-tag">dev</span></div><div class="line"><span class="selector-tag">agent-two</span>  192<span class="selector-class">.168</span><span class="selector-class">.0</span><span class="selector-class">.3</span><span class="selector-pseudo">:8301</span>  <span class="selector-tag">alive</span>   <span class="selector-tag">client</span>  0<span class="selector-class">.6</span><span class="selector-class">.4</span>  2         <span class="selector-tag">dev</span></div></pre></td></tr></table></figure>
+<ul>
+<li>UAT DataCenter:</li>
+</ul>
+<p>在Node3上启动Consul Server</p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">consul agent -server  -bootstrap-expect <span class="number">1</span>  -data-dir /tmp/consul -<span class="keyword">node</span><span class="title">=agent-three</span> -config-dir /etc/consul.d -bind <span class="number">192.168</span>.<span class="number">2.2</span> -<span class="attr">dc=</span>uat</div></pre></td></tr></table></figure>
+<ul>
+<li>关联Dev和UAT DataCenter</li>
+</ul>
+<p>在Node1上：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">consul</span> <span class="selector-tag">members</span> <span class="selector-tag">-wan</span></div><div class="line"></div><div class="line"><span class="selector-tag">agent-one</span>  192<span class="selector-class">.168</span><span class="selector-class">.0</span><span class="selector-class">.2</span><span class="selector-pseudo">:8301</span>  <span class="selector-tag">alive</span>   <span class="selector-tag">server</span>  0<span class="selector-class">.6</span><span class="selector-class">.4</span>  2         <span class="selector-tag">dev</span></div></pre></td></tr></table></figure>
+<p> 通过命令</p>
+ <figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">consul</span> <span class="selector-tag">join</span> <span class="selector-tag">-wan</span> 192<span class="selector-class">.168</span><span class="selector-class">.2</span><span class="selector-class">.2</span></div></pre></td></tr></table></figure>
+<p>通过Consul UI集中式管理多个环境的信息</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/consul-multi-center-web-ui.png" alt="/images/consul-multi-center-web-ui.png"></p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>这篇主要目的是用于介绍一下Consul的基本特性</p>
+<p>在后续还会继续考虑：</p>
+<ul>
+<li>使用Consul替换Spring Cloud作为服务发现和注册平台；</li>
+<li>与Docker集成完成服务的自动发现和注册；</li>
+<li>基于Consul的KV特性完成系统的中心化配置管理</li>
+</ul>
+<p>未完待续……</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

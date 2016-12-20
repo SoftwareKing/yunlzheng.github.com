@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="今天突然觉得每天背着自己的笔记本去公司上班是件活受罪不讨好的事情，于是还是决定在公司的Windows机器上重新弄一套开发环境，关于会话管理的东西之前有听领导介绍但却一直没有机会尝试一下，刚好今天又闲着没什么事情做，就尝试了一下Tmux">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Tmux Linux会话管理神器"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Tmux Linux会话管理神器 - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Tmux Linux会话管理神器</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2013-10-08
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/tools/">#tools</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p> 今天突然觉得每天背着自己的笔记本去公司上班是件活受罪不讨好的事情，于是还是决定在公司的Windows机器上重新弄一套开发环境，关于会话管理的东西之前有听领导介绍但却一直没有机会尝试一下，刚好今天又闲着没什么事情做，就尝试了一下Tmux</p>
+ <a id="more"></a>
+<h2 id="初体验"><a href="#初体验" class="headerlink" title="初体验"></a>初体验</h2><p> “高端大气上档次,低调奢华有内涵”，估计只有这话能形容一下使用的感受。会话管理那套东西就不多少说了，大家都懂。 给我感觉最牛B的还是它的多面板控制</p>
+<p><img src="http://media.tumblr.com/a134acdee31402e4d91b147397e6ae21/tumblr_inline_mucqivJE881sosno0.png" alt=""></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li>环境Ubuntu 12.04</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install tmux</div></pre></td></tr></table></figure>
+<h2 id="需要知道的概念"><a href="#需要知道的概念" class="headerlink" title="需要知道的概念"></a>需要知道的概念</h2><ul>
+<li>server    服务器。输入tmux命令时就开启了一个服务器。</li>
+<li>session   会话。一个服务器可以包含多个会话。</li>
+<li>window    窗口。一个会话可以包含多个窗口。</li>
+<li>pane  面板。一个窗口可以包含多个面板。</li>
+</ul>
+<h2 id="一些实用常用的命令"><a href="#一些实用常用的命令" class="headerlink" title="一些实用常用的命令"></a>一些实用常用的命令</h2><h3 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h3><ul>
+<li>开启一个新的会话</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tmux</div></pre></td></tr></table></figure>
+<ul>
+<li>显示当前系统的所有会话</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tmux ls</div></pre></td></tr></table></figure>
+<p><img src="http://media.tumblr.com/ac9589bb921c65c0af88aae420012470/tumblr_inline_mucr4n5eWw1sosno0.png" alt=""></p>
+<ul>
+<li>重新链接到特定会话</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tmux attach -t &lt;会话编号&gt;</div></pre></td></tr></table></figure>
+<p><img src="http://media.tumblr.com/f3cfb99e5105aa5398a6f1f518d3072d/tumblr_inline_mucrc8Yakl1sosno0.png" alt=""></p>
+<h3 id="控制台命令"><a href="#控制台命令" class="headerlink" title="控制台命令"></a>控制台命令</h3><p>进入tmux后使用 ctrl+b 进入tmux控制台</p>
+<h4 id="系统操作"><a href="#系统操作" class="headerlink" title="系统操作"></a>系统操作</h4><ul>
+<li>？ 列出所有快捷键；按q返回</li>
+<li>d 脱离当前会话；这样可以暂时返回Shell界面，输入tmux attach能够重新进入之前的会话</li>
+<li>ctrl+z 挂起当前会话</li>
+<li>: 进入命令行模式；此时可以输入支持的命令，例如kill-server可以关闭服务器</li>
+</ul>
+<h4 id="面板操作"><a href="#面板操作" class="headerlink" title="面板操作"></a>面板操作</h4><ul>
+<li>% 将当前面板平分为左右两块</li>
+</ul>
+<p><img src="http://media.tumblr.com/b71f6d2f90c2a40b8d05cc1ca52e2f2d/tumblr_inline_mucrhc05gU1sosno0.png" alt=""></p>
+<ul>
+<li>“ 将当前面板平分为上下两块</li>
+</ul>
+<p><img src="http://media.tumblr.com/c527cce15b93d562f501b34574ac5765/tumblr_inline_mucre7xHJb1sosno0.png" alt=""></p>
+<ul>
+<li>x 关闭当前面板</li>
+</ul>
+<p><img src="http://media.tumblr.com/1d0eb920858a50863f2551b7adbdf859/tumblr_inline_mucribO2iM1sosno0.png" alt=""></p>
+<ul>
+<li>ctrl+方向键 以1个单元格为单位移动边缘以调整当前面板大小</li>
+<li>o 在当前窗口中选择下一面板</li>
+<li>方向键 移动光标以选择面板</li>
+<li>{ / } 向前/后置换当前面板</li>
+</ul>
+<h2 id="更多的东西还需要你自己去试试！"><a href="#更多的东西还需要你自己去试试！" class="headerlink" title="更多的东西还需要你自己去试试！"></a>更多的东西还需要你自己去试试！</h2>
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Ansible是一个简单，强大的自动化配置管理工具，对于Ansible而言，自动化所需要的一切就是在控制机上安装一个python的package.就和Fabric一样简单">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Ansible初体验"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Ansible初体验 - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Ansible初体验</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2014-08-05
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>Ansible是一个简单，强大的自动化配置管理工具，<br>对于Ansible而言，自动化所需要的一切就是在控制机上安装一个python的package.就和Fabric一样简单</p>
+<a id="more"></a>
+<h2 id="安装Ansible"><a href="#安装Ansible" class="headerlink" title="安装Ansible"></a>安装Ansible</h2><p>For python user</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip <span class="keyword">install</span> ansible</div></pre></td></tr></table></figure>
+<p>For mac user</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">brew </span><span class="keyword">install </span>ansible</div></pre></td></tr></table></figure>
+<h2 id="SSH远程登录授权"><a href="#SSH远程登录授权" class="headerlink" title="SSH远程登录授权"></a>SSH远程登录授权</h2><p>在这里我们使用Vagrant模拟一个远程服务器 <strong>vagrant init</strong> 创建一个vagrant实例</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-copy-id -<span class="selector-tag">i</span> ~/.ssh/id_rsa<span class="selector-class">.pub</span> vagrant@<span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">2222</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>for mac user need install ssh-copy-id tools first “brew install ssh-copy-id”</p>
+</blockquote>
+<h2 id="ansible-Ad-hot"><a href="#ansible-Ad-hot" class="headerlink" title="ansible Ad-hot"></a>ansible Ad-hot</h2><p>Ad-hot简单来说就是利用ansible来执行一些简单的零时的服务器远程操作。</p>
+<p>example1 初识:</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">echo</span> <span class="string">"127.0.0.1:2222"</span> | tee hosts</div><div class="line">ansible <span class="keyword">all</span> -<span class="keyword">m</span> ping -i hosts -<span class="keyword">u</span> vagrant</div></pre></td></tr></table></figure>
+<p>上面的命令首先在当前目录创建了一个hosts文件，然后调用ansible的ping模块来对hosts文件中定义的服务器调用ping操作</p>
+<p>console output:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">127.0.0.1 | success &gt;</span>&gt; &#123;</div><div class="line">    <span class="string">"changed"</span>: false,</div><div class="line">    <span class="string">"ping"</span>: <span class="string">"pong"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>all: 指定该命令对hosts中的所有主机生效</li>
+<li>-i hosts: 指定hosts配置文件，默认使用/etc/ansible/hosts</li>
+<li>-u vagrant: 指定远程用户vagrant</li>
+<li>-m ping: 指定ansible模块ping</li>
+</ul>
+<p>example2 运行echo语句:</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible all -<span class="selector-tag">a</span> <span class="string">'echo hello'</span> -<span class="selector-tag">i</span> hosts -u vagrant</div></pre></td></tr></table></figure>
+<ul>
+<li>-a: 模块参数，当未使用-m 指定模块时，默认模块为command</li>
+</ul>
+<p>example3 使用ansible copy模块远程拷贝文件:</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible all -m copy -<span class="selector-tag">a</span> <span class="string">"src=hosts dest=~/hosts"</span> -<span class="selector-tag">i</span> hosts -u vagrant</div></pre></td></tr></table></figure>
+<h2 id="ansible-doc-查看模块信息"><a href="#ansible-doc-查看模块信息" class="headerlink" title="ansible-doc 查看模块信息"></a>ansible-doc 查看模块信息</h2><blockquote>
+<p>ansible的百科全书</p>
+</blockquote>
+<p>显示ansible所有可用模块</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible-doc <span class="_">-l</span></div></pre></td></tr></table></figure>
+<p>查看特定模块的相关信息</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible-doc <span class="built_in">ping</span></div></pre></td></tr></table></figure>
+<p><img src="https://31.media.tumblr.com/545c9ccfd0486332ea0958683392c108/tumblr_inline_n9yq5hTERc1sosno0.png" alt=""></p>
+<h2 id="ansible-playbook-剧本"><a href="#ansible-playbook-剧本" class="headerlink" title="ansible-playbook 剧本"></a>ansible-playbook 剧本</h2><blockquote>
+<p>做自己的导演</p>
+</blockquote>
+<p>hosts</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-attr">[webserver]</span></div><div class="line">127<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span><span class="selector-pseudo">:2222</span></div></pre></td></tr></table></figure>
+<p>示例：playbook.xml</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="meta">---</span></div><div class="line"><span class="attr">- hosts:</span> webserver</div><div class="line"><span class="attr">  sudo:</span> <span class="literal">yes</span></div><div class="line"><span class="attr">  remote_user:</span> vagrant</div><div class="line"><span class="attr">  vars:</span></div><div class="line"><span class="attr">    http_port:</span> <span class="number">80</span></div><div class="line"><span class="attr">    max_clients:</span> <span class="number">200</span></div><div class="line"><span class="attr">  tasks:</span></div><div class="line"><span class="attr">    - name:</span> ensure apache is at the latest version</div><div class="line"><span class="attr">      apt:</span> name=apache2 state=latest</div><div class="line"><span class="attr">    - name:</span> write the apache config file</div><div class="line"><span class="attr">      template:</span> src=apache2.conf dest=/etc/apache2/apache2.conf</div><div class="line"><span class="attr">      notify:</span></div><div class="line"><span class="bullet">        -</span> restart apache</div><div class="line"><span class="attr">    - name:</span> ensure apache is running</div><div class="line"><span class="attr">      service:</span> name=apache2 state=started</div><div class="line"><span class="attr">  handlers:</span></div><div class="line"><span class="attr">    - name:</span> restart apache</div><div class="line"><span class="attr">      service:</span> name=apache2 state=restarted</div></pre></td></tr></table></figure>
+<p>执行shell:</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible-playbook playbook<span class="selector-class">.yml</span> -<span class="selector-tag">i</span> hosts</div></pre></td></tr></table></figure>
+<h3 id="Hosts-amp-Users"><a href="#Hosts-amp-Users" class="headerlink" title="Hosts &amp; Users"></a>Hosts &amp; Users</h3><p>在playbook中使用hosts和remote_user指定<strong>全局</strong>主机和远程服务器的用户</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">---</span></div><div class="line"><span class="attr">- hosts:</span> webserver</div><div class="line"><span class="attr">  remote_user:</span> vagrant</div></pre></td></tr></table></figure>
+<p>使用sudo指定任务是否使用sudo权限执行</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="meta">---</span></div><div class="line"><span class="attr">- hosts:</span> webserver</div><div class="line"><span class="attr">  remote_user:</span> vagrant</div><div class="line"><span class="attr">  sudo:</span> <span class="literal">yes</span></div></pre></td></tr></table></figure>
+<p>我们也可以给每一个tasks单独指定remote_user和sudo，如下：</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- <span class="built_in">name</span>: ensure apache <span class="keyword">is</span> <span class="keyword">at</span> <span class="keyword">the</span> latest <span class="built_in">version</span></div><div class="line">  apt: <span class="built_in">name</span>=apache2 state=latest</div><div class="line">  remote_user: vagrant</div><div class="line">  sudo: yes</div></pre></td></tr></table></figure>
+<h3 id="Tasks"><a href="#Tasks" class="headerlink" title="Tasks"></a>Tasks</h3><p>在playbook的描述文件中会包含一个tasks的列表，这些就是我们实际需要在服务器上所做的操作，<br>在ansible中这些任务都是按照顺序依次执行，如果其中的一个任务发生了异常或者错误，ansible将会自动退出，并显示错误信息</p>
+<p>在playbook中我们可以使用<strong>ignore_errors</strong>忽略单个task的发生的错误</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- <span class="built_in">name</span>: ensure apache <span class="keyword">is</span> <span class="keyword">at</span> <span class="keyword">the</span> latest <span class="built_in">version</span> ignore <span class="keyword">the</span> errors</div><div class="line">  apt: <span class="built_in">name</span>=apache2 state=latest</div><div class="line">  ignore_errors: True</div></pre></td></tr></table></figure>
+<p>在ansible中我们可以使用shell模块直接执行shell语句，所以熟悉shell的同学可以直接利用shell完成所有的task如：</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- name:<span class="built_in"> execute </span>shell by ansible</div><div class="line">  shell: echo <span class="string">"hello world"</span> | tee ~/test.txt</div></pre></td></tr></table></figure>
+<p>但是ansible还提供了很多有用的模块，例如apt, yum, mysql, openstack等</p>
+<p>ansible模块列表：<a href="http://docs.ansible.com/list_of_all_modules.html" target="_blank" rel="external">http://docs.ansible.com/list_of_all_modules.html</a></p>
+<h3 id="Handlers"><a href="#Handlers" class="headerlink" title="Handlers"></a>Handlers</h3><p>一般来说当我们更新了服务器的配置文件，都需要对相应的服务器进行重启或者做一些其他的关联操作。这个时候就会使用到handlers。</p>
+<p>简单来说handlers就是ansible中定义好的一组事件，默认并不会执行。 只有当task中使用了notify触发了相应事件，在所有task执行完成后<br>相应的handler才会执行。</p>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">handlers:</div><div class="line">  - name: restart apache</div><div class="line">    service: name=apache2 <span class="keyword">state</span>=restarted</div></pre></td></tr></table></figure>
+<p>我们可能在多个task中都使用了notify，但是handler只会执行一次</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- name: write the apache config file</div><div class="line">  template: src=apache2<span class="selector-class">.conf</span> dest=/etc/apache2/apache2<span class="selector-class">.conf</span></div><div class="line">  notify:</div><div class="line">    - restart apache</div></pre></td></tr></table></figure>
+<p>Demo源码：<a href="https://github.com/yunlzheng/ansible-examples/tree/master/webserver" target="_blank" rel="external">https://github.com/yunlzheng/ansible-examples/tree/master/webserver</a></p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

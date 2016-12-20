@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="如下图所示在基于Neutron的Vlan网络模式下，需要对交换机（L3）进行相应的配置, 一般可划分为3个基本网络：管理网络，用于Openstack内部API调用管理; 虚拟机网络，用于虚拟机之间的通讯；外部网络，用于连接外部网络，作为虚拟机的浮动IP来源；
+由于Vlan模式下，租户建立的网络都具有独立的Vlan标签，故需要利用交换机将虚机网络设置为trunk模式,如允许通过vlan tag 为800~2000网络，保证虚拟机之间能够正常通讯；">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="OpenStack之Neutron Vlan"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>OpenStack之Neutron Vlan - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>OpenStack之Neutron Vlan</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2015-01-31
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/openstack/">#openstack</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>如下图所示在基于Neutron的Vlan网络模式下，需要对交换机（L3）进行相应的配置, 一般可划分为3个基本网络：管理网络，用于Openstack内部API调用管理; 虚拟机网络，用于虚拟机之间的通讯；外部网络，用于连接外部网络，作为虚拟机的浮动IP来源；</p>
+<p>由于Vlan模式下，租户建立的网络都具有独立的Vlan标签，故需要利用交换机将虚机网络设置为trunk模式,如允许通过vlan tag 为800~2000网络，保证虚拟机之间能够正常通讯；</p>
+<a id="more"></a>
+<p><img src="http://filehost.qiniudn.com/openstack-icehouse-vlan.png" alt=""></p>
+<h2 id="Vlan模式主要配置内容"><a href="#Vlan模式主要配置内容" class="headerlink" title="Vlan模式主要配置内容"></a>Vlan模式主要配置内容</h2><ul>
+<li>修改控制节点配置信息</li>
+</ul>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/neutron/plugins/ml2/ml2_conf.ini</span></div><div class="line"><span class="section">[ml2]</span></div><div class="line"><span class="attr">type_drivers</span> = vlan</div><div class="line"><span class="section"></span></div><div class="line">[ml2_type_vlan]</div><div class="line"><span class="attr">network_vlan_ranges</span> = physnet1:<span class="number">800</span>:<span class="number">2000</span></div><div class="line"><span class="section"></span></div><div class="line">[ovs]</div><div class="line"><span class="attr">tenant_network_type</span> = vlan</div><div class="line"><span class="attr">bridge_mappings</span> = physnet1:br-em2</div></pre></td></tr></table></figure>
+<p>重启neutron-server服务</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service neutron-<span class="keyword">server</span> restart</div></pre></td></tr></table></figure>
+<ul>
+<li>网络节点和计算节点</li>
+</ul>
+<p>添加网桥用于虚拟机之间的通讯</p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ovs-vsctl<span class="built_in"> add-br </span>br-em2</div><div class="line">ovs-vsctl<span class="built_in"> add-port </span>br-em2 em2</div></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/neutron/plugins/ml2/ml2_conf.ini</span></div><div class="line"><span class="attr">type_drivers</span> = vlan</div><div class="line"><span class="section"></span></div><div class="line">[ml2_type_vlan]</div><div class="line"><span class="attr">network_vlan_ranges</span> = physnet1:<span class="number">800</span>:<span class="number">2000</span></div><div class="line"><span class="section"></span></div><div class="line">[ovs]</div><div class="line"><span class="attr">tenant_network_type</span> = vlan</div><div class="line"><span class="attr">bridge_mappings</span> = physnet1:br-em2</div></pre></td></tr></table></figure>
+<p>重启openvswitch agent服务</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">service neutron-plugin-openvswitch-agent restart</span></div></pre></td></tr></table></figure>
+<ul>
+<li>网络节点创建外部网络网桥</li>
+</ul>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ovs-vsctl<span class="built_in"> add-br </span>br-ext</div><div class="line">ovs-vsctl<span class="built_in"> add-port </span>br-ext em3</div></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/neutron/l3_agent.ini</span></div><div class="line"><span class="attr">external_network_bridge</span> = br-ext</div></pre></td></tr></table></figure>
+<p>重启L3网络服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service neutron<span class="_">-l</span>3-agent restart</div></pre></td></tr></table></figure>
+<h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2><p>对于Neutron而言该项目提供了多种网络模式诸如: gre, vlan, xvlan等。 在最初采用gre网络模式的部署方案对于大部分业务场景都无异常，但是对于某些特定协议如VNC，windows的RDP远程桌面对虚拟机进行使用时，会导致远程桌面黑屏无法使用的问题，具体原因可能是和gre本身性能，或者是内部过滤器相关，但无定论； 在采用vlan模式部署后该问题消失</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

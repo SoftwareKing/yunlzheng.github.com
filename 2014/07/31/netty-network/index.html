@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="有人想做一个游戏服务器，所以google了一把大概了解了java体系中主要的两个可以作为游戏服务器的框架mina和netty. 参考了知乎上的上的一些观点，毅然决然的选择了netty. 至于原因引用一段netty上的原话“The answer is the philosophy it is build, netty is build to give you most comfortable exprience both terms of API and the implementation from the day one    ”
+其实在技术选型上我有个基本观点，如果不是作为企业开发为目的的话，我一般选新不选旧，其次看官方文档是否完善，而且mina和netty都出自同一个作者。 所以没有多少理由就简单做了一个决定.">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Java网络编程框架Netty"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>Java网络编程框架Netty - I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Java网络编程框架Netty</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2014-07-31
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+
+<a href="/tags/java/">#java</a>
+
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <p>有人想做一个游戏服务器，所以google了一把大概了解了java体系中主要的两个可以作为游戏服务器的框架mina和netty. 参考了知乎上的上的一些观点，毅然决然的选择了netty. 至于原因引用一段netty上的原话“The answer is the philosophy it is build, netty is build to give you most comfortable exprience both terms of API and the implementation from the day one    ”</p>
+<p>其实在技术选型上我有个基本观点，如果不是作为企业开发为目的的话，我一般选新不选旧，其次看官方文档是否完善，而且mina和netty都出自同一个作者。 所以没有多少理由就简单做了一个决定.</p>
+<a id="more"></a>
+<h2 id="What-is-netty"><a href="#What-is-netty" class="headerlink" title="What is netty"></a>What is netty</h2><p>netty是一个提供基于异步事件驱动的网络应用程序框架和用于构架高可维护性，高性能，高伸缩性的协议服务器和客户端的工具.</p>
+<h2 id="支持的协议"><a href="#支持的协议" class="headerlink" title="支持的协议"></a>支持的协议</h2><ul>
+<li>TCP</li>
+<li>UDP</li>
+<li>SCTP(linux only)</li>
+<li>UDT</li>
+<li>Seril</li>
+</ul>
+<h2 id="主要内容有"><a href="#主要内容有" class="headerlink" title="主要内容有"></a>主要内容有</h2><h3 id="ChannelInboundHandler的生命周期"><a href="#ChannelInboundHandler的生命周期" class="headerlink" title="ChannelInboundHandler的生命周期"></a>ChannelInboundHandler的生命周期</h3><p>netty中利用ChannelInboundHandler作为业余控制器, 对应一个socket请求，handler有相应的生命周期</p>
+<p>channelRegisterd (通道注册完成)</p>
+<p>channelActive (通道可用)</p>
+<p>channelRead (从socket中读取信息)</p>
+<p>channelInactive(通道不可用)</p>
+<p>channelUnregistered(通道注销)</p>
+<p>一般来说程序的核心逻辑部分都关注于channelRead和channelActive两个状态.</p>
+<p>channelActive表示当前通道已经可用不过还未从scoket中接受到数据, 不过此时已经可以向通道发送响应信息。</p>
+<p>channelRead表示从scoket中读取到数据, 一般来说就是客户端向服务器端发起的调用信息，服务器端程序根据调用信息进行不同的逻辑处理并在比方法中将响应信息返回给客户端。</p>
+<h3 id="自定义协议"><a href="#自定义协议" class="headerlink" title="自定义协议"></a>自定义协议</h3><p>其中主要涉及的问题是自定义协议的部分，这东西在没做过之前感觉挺神秘，不过试过以后其实还是挺好处理的，简单来说就是定义一段规则，比如限制协议大小未12个字节，第一个字节表示撒，第二个字节表示撒….. 定义好这个规则以后再根据规则创建相应的pojo对象。 利用netty的encoder和decoder可以很方便的处理，值得注意的地方是将二进制流转换为pojo对象是需要判断一下获取到的数据大小时候满足约定，否则直接抛弃掉。</p>
+<p><strong>定义协议POJO对象</strong></p>
+<pre><code>package com.moo.springnetty.handlers.codec.kame;
+
+public class KameRequest {
+
+    private byte encode; //编码格式
+    private byte encrypt; //加密类型
+    private byte extend1;
+    private byte extend2;
+    private int sessionId;
+    private int command；
+
+    public byte getEncode() {
+        return encode;
+    }
+
+    public void setEncode(byte encode) {
+        this.encode = encode;
+    }
+
+    public byte getEncrypt() {
+        return encrypt;
+    }
+
+    public void setEncrypt(byte encrypt) {
+        this.encrypt = encrypt;
+    }
+
+    /**  Other Setter And Getter**/
+
+    @Override
+    public String toString() {
+        return &quot;Request [encode=&quot; + encode + &quot;, encrypt=&quot; + encrypt + &quot;, extend1=&quot; + extend1 + &quot;, extend2=&quot; + extend2
+            + &quot;, sessionid=&quot; + sessionId + &quot;, command=&quot; + command + &quot;]&quot;;
+    }
+
+}
+</code></pre><p>如上代码所示定义的为协议的POJO对象，所需的字节为12个字节（4个byte 2个int）, 在scoket传送数据包到达服务器后，可以位获取数据包中的内容，并使用获取的数据构造Request对象，如下所示：</p>
+<p><strong>定义Request的解码器</strong></p>
+<pre><code>public class KameRequestDecoder extends ByteToMessageDecoder {
+
+    @Override
+    protected void decode(ChannelHandlerContext ctx, ByteBuf in, List&lt;Object&gt; out) throws Exception {
+
+        if (in.readableBytes() &lt; 12) {
+            return;
+        }
+
+        byte encode = in.readByte();
+        byte encrypt = in.readByte();
+        byte extend1 = in.readByte();
+        byte extend2 = in.readByte();
+        int sessionId = in.readInt();
+        int command = in.readInt();
+
+
+        KameRequest request = new KameRequest();
+        request.setEncode(encode);
+        request.setEncrypt(encrypt);
+        request.setExtend1(extend1);
+        request.setExtend2(extend2);
+        request.setSessionId(sessionId);  
+        request.setCommand(command);
+
+        out.add(request);
+    }
+
+}
+</code></pre><p><strong>定义解码器</strong></p>
+<pre><code>@ChannelHandler.Sharable
+public class KameRequestEncoder extends     MessageToByteEncoder&lt;KameRequest&gt; {
+
+    @Override
+    protected void encode(ChannelHandlerContext ctx, KameRequest msg, ByteBuf out) throws Exception {
+        out.writeByte(msg.getEncode());
+        out.writeByte(msg.getEncrypt());
+        out.writeByte(msg.getExtend1());
+        out.writeByte(msg.getExtend2());
+        out.writeInt(msg.getSessionId());
+        out.writeInt(msg.getCommand())；
+    }
+}
+</code></pre><p>如上所示定义了一个自定义协议对象的解码和编码内容。</p>
+<p>在ChannelHandler声明周期channelRead前，Netty会自动加载Decoder将客户端发送的数据包解码为Request对象，方便程序进行逻辑处理。</p>
+<p>同理，在逻辑处理完成后，Netty会自动加载Encoder将返回的协议对象编码成二进制内容返回给客户端，完成一个请求与响应过程。</p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2016 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
