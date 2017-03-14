@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yunlzheng.github.io/"/>
-  <updated>2016-12-20T07:34:14.000Z</updated>
+  <updated>2017-03-14T07:27:57.000Z</updated>
   <id>http://yunlzheng.github.io/</id>
   
   <author>
@@ -14,6 +14,76 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>API网关那些儿</title>
+    <link href="http://yunlzheng.github.io/2017/03/14/the-things-about-api-gateway/"/>
+    <id>http://yunlzheng.github.io/2017/03/14/the-things-about-api-gateway/</id>
+    <published>2017-03-14T07:23:58.000Z</published>
+    <updated>2017-03-14T07:27:57.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>现在越来越多的技术团队开始尝试采纳微服务架构进行产品开发。而基于微服务架构后后端服务通常而言是动态的，为了简化前端的调用逻辑，通常会引入API Gateway作为轻量级网关，同时API Gateway中也会实现相关的认证逻辑从而简化内部服务之间相互调用的复杂度，这边文章我们就来聊聊API Gateway的那些事。<br>关键字：API Gateway, Spring Cloud Zuul, Nginx，Consul，Consul-Template。</p>
+</blockquote>
+<h2 id="为什么需要API-Gateway"><a href="#为什么需要API-Gateway" class="headerlink" title="为什么需要API Gateway"></a>为什么需要API Gateway</h2><ul>
+<li>简化客户端调用复杂度</li>
+</ul>
+<p>在微服务架构模式下后端服务的实例数一般是动态的，对于客户端而言如何发现这些动态改变的服务实例的访问地址信息？因此在基于微服务的项目中为了简化前端的调用逻辑，通常会引入API Gateway作为轻量级网关，同时API Gateway中也会实现相关的认证逻辑从而简化内部服务之间相互调用的复杂度。</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/api_gateway.png" alt="http://7pn5d3.com1.z0.glb.clouddn.com/api_gateway.png"></p>
+<ul>
+<li>数据裁剪以及聚合</li>
+</ul>
+<p>通常而言多余不同的客户端对于显示时对于数据的需求是不一致的，比如手机端或者Web端又或者在低延迟的网络环境或者高延迟的网络环境。</p>
+<p>因此为了优化客户端的使用体验，API Gateway可以对通用性的响应数据进行裁剪以适应不同客户端的使用需求。同时还可以将多个API调用逻辑进行聚合，从而减少客户端的请求数，优化客户端用户体验</p>
+<ul>
+<li>多渠道支持</li>
+</ul>
+<p>当然我们还可以针对不同的渠道和客户端提供不同的API Gateway,对于该模式的使用由另外一个大家熟知的方式叫<strong>Backend for front-end</strong>, 在Backend for front-end模式当中，我们可以针对不同的客户端分别创建其BFF</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/bff.png" alt="backend for front-end"></p>
+<ul>
+<li>遗留系统的微服务化改造</li>
+</ul>
+<p>对于系统系统而言进行微服务改造通常是由于原有的系统存在或多或少的问题，比如技术债务，代码质量，可维护性，可扩展性等等。API Gateway的模式同样适用于这一类遗留系统的改造，通过微服务化的改造逐步实现对原有系统中的问题的修复，从而提升对于原有业务<strong>响应力</strong>的提升。<strong>通过引入抽象层，逐步使用新的实现替换旧的实现。</strong></p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/bff-process.png" alt=""></p>
+<h2 id="使用Zuul实现API网关"><a href="#使用Zuul实现API网关" class="headerlink" title="使用Zuul实现API网关"></a>使用Zuul实现API网关</h2><p>Spring Cloud的Zuul组件提供了轻量级网关的功能支持，通过定义路由规则可以快速实现一个轻量级的API网关</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">zuul:</span></div><div class="line"><span class="symbol">  ignoredPatterns:</span> <span class="meta-keyword">/api/</span>auth</div><div class="line">  sensitive-headers: <span class="string">"*"</span></div><div class="line"><span class="symbol">  ignoreLocalService:</span> true</div><div class="line"><span class="symbol">  retryable:</span> false</div><div class="line"><span class="symbol">  host:</span></div><div class="line">    max-total-connections: <span class="number">500</span></div><div class="line"><span class="symbol">  routes:</span></div><div class="line"><span class="symbol">    service01:</span></div><div class="line"><span class="symbol">      pateh:</span> <span class="meta-keyword">/service01/</span>**</div><div class="line"><span class="symbol">      serviceId:</span> service01</div><div class="line"><span class="symbol">      stripPrefix:</span> true</div><div class="line"><span class="symbol">    thirdpart:</span></div><div class="line"><span class="symbol">      pateh:</span> <span class="meta-keyword">/thirdpart/</span>**</div><div class="line"><span class="symbol">      url:</span> http:<span class="comment">//thirdpart.api.com</span></div></pre></td></tr></table></figure>
+<p>同时除了通过serviceId关联已经注册到Consul的服务实例以外，我们也可以通过zuul直接定义实现对已有服务的直接集成。</p>
+<p>这里我们就不过多介绍Zuul的细节，在实际使用中我们会发现直接使用Zuul会存在诸多问题，包括：</p>
+<ul>
+<li>性能问题：当存在大量请求超时后会造成Zuul阻塞，目前只能通过横向扩展Zuul实例实现对高并发的支持；</li>
+<li>WebSocket的支持问题： Zuul中并不直接提供对WebSocket的支持，需要添加额外的过滤器实现对WebSocket的支持；</li>
+</ul>
+<p>为了解决以上问题，可以通过在Zuul前端部署Nginx实现对Zuul实例的反向代理，同时适当的通过添加Cache以及请求压缩减少对后端Zuul实例的压力。</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/nginx-with-zuul.png" alt=""></p>
+<h2 id="实现Nginx的动态代理"><a href="#实现Nginx的动态代理" class="headerlink" title="实现Nginx的动态代理"></a>实现Nginx的动态代理</h2><p>通过Nginx我们可以实现对多实例Zuul的请求代理，同时通过添加适当的缓存以及请求压缩配置可以提升前端UI的请求响应时间。这里需要解决的问题是Nginx如何动态发现Zuul实例信息并且将请求转发到Zuul当中。</p>
+<p><a href="https://github.com/hashicorp/consul-template" target="_blank" rel="external">consul-template</a>可以帮助我们解决以上问题,consul-template是一个命令行工具，结合consul实现配置文件的动态生成并且支持在配置文件发生变化后触发用户自定义命令。</p>
+<p>我们使用了如下的Dockerfile用于构建我们的Nginx服务</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">FROM</span> nginx:<span class="number">1.11</span>.<span class="number">10</span></div><div class="line"></div><div class="line"><span class="keyword">ADD</span><span class="bash"> consul-template /usr/<span class="built_in">local</span>/bin</span></div><div class="line"></div><div class="line"><span class="keyword">RUN</span><span class="bash"> mkdir /etc/consul-templates</span></div><div class="line"></div><div class="line"><span class="comment"># 模板文件</span></div><div class="line"><span class="keyword">ADD</span><span class="bash"> nginx.tpl /etc/consul-templates/nginx.tpl</span></div><div class="line"><span class="keyword">ENV</span> CT_FILE /etc/consul-templates/nginx.tpl</div><div class="line"></div><div class="line"><span class="keyword">ENV</span> NX_FILE /etc/nginx/conf.d/default.conf <span class="comment"># 目标文件</span></div><div class="line"></div><div class="line"><span class="keyword">ENV</span> SERVICE identity <span class="comment"># 注册在Consul的服务名</span></div><div class="line"></div><div class="line"><span class="keyword">COPY</span><span class="bash"> dist /usr/share/nginx/html</span></div><div class="line"><span class="keyword">RUN</span><span class="bash"> mkdir -p /data/cache</span></div><div class="line"></div><div class="line"><span class="keyword">CMD</span><span class="bash"> /usr/sbin/nginx -c /etc/nginx/nginx.conf  \</span></div><div class="line">  &amp; CONSUL_TEMPLATE_LOG=debug \</div><div class="line">  consul-template -consul-addr=<span class="variable">$CONSUL</span> -template <span class="string">"<span class="variable">$CT_FILE</span>:<span class="variable">$NX_FILE</span>:/usr/sbin/nginx -s reload"</span>;</div></pre></td></tr></table></figure>
+<p>Nginx配置模板文件</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># nginx.tpl</span></div><div class="line">upstream api_server &#123;</div><div class="line">  least_conn;</div><div class="line">  &#123;&#123;range service <span class="string">"identity"</span>&#125;&#125;</div><div class="line">  <span class="keyword">server</span>  &#123;&#123;.Address&#125;&#125;:&#123;&#123;.Port&#125;&#125;;</div><div class="line">  &#123;&#123;<span class="keyword">else</span>&#125;&#125;<span class="keyword">server</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">9191</span>;&#123;&#123;end&#125;&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">server</span> &#123;</div><div class="line">    listen       <span class="number">80</span>;</div><div class="line">    server_name  localhost;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        root   /usr/share/nginx/html;</div><div class="line">        <span class="keyword">index</span>  <span class="keyword">index</span>.html <span class="keyword">index</span>.htm;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    location /api &#123;</div><div class="line">      proxy_pass http:<span class="comment">//api_server;</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其中</p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">upstream api_server &#123;</div><div class="line">  least_conn;</div><div class="line">  &#123;&#123;range service <span class="string">"identity"</span>&#125;&#125;</div><div class="line">  server  &#123;&#123;.Address&#125;&#125;:&#123;&#123;.Port&#125;&#125;;</div><div class="line">  &#123;&#123;else&#125;&#125;server <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">9191</span>;&#123;&#123;end&#125;&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>会根据当前consul中注册的所有identity服务实例进行模板渲染，并且当配置文件内容发生变化后调用nginx -s reload重新加载Nginx配置从而实现对于后端服务实例的动态代理。</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">CMD</span><span class="bash"> /usr/sbin/nginx -c /etc/nginx/nginx.conf  \</span></div><div class="line">  &amp; CONSUL_TEMPLATE_LOG=debug \</div><div class="line">  consul-template -consul-addr=<span class="variable">$CONSUL</span> -template <span class="string">"<span class="variable">$CT_FILE</span>:<span class="variable">$NX_FILE</span>:/usr/sbin/nginx -s reload"</span>;</div></pre></td></tr></table></figure>
+<h2 id="其它的一些优化建议"><a href="#其它的一些优化建议" class="headerlink" title="其它的一些优化建议"></a>其它的一些优化建议</h2><p>启用Nginx的Gzip可以对服务器端响应内容进行压缩从而减少一定的客户端响应时间</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">gzip <span class="keyword">on</span>;</div><div class="line">gzip_min_length <span class="number">1</span>k;</div><div class="line">gzip_buffers  <span class="number">4</span> <span class="number">32</span>k;</div><div class="line">gzip_types    <span class="built_in">text</span>/plain <span class="built_in">application</span>/x-javascript <span class="built_in">application</span>/javascript <span class="built_in">text</span>/xml <span class="built_in">text</span>/css;</div><div class="line">gzip_vary <span class="keyword">on</span>;</div></pre></td></tr></table></figure>
+<p>缓存图片以及其它静态资源可以减少对Zuul实例的请求量</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">proxy_buffering</span> <span class="literal">on</span>;</div><div class="line"><span class="attribute">proxy_cache_valid</span> any <span class="number">10m</span>;</div><div class="line"><span class="attribute">proxy_cache_path</span> /data/cache levels=<span class="number">1</span>:<span class="number">2</span> keys_zone=my-cache:<span class="number">8m</span> max_size=<span class="number">1000m</span> inactive=<span class="number">600m</span>;</div><div class="line"><span class="attribute">proxy_temp_path</span> /data/temp;</div><div class="line"><span class="attribute">proxy_buffer_size</span> <span class="number">4k</span>;</div><div class="line"><span class="attribute">proxy_buffers</span> <span class="number">100</span> <span class="number">8k</span>;</div><div class="line"></div><div class="line"><span class="attribute">location</span> <span class="regexp">~* (images)</span>    &#123;</div><div class="line">  <span class="attribute">proxy_pass</span> http://api_server;</div><div class="line">  <span class="comment"># cache setting</span></div><div class="line">  <span class="attribute">proxy_cache</span> my-cache;</div><div class="line">  <span class="attribute">proxy_cache_valid</span> <span class="number">200</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果需要通过Nginx实现对Websocket的代理可以添加一下配置</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">location</span> /sockjs &#123;</div><div class="line">    <span class="attribute">proxy_pass</span> http://api_server;</div><div class="line"></div><div class="line">    <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</div><div class="line">    <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</div><div class="line">    <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</div><div class="line"></div><div class="line">    <span class="comment"># WebSocket support (nginx 1.4)</span></div><div class="line">    <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</div><div class="line">    <span class="attribute">proxy_set_header</span> Upgrade <span class="variable">$http_upgrade</span>;</div><div class="line">    <span class="attribute">proxy_set_header</span> Connection <span class="string">"upgrade"</span>;</div><div class="line">    <span class="attribute">proxy_connect_timeout</span> <span class="number">90</span>;</div><div class="line">    <span class="attribute">proxy_send_timeout</span> <span class="number">90</span>;</div><div class="line">    <span class="attribute">proxy_read_timeout</span> <span class="number">90</span>;</div><div class="line"></div><div class="line">    <span class="comment"># !!!Support Spring Boot</span></div><div class="line">    <span class="attribute">proxy_pass_header</span> X-XSRF-TOKEN;</div><div class="line">    <span class="attribute">proxy_set_header</span> Origin <span class="string">"http://localhost:4000"</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;现在越来越多的技术团队开始尝试采纳微服务架构进行产品开发。而基于微服务架构后后端服务通常而言是动态的，为了简化前端的调用逻辑，通常会引入API Gateway作为轻量级网关，同时API Gateway中也会实现相关的认证逻辑从而简化内部服务之间相互
+    
+    </summary>
+    
+    
+      <category term="microservice" scheme="http://yunlzheng.github.io/tags/microservice/"/>
+    
+  </entry>
   
   <entry>
     <title>我们应该如何基于容器来进行软件的持续交付的（一）？</title>
@@ -607,102 +677,6 @@
   </entry>
   
   <entry>
-    <title>Python查漏补缺</title>
-    <link href="http://yunlzheng.github.io/2016/04/21/basic_python/"/>
-    <id>http://yunlzheng.github.io/2016/04/21/basic_python/</id>
-    <published>2016-04-21T13:28:49.000Z</published>
-    <updated>2016-12-20T07:34:14.000Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="Python文件头"><a href="#Python文件头" class="headerlink" title="Python文件头"></a>Python文件头</h3><ul>
-<li>设置脚本执行解释器路径</li>
-</ul>
-<p>告诉操作系统执行脚本时调用/usr/bin下的python解释器</p>
-<figure class="highlight d"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/python</span></div></pre></td></tr></table></figure>
-<p>防止在/usr/bin路径下不存在python解释器的情况，从env设置中查找Python安装路径，再调用相应路径下的解释器</p>
-<figure class="highlight d"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/env python</span></div></pre></td></tr></table></figure>
-<ul>
-<li>设置脚本脚本编码格式</li>
-</ul>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># coding=utf-8</span></div></pre></td></tr></table></figure>
-<p>or</p>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># -*- coding: utf-8 -*-</span></div></pre></td></tr></table></figure>
-<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><ul>
-<li>单行注释</li>
-</ul>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># This is comment</span></div></pre></td></tr></table></figure>
-<ul>
-<li>多行注释</li>
-</ul>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">'''</div><div class="line">This is mutil line comment</div><div class="line">'''</div></pre></td></tr></table></figure>
-<ul>
-<li>函数说明</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_func</span><span class="params">()</span>:</span></div><div class="line">  <span class="string">'This is function doc you can show it by some_func.__doc__'</span></div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure>
-<h3 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h3><ul>
-<li>序列解包</li>
-</ul>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">values = <span class="number">1.</span> <span class="number">2.</span> <span class="number">3</span> # This is tuple</div><div class="line">x, y, z = values</div></pre></td></tr></table></figure>
-<ul>
-<li>相等性和同一性</li>
-</ul>
-<p>is运算符判定同一性而不是相等性</p>
-<figure class="highlight nix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="attr">x</span> = <span class="attr">y</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"><span class="attr">z</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"><span class="attr">x</span> == y <span class="comment"># True</span></div><div class="line"><span class="attr">x</span> == z <span class="comment"># True</span></div><div class="line">x is y <span class="comment"># True</span></div><div class="line">x is z <span class="comment"># False</span></div></pre></td></tr></table></figure>
-<ul>
-<li>列表与迭代</li>
-</ul>
-<p>当需要迭代一个巨大的序列时xrange会比range更高效，range函数一次产生整个序列，而xrange一次只创建一个数</p>
-<p>实现原理可以参考：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">irange</span>(<span class="title">object</span>):</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(<span class="keyword">self</span>, start, <span class="keyword">end</span>, step=<span class="number">1</span>)</span></span>:</div><div class="line">        <span class="keyword">self</span>.start = start</div><div class="line">        <span class="keyword">self</span>.<span class="keyword">end</span> = <span class="keyword">end</span></div><div class="line">        <span class="keyword">self</span>.step = step</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">next</span><span class="params">(<span class="keyword">self</span>)</span></span>:</div><div class="line">        <span class="keyword">if</span> <span class="keyword">self</span>.start + <span class="keyword">self</span>.step &gt;= <span class="keyword">self</span>.<span class="symbol">end:</span></div><div class="line">            raise StopIteration</div><div class="line">        <span class="keyword">self</span>.start = <span class="keyword">self</span>.start + <span class="keyword">self</span>.step</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.start</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(<span class="keyword">self</span>)</span></span>:</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name_<span class="number">_</span> == <span class="string">"__main__"</span>:</div><div class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> irange(<span class="number">1</span>, <span class="number">10</span>):</div><div class="line">        print x</div></pre></td></tr></table></figure>
-<ul>
-<li>编号迭代</li>
-</ul>
-<p>使用enumerate可以迭代索引-值</p>
-<figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> <span class="keyword">index</span>, <span class="keyword">str</span> in enumerate(strings):</div><div class="line">  pass</div></pre></td></tr></table></figure>
-<ul>
-<li>in <scope> 消除exec和evel的全局污染</scope></li>
-</ul>
-<p>限制exec执行的作用域只存在于scope当中</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sqrt</div><div class="line">scope = &#123;&#125;</div><div class="line"><span class="keyword">exec</span> <span class="string">'sqrt = 1'</span> <span class="keyword">in</span> scope</div><div class="line">scope[<span class="string">'sqrt'</span>] <span class="comment"># 1</span></div></pre></td></tr></table></figure>
-<p>为evel提供命名空间</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">scope = &#123;&#125;</div><div class="line">scope[<span class="string">'x'</span>] = <span class="number">2</span></div><div class="line">scope[<span class="string">'y'</span>] = <span class="number">3</span></div><div class="line"><span class="function"><span class="title">eval</span><span class="params">(<span class="string">'x*y'</span>, scope)</span></span></div></pre></td></tr></table></figure>
-<h3 id="函数参数参数"><a href="#函数参数参数" class="headerlink" title="函数参数参数"></a>函数参数参数</h3><ul>
-<li>收集参数<em>和*</em></li>
-</ul>
-<p>python函数定义时的参数可以分为位置参数和关键字参数</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(greeting, name)</span>:</span></div><div class="line">  <span class="keyword">pass</span></div><div class="line"></div><div class="line">hello(<span class="string">"welcome"</span>, name=<span class="string">'world'</span>)</div></pre></td></tr></table></figure>
-<p>使用*收集其余的位置参数</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_func</span><span class="params">(*args)</span>:</span></div><div class="line">  <span class="keyword">pass</span> <span class="comment"># args is tuple</span></div><div class="line"></div><div class="line">some_func(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</div></pre></td></tr></table></figure>
-<p>使用**收集其余的关键字参数</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_func</span><span class="params">(*kargs)</span>:</span></div><div class="line">  <span class="keyword">pass</span> <span class="comment">#kargs is dict</span></div><div class="line"></div><div class="line">some_func(a=<span class="number">1</span>, b=<span class="number">2</span>, c=<span class="number">3</span>)</div></pre></td></tr></table></figure>
-<ul>
-<li>参数分配<em>和*</em></li>
-</ul>
-<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">params = (<span class="number">1</span>, <span class="number">2</span>)</div><div class="line">some_func(<span class="name">*params</span>)</div></pre></td></tr></table></figure>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">params = &#123;<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'b'</span>:<span class="number">2</span>&#125;</div><div class="line"><span class="function"><span class="title">some_func</span><span class="params">(**params)</span></span></div></pre></td></tr></table></figure>
-<h3 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h3><ul>
-<li>私有化</li>
-</ul>
-<p>Python并没有真正的私有化支持</p>
-<p>使用双下划线,类内部使用双下划线开始的名称都被翻译为’_<classname>__<methodname>‘</methodname></classname></p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Some</span></span>:</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__pri_method</span></span>:</div><div class="line">    print <span class="symbol">'you</span> can call <span class="keyword">this</span> fake <span class="keyword">private</span> method'</div><div class="line"></div><div class="line">s = <span class="type">Some</span>()</div><div class="line">s._Some__pri_method()</div></pre></td></tr></table></figure>
-<p>另外类的函数名称前包含单下划线的方法都不会被imports语句导入</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;Python文件头&quot;&gt;&lt;a href=&quot;#Python文件头&quot; class=&quot;headerlink&quot; title=&quot;Python文件头&quot;&gt;&lt;/a&gt;Python文件头&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;设置脚本执行解释器路径&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;告诉操作系统执行脚本
-    
-    </summary>
-    
-    
-      <category term="python" scheme="http://yunlzheng.github.io/tags/python/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Python函数式编程</title>
     <link href="http://yunlzheng.github.io/2016/04/21/functional-programming-with-python/"/>
     <id>http://yunlzheng.github.io/2016/04/21/functional-programming-with-python/</id>
@@ -923,6 +897,102 @@
     
     </summary>
     
+    
+  </entry>
+  
+  <entry>
+    <title>Python查漏补缺</title>
+    <link href="http://yunlzheng.github.io/2016/04/21/basic_python/"/>
+    <id>http://yunlzheng.github.io/2016/04/21/basic_python/</id>
+    <published>2016-04-21T13:28:49.000Z</published>
+    <updated>2016-12-20T07:34:14.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="Python文件头"><a href="#Python文件头" class="headerlink" title="Python文件头"></a>Python文件头</h3><ul>
+<li>设置脚本执行解释器路径</li>
+</ul>
+<p>告诉操作系统执行脚本时调用/usr/bin下的python解释器</p>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/python</span></div></pre></td></tr></table></figure>
+<p>防止在/usr/bin路径下不存在python解释器的情况，从env设置中查找Python安装路径，再调用相应路径下的解释器</p>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/env python</span></div></pre></td></tr></table></figure>
+<ul>
+<li>设置脚本脚本编码格式</li>
+</ul>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># coding=utf-8</span></div></pre></td></tr></table></figure>
+<p>or</p>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># -*- coding: utf-8 -*-</span></div></pre></td></tr></table></figure>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><ul>
+<li>单行注释</li>
+</ul>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># This is comment</span></div></pre></td></tr></table></figure>
+<ul>
+<li>多行注释</li>
+</ul>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">'''</div><div class="line">This is mutil line comment</div><div class="line">'''</div></pre></td></tr></table></figure>
+<ul>
+<li>函数说明</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_func</span><span class="params">()</span>:</span></div><div class="line">  <span class="string">'This is function doc you can show it by some_func.__doc__'</span></div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<h3 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h3><ul>
+<li>序列解包</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">values = <span class="number">1.</span> <span class="number">2.</span> <span class="number">3</span> # This is tuple</div><div class="line">x, y, z = values</div></pre></td></tr></table></figure>
+<ul>
+<li>相等性和同一性</li>
+</ul>
+<p>is运算符判定同一性而不是相等性</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="attr">x</span> = <span class="attr">y</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"><span class="attr">z</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"><span class="attr">x</span> == y <span class="comment"># True</span></div><div class="line"><span class="attr">x</span> == z <span class="comment"># True</span></div><div class="line">x is y <span class="comment"># True</span></div><div class="line">x is z <span class="comment"># False</span></div></pre></td></tr></table></figure>
+<ul>
+<li>列表与迭代</li>
+</ul>
+<p>当需要迭代一个巨大的序列时xrange会比range更高效，range函数一次产生整个序列，而xrange一次只创建一个数</p>
+<p>实现原理可以参考：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">irange</span>(<span class="title">object</span>):</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(<span class="keyword">self</span>, start, <span class="keyword">end</span>, step=<span class="number">1</span>)</span></span>:</div><div class="line">        <span class="keyword">self</span>.start = start</div><div class="line">        <span class="keyword">self</span>.<span class="keyword">end</span> = <span class="keyword">end</span></div><div class="line">        <span class="keyword">self</span>.step = step</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">next</span><span class="params">(<span class="keyword">self</span>)</span></span>:</div><div class="line">        <span class="keyword">if</span> <span class="keyword">self</span>.start + <span class="keyword">self</span>.step &gt;= <span class="keyword">self</span>.<span class="symbol">end:</span></div><div class="line">            raise StopIteration</div><div class="line">        <span class="keyword">self</span>.start = <span class="keyword">self</span>.start + <span class="keyword">self</span>.step</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.start</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(<span class="keyword">self</span>)</span></span>:</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name_<span class="number">_</span> == <span class="string">"__main__"</span>:</div><div class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> irange(<span class="number">1</span>, <span class="number">10</span>):</div><div class="line">        print x</div></pre></td></tr></table></figure>
+<ul>
+<li>编号迭代</li>
+</ul>
+<p>使用enumerate可以迭代索引-值</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> <span class="keyword">index</span>, <span class="keyword">str</span> in enumerate(strings):</div><div class="line">  pass</div></pre></td></tr></table></figure>
+<ul>
+<li>in <scope> 消除exec和evel的全局污染</scope></li>
+</ul>
+<p>限制exec执行的作用域只存在于scope当中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sqrt</div><div class="line">scope = &#123;&#125;</div><div class="line"><span class="keyword">exec</span> <span class="string">'sqrt = 1'</span> <span class="keyword">in</span> scope</div><div class="line">scope[<span class="string">'sqrt'</span>] <span class="comment"># 1</span></div></pre></td></tr></table></figure>
+<p>为evel提供命名空间</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">scope = &#123;&#125;</div><div class="line">scope[<span class="string">'x'</span>] = <span class="number">2</span></div><div class="line">scope[<span class="string">'y'</span>] = <span class="number">3</span></div><div class="line"><span class="function"><span class="title">eval</span><span class="params">(<span class="string">'x*y'</span>, scope)</span></span></div></pre></td></tr></table></figure>
+<h3 id="函数参数参数"><a href="#函数参数参数" class="headerlink" title="函数参数参数"></a>函数参数参数</h3><ul>
+<li>收集参数<em>和*</em></li>
+</ul>
+<p>python函数定义时的参数可以分为位置参数和关键字参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(greeting, name)</span>:</span></div><div class="line">  <span class="keyword">pass</span></div><div class="line"></div><div class="line">hello(<span class="string">"welcome"</span>, name=<span class="string">'world'</span>)</div></pre></td></tr></table></figure>
+<p>使用*收集其余的位置参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_func</span><span class="params">(*args)</span>:</span></div><div class="line">  <span class="keyword">pass</span> <span class="comment"># args is tuple</span></div><div class="line"></div><div class="line">some_func(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</div></pre></td></tr></table></figure>
+<p>使用**收集其余的关键字参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_func</span><span class="params">(*kargs)</span>:</span></div><div class="line">  <span class="keyword">pass</span> <span class="comment">#kargs is dict</span></div><div class="line"></div><div class="line">some_func(a=<span class="number">1</span>, b=<span class="number">2</span>, c=<span class="number">3</span>)</div></pre></td></tr></table></figure>
+<ul>
+<li>参数分配<em>和*</em></li>
+</ul>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">params = (<span class="number">1</span>, <span class="number">2</span>)</div><div class="line">some_func(<span class="name">*params</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">params = &#123;<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'b'</span>:<span class="number">2</span>&#125;</div><div class="line"><span class="function"><span class="title">some_func</span><span class="params">(**params)</span></span></div></pre></td></tr></table></figure>
+<h3 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h3><ul>
+<li>私有化</li>
+</ul>
+<p>Python并没有真正的私有化支持</p>
+<p>使用双下划线,类内部使用双下划线开始的名称都被翻译为’_<classname>__<methodname>‘</methodname></classname></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Some</span></span>:</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__pri_method</span></span>:</div><div class="line">    print <span class="symbol">'you</span> can call <span class="keyword">this</span> fake <span class="keyword">private</span> method'</div><div class="line"></div><div class="line">s = <span class="type">Some</span>()</div><div class="line">s._Some__pri_method()</div></pre></td></tr></table></figure>
+<p>另外类的函数名称前包含单下划线的方法都不会被imports语句导入</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;Python文件头&quot;&gt;&lt;a href=&quot;#Python文件头&quot; class=&quot;headerlink&quot; title=&quot;Python文件头&quot;&gt;&lt;/a&gt;Python文件头&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;设置脚本执行解释器路径&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;告诉操作系统执行脚本
+    
+    </summary>
+    
+    
+      <category term="python" scheme="http://yunlzheng.github.io/tags/python/"/>
     
   </entry>
   
@@ -1405,9 +1475,9 @@
     </summary>
     
     
-      <category term="web" scheme="http://yunlzheng.github.io/tags/web/"/>
-    
       <category term="react.js" scheme="http://yunlzheng.github.io/tags/react-js/"/>
+    
+      <category term="web" scheme="http://yunlzheng.github.io/tags/web/"/>
     
   </entry>
   
@@ -1714,41 +1784,6 @@
     
       &lt;p&gt;如下图所示在基于Neutron的Vlan网络模式下，需要对交换机（L3）进行相应的配置, 一般可划分为3个基本网络：管理网络，用于Openstack内部API调用管理; 虚拟机网络，用于虚拟机之间的通讯；外部网络，用于连接外部网络，作为虚拟机的浮动IP来源；&lt;/p&gt;
 &lt;p&gt;由于Vlan模式下，租户建立的网络都具有独立的Vlan标签，故需要利用交换机将虚机网络设置为trunk模式,如允许通过vlan tag 为800~2000网络，保证虚拟机之间能够正常通讯；&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="openstack" scheme="http://yunlzheng.github.io/tags/openstack/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>OpenStack之镜像管理</title>
-    <link href="http://yunlzheng.github.io/2015/01/02/openstack-machine-image-pipelines/"/>
-    <id>http://yunlzheng.github.io/2015/01/02/openstack-machine-image-pipelines/</id>
-    <published>2015-01-01T18:14:15.000Z</published>
-    <updated>2016-12-20T07:34:14.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>在基于OpenStack的企业私有云环境建设当中，系统镜像起到了非常重要的作用。同时对于使用者而言，我们通常需要各种不同类型的操作系统角色，比如AppServer, DBServer,假如我们重头构建所有的镜像，对于使用者而言是非常浪费时间的。<br>同时当镜像的数量达到一定程度之后，其本身的管理也是非常复杂的，这里我们来探讨一下如果通过一些技术实践来加快我们的系统镜像构建，以及大量镜像的管理方式。</p>
-<a id="more"></a>
-<h2 id="镜像管理"><a href="#镜像管理" class="headerlink" title="镜像管理"></a>镜像管理</h2><p>关于大量镜像管理我个人的想法就是：“不要对镜像管理”；</p>
-<p>“不要对镜像管理”的意思不是说不管，这里我们来说说加入我们对镜像进行管理所带来的一些基本问题：</p>
-<ul>
-<li>镜像的命名，分类</li>
-</ul>
-<p>对于大部分使用者而言我们往往想的是，我只需要根据一个镜像启动一台主机，我的所有环境就OK了。 这是一个非常理想的情况，但是假如我们的环境组合涉及到操作系统，应用程序版本，应用补丁之后。本身关于镜像命名就已经是非常复杂的事情，这时候我们常常会看到的情况就是有一大堆名字如同“ubuntu-12.04-server-x86-64-project-v0.0.1-p0.0.2-mysql-5.5”。 我们当然希望使用者能够通过名字去找到他们所有需要的镜像，但是这么长的名字，难道不恶心吗？</p>
-<ul>
-<li>被浪费的存储空间</li>
-</ul>
-<p>对于一个系统镜像而言其体积本身就不小，那假如我们的镜像有成百上千个的时候怎么办？ 只是镜像的存储就会浪费掉大量的物理资源。</p>
-<p>“不对镜像进行管理”的意思就是我们只需要对镜像的构建过程（自动化脚本+Packer模板）进行管理，当我们已经有了完善的自动化流程，对于构建一个特定镜像而言我们要做的事情实际上要做的事情就是去组合我们的自动化脚本，并且结合诸如Packer这样的工具去完成我们的镜像构建。</p>
-<p>那么这个时候我们要管理的镜像实际上就是去管理我们的自动化脚本以及Packer模板。</p>
-<h2 id="构建镜像Pipline"><a href="#构建镜像Pipline" class="headerlink" title="构建镜像Pipline"></a>构建镜像Pipline</h2><p>未完待续</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在基于OpenStack的企业私有云环境建设当中，系统镜像起到了非常重要的作用。同时对于使用者而言，我们通常需要各种不同类型的操作系统角色，比如AppServer, DBServer,假如我们重头构建所有的镜像，对于使用者而言是非常浪费时间的。&lt;br&gt;同时当镜像的数量达到一定程度之后，其本身的管理也是非常复杂的，这里我们来探讨一下如果通过一些技术实践来加快我们的系统镜像构建，以及大量镜像的管理方式。&lt;/p&gt;
     
     </summary>
     
