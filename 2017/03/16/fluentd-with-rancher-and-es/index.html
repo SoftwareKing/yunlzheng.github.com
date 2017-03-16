@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="微服务是这样一种软件架构模式：独立进程，独立部署，独立发布。而一个业务通常会由多个服务进行支撑，这就带来一个问题，当用户的操作分布到了不同的服务当中之后，如果出现了异常开发人员如何才能快速完成问题定位？这篇文章我们就来聊聊关于日志的那些事儿
+关键字：Fluentd, Elasticsearch, K">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="云龙">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="I&#39;m yunlong"/>
+    
+
+    <!--Open Graph Description-->
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="I&#39;m yunlong"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="website" />
+    
+
+    <!--Page Cover-->
+    
+
+        <meta name="twitter:card" content="summary" />
+    
+
+    <!-- Title -->
+    
+    <title>I&#39;m yunlong</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+</head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Peaceful</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                博客
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="https://github.com/yunlzheng">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('http://7xj61w.com1.z0.glb.clouddn.com/header-bg-1.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>Untitled</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        2017-03-16
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <blockquote>
+<p>微服务是这样一种软件架构模式：独立进程，独立部署，独立发布。而一个业务通常会由多个服务进行支撑，这就带来一个问题，当用户的操作分布到了不同的服务当中之后，如果出现了异常开发人员如何才能快速完成问题定位？这篇文章我们就来聊聊关于日志的那些事儿</p>
+<p>关键字：Fluentd, Elasticsearch, Kibana，日志相关性定位</p>
+</blockquote>
+<h3 id="场景假设"><a href="#场景假设" class="headerlink" title="场景假设"></a>场景假设</h3><p>假定我们有这样一个项目：</p>
+<ul>
+<li>前端使用是独立构建的Vuejs应用程序；</li>
+<li>API Gateway代理所有的前端请求同时提供认证授权接口；</li>
+<li>对于所有后端服务的请求实际都由API Gateway完成；</li>
+<li>后端有4个不同的服务分别提供不同的功能；</li>
+</ul>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/api_gateway.png" alt="http://7pn5d3.com1.z0.glb.clouddn.com/api_gateway.png"></p>
+<p>基于微服务架构我们可以实现服务的独立部署，独立发布。而一个业务通常会由多个服务进行支撑，这就带来一个问题，当用户的操作分布到了不同的服务当中之后，如果出现了异常开发人员如何才能快速完成问题定位。</p>
+<h3 id="容器日志聚合"><a href="#容器日志聚合" class="headerlink" title="容器日志聚合"></a>容器日志聚合</h3><p>对于Docker容器而言，通常有两种方式来进行日志的聚合分析。</p>
+<ul>
+<li>docker logging driver</li>
+</ul>
+<p>docker原生支持多种logging driver用于支持用户从容器中获取输出信息</p>
+<table>
+<thead>
+<tr>
+<th>驱动</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none</td>
+<td>容器不会产生任何日志输出，docker logs不会显示任何信息</td>
+</tr>
+<tr>
+<td>json-file</td>
+<td>默认设置，将日志格式化为json并且保存到文件</td>
+</tr>
+<tr>
+<td>syslog</td>
+<td>docker将会日志输出到syslog,需要在主机上运行syslog进程</td>
+</tr>
+<tr>
+<td>fluentd</td>
+<td>将日志输出到fluentd,fluentd需要提供forward源支持, docker logs无法查看日志信息</td>
+</tr>
+<tr>
+<td>其它</td>
+<td><a href="https://docs.docker.com/engine/admin/logging/overview/#supported-logging-drivers" target="_blank" rel="external">点击查看详情</a></td>
+</tr>
+</tbody>
+</table>
+<p>当使用默认的json-file方式时，所有的日志文件都输出到/var/lib/docker/containers/<contaner_id>/<container_id>-json.log</container_id></contaner_id></p>
+<p>以Fluentd为例</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker <span class="keyword">run</span><span class="bash"> --log-driver=fluentd ubuntu <span class="built_in">echo</span> <span class="string">"Hello Fluentd!"</span></span></div></pre></td></tr></table></figure>
+<p>对于垮主机的情况可以使用</p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --<span class="built_in">log</span>-<span class="built_in">driver</span>=fluentd --<span class="built_in">log</span>-opt fluentd-address=<span class="number">192.168</span>.<span class="number">50.101</span>:<span class="number">24225</span> ubuntu <span class="built_in">echo</span> <span class="string">"..."</span></div></pre></td></tr></table></figure>
+<p>同时通过log-opt我们可以定义fluentd收集时的日志标签等信息</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --<span class="built_in">log</span>-driver=fluentd --<span class="built_in">log</span>-<span class="keyword">opt</span> fluentd-<span class="keyword">tag</span>=docker.&#123;&#123;.ID&#125;&#125; ubuntu <span class="keyword">echo</span> <span class="string">"..."</span></div></pre></td></tr></table></figure>
+<p>而如上面的表所示，只有在logging driver为json-file或者journald时会才能支持使用docker logs查看日志信息，因此对于个别情况需要对单独容器进行容器查看的时候多少会带来很多麻烦，包括日志不实时\,查询复杂等。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ docker logs</div><div class="line"><span class="string">"logs"</span> <span class="keyword">command</span> <span class="keyword">is</span> supported <span class="keyword">only</span> <span class="keyword">for</span> <span class="string">"json-file"</span> <span class="built_in">and</span> <span class="string">"journald"</span> logging drivers (<span class="keyword">go</span><span class="variable">t:</span> fluentd)</div></pre></td></tr></table></figure>
+<ul>
+<li>基于主机Agent的日志采集方式</li>
+</ul>
+<p>上文有说docker默认使用json-file作为日志输出，同时所有的日志都会以Json的形式存储于日志文件当中/var/lib/docker/containers/<contaner_id>/<container_id>-json.log</container_id></contaner_id></p>
+<p>通过对日志文件的收集，在满足中心化收集和处理容器日志的同时，还能支持对于单个容器的本地化操作。</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/efk.png" alt=""></p>
+<h3 id="日志输出规范"><a href="#日志输出规范" class="headerlink" title="日志输出规范"></a>日志输出规范</h3><p>除了日志收集以外，我们还需要对于用户操作产生的日志做相关性处理，由于在微服务模式下应用程序可能由不同的服务是由不同应用开发框架完成，因此对于日志规范更多是“约定大于实现”。通过在各个服务中添加当前用户信息即可如user-<uuid>即可。由于日志的输出本身是满足时间序列性的，因此可以通过用户标识，时间等维度通过Kibana查询相关的日志输出信息。</uuid></p>
+<h3 id="基于Fluentd搭建日志聚合分析平台"><a href="#基于Fluentd搭建日志聚合分析平台" class="headerlink" title="基于Fluentd搭建日志聚合分析平台"></a>基于Fluentd搭建日志聚合分析平台</h3><ul>
+<li>Fluentd是什么？</li>
+</ul>
+<p>Fluentd是一个开源的数据收集方案，用于统一数据的收集和处理。Fluentd通过类似于Data Pipeline的形式完成对日志以及其它格式化数据的统一收集和处理。</p>
+<p>同时提供了大量的插件用以支持各种不同的需求如，日志持久化，告警通知等等。</p>
+<ul>
+<li>在Rancher下部署Fluentd</li>
+</ul>
+<p>这里主要分享基于Fluentd在Rancher下搭建日志聚合分析相关工具的内容。</p>
+<blockquote>
+<p>用于示例的镜像可<a href="https://hub.docker.com/r/yunlzheng/fluent-es/" target="_blank" rel="external">点击查看详情</a></p>
+</blockquote>
+<p>创建fluentd配置文件内容如下所示：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">&lt;source&gt;</span></div><div class="line">  <span class="built_in">type</span> forward</div><div class="line">  port <span class="number">24224</span></div><div class="line">  bind <span class="number">0.0</span>.<span class="number">0.0</span></div><div class="line">&lt;/<span class="keyword">source</span>&gt;</div><div class="line"></div><div class="line"><span class="symbol">&lt;source&gt;</span></div><div class="line">  <span class="built_in">type</span> tail</div><div class="line">  path /var/lib/docker/containers/*/*-json.<span class="built_in">log</span></div><div class="line">  pos_file /fluentd/pos_file/fluentd-docker.pos</div><div class="line">  time_format %Y-%<span class="keyword">m</span>-%dT%H:%M:%S</div><div class="line">  <span class="keyword">tag</span> docker.*</div><div class="line">  format json</div><div class="line">&lt;/<span class="keyword">source</span>&gt;</div><div class="line"></div><div class="line">&lt;<span class="keyword">match</span> docker.var.lib.docker.containers.*.*.<span class="built_in">log</span>&gt;</div><div class="line">  <span class="built_in">type</span> record_reformer</div><div class="line">  container_id $&#123;tag_parts[<span class="number">5</span>]&#125;</div><div class="line">  <span class="keyword">tag</span> docker.<span class="keyword">all</span></div><div class="line">&lt;/<span class="keyword">match</span>&gt;</div><div class="line"></div><div class="line">&lt;<span class="keyword">match</span> *.*&gt;</div><div class="line">  <span class="built_in">type</span> elasticsearch</div><div class="line">  logstash_format true</div><div class="line">  host <span class="string">"elasticsearch"</span></div><div class="line">  port <span class="number">9200</span></div><div class="line">  flush_interval <span class="number">5</span>s</div><div class="line">&lt;/<span class="keyword">match</span>&gt;</div></pre></td></tr></table></figure>
+<p>这里我们添加了两个数据源分别是:</p>
+<ul>
+<li>forward以及tail，forward用于接收docker logging driver产生的日志;</li>
+<li>tail则实现对当前主机上的容器日志的统一收集。</li>
+</ul>
+<p>为了将Fluentd的部署到Rancher的所有主机上，通过在服务启动时添加标签<strong>io.rancher.scheduler.global=true</strong>即可，当容器启动后Rancher会自动将Fluentd容器部署到所有Envionment下的Host主机</p>
+<p>同时对主机的目录进行映射即可/var/lib/docker/containers:/var/lib/docker/containers</p>
+<p>这里已经在Docker HUb构建了用于示例的镜像可<a href="https://hub.docker.com/r/yunlzheng/fluent-es/" target="_blank" rel="external">点击查看详情</a></p>
+<p>用于部署Rancher的docker-compose内容如下：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">version</span>: <span class="string">'2'</span></div><div class="line"><span class="attribute">services</span>:</div><div class="line">  <span class="attribute">fluent-es</span>:</div><div class="line">    <span class="attribute">image</span>: yunlzheng/fluent-es</div><div class="line">    <span class="attribute">stdin_open</span>: true</div><div class="line">    <span class="attribute">tty</span>: true</div><div class="line">    <span class="attribute">ports</span>:</div><div class="line">    - <span class="number">24224</span>:<span class="number">24224</span>/tcp</div><div class="line">    <span class="attribute">external_links</span>:</div><div class="line">    - elasticsearch-<span class="number">2</span>/<span class="attribute">elasticsearch-masters</span>:elasticsearch</div><div class="line">    <span class="attribute">labels</span>:</div><div class="line">      io.rancher.container.<span class="attribute">pull_image</span>: always</div><div class="line">      io.rancher.scheduler.<span class="attribute">global</span>: true</div></pre></td></tr></table></figure>
+<p>完整Catalog示例可访问:<a href="https://github.com/yunlzheng/rancher-catalog/tree/master/templates/fluentd" target="_blank" rel="external">Github</a>获取</p>
+<p>Rancher Catalog中社区已经提供了ElasticSearch以及Kinana的相关Catalog，这里就不在过多说明了。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>日志聚合分析是支撑微服务架构应用的重要基础设施之一。同时通过对日志内容进行规范进行约定就可以达到对日志以及问题快速定位的需求，避免从技术层面引入更多的框架所引入的开发的复杂度。</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/kibana-demo.png" alt=""></p>
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/yunlzheng" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2017 云龙<br></p>
+                <p class="copyright text-muted">Powerby <a target="_blank" href="https://hexo.io/">Hexo</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

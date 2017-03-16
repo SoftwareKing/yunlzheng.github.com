@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yunlzheng.github.io/"/>
-  <updated>2017-03-14T07:27:57.000Z</updated>
+  <updated>2017-03-16T05:39:19.000Z</updated>
   <id>http://yunlzheng.github.io/</id>
   
   <author>
@@ -14,6 +14,117 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://yunlzheng.github.io/2017/03/16/fluentd-with-rancher-and-es/"/>
+    <id>http://yunlzheng.github.io/2017/03/16/fluentd-with-rancher-and-es/</id>
+    <published>2017-03-16T05:26:45.000Z</published>
+    <updated>2017-03-16T05:39:19.000Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote>
+<p>微服务是这样一种软件架构模式：独立进程，独立部署，独立发布。而一个业务通常会由多个服务进行支撑，这就带来一个问题，当用户的操作分布到了不同的服务当中之后，如果出现了异常开发人员如何才能快速完成问题定位？这篇文章我们就来聊聊关于日志的那些事儿</p>
+<p>关键字：Fluentd, Elasticsearch, Kibana，日志相关性定位</p>
+</blockquote>
+<h3 id="场景假设"><a href="#场景假设" class="headerlink" title="场景假设"></a>场景假设</h3><p>假定我们有这样一个项目：</p>
+<ul>
+<li>前端使用是独立构建的Vuejs应用程序；</li>
+<li>API Gateway代理所有的前端请求同时提供认证授权接口；</li>
+<li>对于所有后端服务的请求实际都由API Gateway完成；</li>
+<li>后端有4个不同的服务分别提供不同的功能；</li>
+</ul>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/api_gateway.png" alt="http://7pn5d3.com1.z0.glb.clouddn.com/api_gateway.png"></p>
+<p>基于微服务架构我们可以实现服务的独立部署，独立发布。而一个业务通常会由多个服务进行支撑，这就带来一个问题，当用户的操作分布到了不同的服务当中之后，如果出现了异常开发人员如何才能快速完成问题定位。</p>
+<h3 id="容器日志聚合"><a href="#容器日志聚合" class="headerlink" title="容器日志聚合"></a>容器日志聚合</h3><p>对于Docker容器而言，通常有两种方式来进行日志的聚合分析。</p>
+<ul>
+<li>docker logging driver</li>
+</ul>
+<p>docker原生支持多种logging driver用于支持用户从容器中获取输出信息</p>
+<table>
+<thead>
+<tr>
+<th>驱动</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>none</td>
+<td>容器不会产生任何日志输出，docker logs不会显示任何信息</td>
+</tr>
+<tr>
+<td>json-file</td>
+<td>默认设置，将日志格式化为json并且保存到文件</td>
+</tr>
+<tr>
+<td>syslog</td>
+<td>docker将会日志输出到syslog,需要在主机上运行syslog进程</td>
+</tr>
+<tr>
+<td>fluentd</td>
+<td>将日志输出到fluentd,fluentd需要提供forward源支持, docker logs无法查看日志信息</td>
+</tr>
+<tr>
+<td>其它</td>
+<td><a href="https://docs.docker.com/engine/admin/logging/overview/#supported-logging-drivers" target="_blank" rel="external">点击查看详情</a></td>
+</tr>
+</tbody>
+</table>
+<p>当使用默认的json-file方式时，所有的日志文件都输出到/var/lib/docker/containers/<contaner_id>/<container_id>-json.log</container_id></contaner_id></p>
+<p>以Fluentd为例</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker <span class="keyword">run</span><span class="bash"> --log-driver=fluentd ubuntu <span class="built_in">echo</span> <span class="string">"Hello Fluentd!"</span></span></div></pre></td></tr></table></figure>
+<p>对于垮主机的情况可以使用</p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --<span class="built_in">log</span>-<span class="built_in">driver</span>=fluentd --<span class="built_in">log</span>-opt fluentd-address=<span class="number">192.168</span>.<span class="number">50.101</span>:<span class="number">24225</span> ubuntu <span class="built_in">echo</span> <span class="string">"..."</span></div></pre></td></tr></table></figure>
+<p>同时通过log-opt我们可以定义fluentd收集时的日志标签等信息</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker run --<span class="built_in">log</span>-driver=fluentd --<span class="built_in">log</span>-<span class="keyword">opt</span> fluentd-<span class="keyword">tag</span>=docker.&#123;&#123;.ID&#125;&#125; ubuntu <span class="keyword">echo</span> <span class="string">"..."</span></div></pre></td></tr></table></figure>
+<p>而如上面的表所示，只有在logging driver为json-file或者journald时会才能支持使用docker logs查看日志信息，因此对于个别情况需要对单独容器进行容器查看的时候多少会带来很多麻烦，包括日志不实时\,查询复杂等。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ docker logs</div><div class="line"><span class="string">"logs"</span> <span class="keyword">command</span> <span class="keyword">is</span> supported <span class="keyword">only</span> <span class="keyword">for</span> <span class="string">"json-file"</span> <span class="built_in">and</span> <span class="string">"journald"</span> logging drivers (<span class="keyword">go</span><span class="variable">t:</span> fluentd)</div></pre></td></tr></table></figure>
+<ul>
+<li>基于主机Agent的日志采集方式</li>
+</ul>
+<p>上文有说docker默认使用json-file作为日志输出，同时所有的日志都会以Json的形式存储于日志文件当中/var/lib/docker/containers/<contaner_id>/<container_id>-json.log</container_id></contaner_id></p>
+<p>通过对日志文件的收集，在满足中心化收集和处理容器日志的同时，还能支持对于单个容器的本地化操作。</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/efk.png" alt=""></p>
+<h3 id="日志输出规范"><a href="#日志输出规范" class="headerlink" title="日志输出规范"></a>日志输出规范</h3><p>除了日志收集以外，我们还需要对于用户操作产生的日志做相关性处理，由于在微服务模式下应用程序可能由不同的服务是由不同应用开发框架完成，因此对于日志规范更多是“约定大于实现”。通过在各个服务中添加当前用户信息即可如user-<uuid>即可。由于日志的输出本身是满足时间序列性的，因此可以通过用户标识，时间等维度通过Kibana查询相关的日志输出信息。</uuid></p>
+<h3 id="基于Fluentd搭建日志聚合分析平台"><a href="#基于Fluentd搭建日志聚合分析平台" class="headerlink" title="基于Fluentd搭建日志聚合分析平台"></a>基于Fluentd搭建日志聚合分析平台</h3><ul>
+<li>Fluentd是什么？</li>
+</ul>
+<p>Fluentd是一个开源的数据收集方案，用于统一数据的收集和处理。Fluentd通过类似于Data Pipeline的形式完成对日志以及其它格式化数据的统一收集和处理。</p>
+<p>同时提供了大量的插件用以支持各种不同的需求如，日志持久化，告警通知等等。</p>
+<ul>
+<li>在Rancher下部署Fluentd</li>
+</ul>
+<p>这里主要分享基于Fluentd在Rancher下搭建日志聚合分析相关工具的内容。</p>
+<blockquote>
+<p>用于示例的镜像可<a href="https://hub.docker.com/r/yunlzheng/fluent-es/" target="_blank" rel="external">点击查看详情</a></p>
+</blockquote>
+<p>创建fluentd配置文件内容如下所示：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="symbol">&lt;source&gt;</span></div><div class="line">  <span class="built_in">type</span> forward</div><div class="line">  port <span class="number">24224</span></div><div class="line">  bind <span class="number">0.0</span>.<span class="number">0.0</span></div><div class="line">&lt;/<span class="keyword">source</span>&gt;</div><div class="line"></div><div class="line"><span class="symbol">&lt;source&gt;</span></div><div class="line">  <span class="built_in">type</span> tail</div><div class="line">  path /var/lib/docker/containers/*/*-json.<span class="built_in">log</span></div><div class="line">  pos_file /fluentd/pos_file/fluentd-docker.pos</div><div class="line">  time_format %Y-%<span class="keyword">m</span>-%dT%H:%M:%S</div><div class="line">  <span class="keyword">tag</span> docker.*</div><div class="line">  format json</div><div class="line">&lt;/<span class="keyword">source</span>&gt;</div><div class="line"></div><div class="line">&lt;<span class="keyword">match</span> docker.var.lib.docker.containers.*.*.<span class="built_in">log</span>&gt;</div><div class="line">  <span class="built_in">type</span> record_reformer</div><div class="line">  container_id $&#123;tag_parts[<span class="number">5</span>]&#125;</div><div class="line">  <span class="keyword">tag</span> docker.<span class="keyword">all</span></div><div class="line">&lt;/<span class="keyword">match</span>&gt;</div><div class="line"></div><div class="line">&lt;<span class="keyword">match</span> *.*&gt;</div><div class="line">  <span class="built_in">type</span> elasticsearch</div><div class="line">  logstash_format true</div><div class="line">  host <span class="string">"elasticsearch"</span></div><div class="line">  port <span class="number">9200</span></div><div class="line">  flush_interval <span class="number">5</span>s</div><div class="line">&lt;/<span class="keyword">match</span>&gt;</div></pre></td></tr></table></figure>
+<p>这里我们添加了两个数据源分别是:</p>
+<ul>
+<li>forward以及tail，forward用于接收docker logging driver产生的日志;</li>
+<li>tail则实现对当前主机上的容器日志的统一收集。</li>
+</ul>
+<p>为了将Fluentd的部署到Rancher的所有主机上，通过在服务启动时添加标签<strong>io.rancher.scheduler.global=true</strong>即可，当容器启动后Rancher会自动将Fluentd容器部署到所有Envionment下的Host主机</p>
+<p>同时对主机的目录进行映射即可/var/lib/docker/containers:/var/lib/docker/containers</p>
+<p>这里已经在Docker HUb构建了用于示例的镜像可<a href="https://hub.docker.com/r/yunlzheng/fluent-es/" target="_blank" rel="external">点击查看详情</a></p>
+<p>用于部署Rancher的docker-compose内容如下：</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">version</span>: <span class="string">'2'</span></div><div class="line"><span class="attribute">services</span>:</div><div class="line">  <span class="attribute">fluent-es</span>:</div><div class="line">    <span class="attribute">image</span>: yunlzheng/fluent-es</div><div class="line">    <span class="attribute">stdin_open</span>: true</div><div class="line">    <span class="attribute">tty</span>: true</div><div class="line">    <span class="attribute">ports</span>:</div><div class="line">    - <span class="number">24224</span>:<span class="number">24224</span>/tcp</div><div class="line">    <span class="attribute">external_links</span>:</div><div class="line">    - elasticsearch-<span class="number">2</span>/<span class="attribute">elasticsearch-masters</span>:elasticsearch</div><div class="line">    <span class="attribute">labels</span>:</div><div class="line">      io.rancher.container.<span class="attribute">pull_image</span>: always</div><div class="line">      io.rancher.scheduler.<span class="attribute">global</span>: true</div></pre></td></tr></table></figure>
+<p>完整Catalog示例可访问:<a href="https://github.com/yunlzheng/rancher-catalog/tree/master/templates/fluentd" target="_blank" rel="external">Github</a>获取</p>
+<p>Rancher Catalog中社区已经提供了ElasticSearch以及Kinana的相关Catalog，这里就不在过多说明了。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>日志聚合分析是支撑微服务架构应用的重要基础设施之一。同时通过对日志内容进行规范进行约定就可以达到对日志以及问题快速定位的需求，避免从技术层面引入更多的框架所引入的开发的复杂度。</p>
+<p><img src="http://7pn5d3.com1.z0.glb.clouddn.com/kibana-demo.png" alt=""></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;blockquote&gt;
+&lt;p&gt;微服务是这样一种软件架构模式：独立进程，独立部署，独立发布。而一个业务通常会由多个服务进行支撑，这就带来一个问题，当用户的操作分布到了不同的服务当中之后，如果出现了异常开发人员如何才能快速完成问题定位？这篇文章我们就来聊聊关于日志的那些事儿&lt;/p&gt;
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>API网关那些儿</title>
@@ -677,6 +788,102 @@
   </entry>
   
   <entry>
+    <title>Python查漏补缺</title>
+    <link href="http://yunlzheng.github.io/2016/04/21/basic_python/"/>
+    <id>http://yunlzheng.github.io/2016/04/21/basic_python/</id>
+    <published>2016-04-21T13:28:49.000Z</published>
+    <updated>2016-12-20T07:34:14.000Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="Python文件头"><a href="#Python文件头" class="headerlink" title="Python文件头"></a>Python文件头</h3><ul>
+<li>设置脚本执行解释器路径</li>
+</ul>
+<p>告诉操作系统执行脚本时调用/usr/bin下的python解释器</p>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/python</span></div></pre></td></tr></table></figure>
+<p>防止在/usr/bin路径下不存在python解释器的情况，从env设置中查找Python安装路径，再调用相应路径下的解释器</p>
+<figure class="highlight d"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/env python</span></div></pre></td></tr></table></figure>
+<ul>
+<li>设置脚本脚本编码格式</li>
+</ul>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># coding=utf-8</span></div></pre></td></tr></table></figure>
+<p>or</p>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># -*- coding: utf-8 -*-</span></div></pre></td></tr></table></figure>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><ul>
+<li>单行注释</li>
+</ul>
+<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># This is comment</span></div></pre></td></tr></table></figure>
+<ul>
+<li>多行注释</li>
+</ul>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">'''</div><div class="line">This is mutil line comment</div><div class="line">'''</div></pre></td></tr></table></figure>
+<ul>
+<li>函数说明</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_func</span><span class="params">()</span>:</span></div><div class="line">  <span class="string">'This is function doc you can show it by some_func.__doc__'</span></div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<h3 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h3><ul>
+<li>序列解包</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">values = <span class="number">1.</span> <span class="number">2.</span> <span class="number">3</span> # This is tuple</div><div class="line">x, y, z = values</div></pre></td></tr></table></figure>
+<ul>
+<li>相等性和同一性</li>
+</ul>
+<p>is运算符判定同一性而不是相等性</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="attr">x</span> = <span class="attr">y</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"><span class="attr">z</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"><span class="attr">x</span> == y <span class="comment"># True</span></div><div class="line"><span class="attr">x</span> == z <span class="comment"># True</span></div><div class="line">x is y <span class="comment"># True</span></div><div class="line">x is z <span class="comment"># False</span></div></pre></td></tr></table></figure>
+<ul>
+<li>列表与迭代</li>
+</ul>
+<p>当需要迭代一个巨大的序列时xrange会比range更高效，range函数一次产生整个序列，而xrange一次只创建一个数</p>
+<p>实现原理可以参考：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">irange</span>(<span class="title">object</span>):</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(<span class="keyword">self</span>, start, <span class="keyword">end</span>, step=<span class="number">1</span>)</span></span>:</div><div class="line">        <span class="keyword">self</span>.start = start</div><div class="line">        <span class="keyword">self</span>.<span class="keyword">end</span> = <span class="keyword">end</span></div><div class="line">        <span class="keyword">self</span>.step = step</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">next</span><span class="params">(<span class="keyword">self</span>)</span></span>:</div><div class="line">        <span class="keyword">if</span> <span class="keyword">self</span>.start + <span class="keyword">self</span>.step &gt;= <span class="keyword">self</span>.<span class="symbol">end:</span></div><div class="line">            raise StopIteration</div><div class="line">        <span class="keyword">self</span>.start = <span class="keyword">self</span>.start + <span class="keyword">self</span>.step</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.start</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(<span class="keyword">self</span>)</span></span>:</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name_<span class="number">_</span> == <span class="string">"__main__"</span>:</div><div class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> irange(<span class="number">1</span>, <span class="number">10</span>):</div><div class="line">        print x</div></pre></td></tr></table></figure>
+<ul>
+<li>编号迭代</li>
+</ul>
+<p>使用enumerate可以迭代索引-值</p>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> <span class="keyword">index</span>, <span class="keyword">str</span> in enumerate(strings):</div><div class="line">  pass</div></pre></td></tr></table></figure>
+<ul>
+<li>in <scope> 消除exec和evel的全局污染</scope></li>
+</ul>
+<p>限制exec执行的作用域只存在于scope当中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sqrt</div><div class="line">scope = &#123;&#125;</div><div class="line"><span class="keyword">exec</span> <span class="string">'sqrt = 1'</span> <span class="keyword">in</span> scope</div><div class="line">scope[<span class="string">'sqrt'</span>] <span class="comment"># 1</span></div></pre></td></tr></table></figure>
+<p>为evel提供命名空间</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">scope = &#123;&#125;</div><div class="line">scope[<span class="string">'x'</span>] = <span class="number">2</span></div><div class="line">scope[<span class="string">'y'</span>] = <span class="number">3</span></div><div class="line"><span class="function"><span class="title">eval</span><span class="params">(<span class="string">'x*y'</span>, scope)</span></span></div></pre></td></tr></table></figure>
+<h3 id="函数参数参数"><a href="#函数参数参数" class="headerlink" title="函数参数参数"></a>函数参数参数</h3><ul>
+<li>收集参数<em>和*</em></li>
+</ul>
+<p>python函数定义时的参数可以分为位置参数和关键字参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(greeting, name)</span>:</span></div><div class="line">  <span class="keyword">pass</span></div><div class="line"></div><div class="line">hello(<span class="string">"welcome"</span>, name=<span class="string">'world'</span>)</div></pre></td></tr></table></figure>
+<p>使用*收集其余的位置参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_func</span><span class="params">(*args)</span>:</span></div><div class="line">  <span class="keyword">pass</span> <span class="comment"># args is tuple</span></div><div class="line"></div><div class="line">some_func(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</div></pre></td></tr></table></figure>
+<p>使用**收集其余的关键字参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_func</span><span class="params">(*kargs)</span>:</span></div><div class="line">  <span class="keyword">pass</span> <span class="comment">#kargs is dict</span></div><div class="line"></div><div class="line">some_func(a=<span class="number">1</span>, b=<span class="number">2</span>, c=<span class="number">3</span>)</div></pre></td></tr></table></figure>
+<ul>
+<li>参数分配<em>和*</em></li>
+</ul>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">params = (<span class="number">1</span>, <span class="number">2</span>)</div><div class="line">some_func(<span class="name">*params</span>)</div></pre></td></tr></table></figure>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">params = &#123;<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'b'</span>:<span class="number">2</span>&#125;</div><div class="line"><span class="function"><span class="title">some_func</span><span class="params">(**params)</span></span></div></pre></td></tr></table></figure>
+<h3 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h3><ul>
+<li>私有化</li>
+</ul>
+<p>Python并没有真正的私有化支持</p>
+<p>使用双下划线,类内部使用双下划线开始的名称都被翻译为’_<classname>__<methodname>‘</methodname></classname></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Some</span></span>:</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__pri_method</span></span>:</div><div class="line">    print <span class="symbol">'you</span> can call <span class="keyword">this</span> fake <span class="keyword">private</span> method'</div><div class="line"></div><div class="line">s = <span class="type">Some</span>()</div><div class="line">s._Some__pri_method()</div></pre></td></tr></table></figure>
+<p>另外类的函数名称前包含单下划线的方法都不会被imports语句导入</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;Python文件头&quot;&gt;&lt;a href=&quot;#Python文件头&quot; class=&quot;headerlink&quot; title=&quot;Python文件头&quot;&gt;&lt;/a&gt;Python文件头&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;设置脚本执行解释器路径&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;告诉操作系统执行脚本
+    
+    </summary>
+    
+    
+      <category term="python" scheme="http://yunlzheng.github.io/tags/python/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Python函数式编程</title>
     <link href="http://yunlzheng.github.io/2016/04/21/functional-programming-with-python/"/>
     <id>http://yunlzheng.github.io/2016/04/21/functional-programming-with-python/</id>
@@ -897,102 +1104,6 @@
     
     </summary>
     
-    
-  </entry>
-  
-  <entry>
-    <title>Python查漏补缺</title>
-    <link href="http://yunlzheng.github.io/2016/04/21/basic_python/"/>
-    <id>http://yunlzheng.github.io/2016/04/21/basic_python/</id>
-    <published>2016-04-21T13:28:49.000Z</published>
-    <updated>2016-12-20T07:34:14.000Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="Python文件头"><a href="#Python文件头" class="headerlink" title="Python文件头"></a>Python文件头</h3><ul>
-<li>设置脚本执行解释器路径</li>
-</ul>
-<p>告诉操作系统执行脚本时调用/usr/bin下的python解释器</p>
-<figure class="highlight d"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/python</span></div></pre></td></tr></table></figure>
-<p>防止在/usr/bin路径下不存在python解释器的情况，从env设置中查找Python安装路径，再调用相应路径下的解释器</p>
-<figure class="highlight d"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#!/usr/bin/env python</span></div></pre></td></tr></table></figure>
-<ul>
-<li>设置脚本脚本编码格式</li>
-</ul>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># coding=utf-8</span></div></pre></td></tr></table></figure>
-<p>or</p>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># -*- coding: utf-8 -*-</span></div></pre></td></tr></table></figure>
-<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><ul>
-<li>单行注释</li>
-</ul>
-<figure class="highlight vala"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta"># This is comment</span></div></pre></td></tr></table></figure>
-<ul>
-<li>多行注释</li>
-</ul>
-<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">'''</div><div class="line">This is mutil line comment</div><div class="line">'''</div></pre></td></tr></table></figure>
-<ul>
-<li>函数说明</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_func</span><span class="params">()</span>:</span></div><div class="line">  <span class="string">'This is function doc you can show it by some_func.__doc__'</span></div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure>
-<h3 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h3><ul>
-<li>序列解包</li>
-</ul>
-<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">values = <span class="number">1.</span> <span class="number">2.</span> <span class="number">3</span> # This is tuple</div><div class="line">x, y, z = values</div></pre></td></tr></table></figure>
-<ul>
-<li>相等性和同一性</li>
-</ul>
-<p>is运算符判定同一性而不是相等性</p>
-<figure class="highlight nix"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="attr">x</span> = <span class="attr">y</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"><span class="attr">z</span> = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"><span class="attr">x</span> == y <span class="comment"># True</span></div><div class="line"><span class="attr">x</span> == z <span class="comment"># True</span></div><div class="line">x is y <span class="comment"># True</span></div><div class="line">x is z <span class="comment"># False</span></div></pre></td></tr></table></figure>
-<ul>
-<li>列表与迭代</li>
-</ul>
-<p>当需要迭代一个巨大的序列时xrange会比range更高效，range函数一次产生整个序列，而xrange一次只创建一个数</p>
-<p>实现原理可以参考：</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">irange</span>(<span class="title">object</span>):</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(<span class="keyword">self</span>, start, <span class="keyword">end</span>, step=<span class="number">1</span>)</span></span>:</div><div class="line">        <span class="keyword">self</span>.start = start</div><div class="line">        <span class="keyword">self</span>.<span class="keyword">end</span> = <span class="keyword">end</span></div><div class="line">        <span class="keyword">self</span>.step = step</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">next</span><span class="params">(<span class="keyword">self</span>)</span></span>:</div><div class="line">        <span class="keyword">if</span> <span class="keyword">self</span>.start + <span class="keyword">self</span>.step &gt;= <span class="keyword">self</span>.<span class="symbol">end:</span></div><div class="line">            raise StopIteration</div><div class="line">        <span class="keyword">self</span>.start = <span class="keyword">self</span>.start + <span class="keyword">self</span>.step</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.start</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(<span class="keyword">self</span>)</span></span>:</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name_<span class="number">_</span> == <span class="string">"__main__"</span>:</div><div class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> irange(<span class="number">1</span>, <span class="number">10</span>):</div><div class="line">        print x</div></pre></td></tr></table></figure>
-<ul>
-<li>编号迭代</li>
-</ul>
-<p>使用enumerate可以迭代索引-值</p>
-<figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> <span class="keyword">index</span>, <span class="keyword">str</span> in enumerate(strings):</div><div class="line">  pass</div></pre></td></tr></table></figure>
-<ul>
-<li>in <scope> 消除exec和evel的全局污染</scope></li>
-</ul>
-<p>限制exec执行的作用域只存在于scope当中</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> math <span class="keyword">import</span> sqrt</div><div class="line">scope = &#123;&#125;</div><div class="line"><span class="keyword">exec</span> <span class="string">'sqrt = 1'</span> <span class="keyword">in</span> scope</div><div class="line">scope[<span class="string">'sqrt'</span>] <span class="comment"># 1</span></div></pre></td></tr></table></figure>
-<p>为evel提供命名空间</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">scope = &#123;&#125;</div><div class="line">scope[<span class="string">'x'</span>] = <span class="number">2</span></div><div class="line">scope[<span class="string">'y'</span>] = <span class="number">3</span></div><div class="line"><span class="function"><span class="title">eval</span><span class="params">(<span class="string">'x*y'</span>, scope)</span></span></div></pre></td></tr></table></figure>
-<h3 id="函数参数参数"><a href="#函数参数参数" class="headerlink" title="函数参数参数"></a>函数参数参数</h3><ul>
-<li>收集参数<em>和*</em></li>
-</ul>
-<p>python函数定义时的参数可以分为位置参数和关键字参数</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(greeting, name)</span>:</span></div><div class="line">  <span class="keyword">pass</span></div><div class="line"></div><div class="line">hello(<span class="string">"welcome"</span>, name=<span class="string">'world'</span>)</div></pre></td></tr></table></figure>
-<p>使用*收集其余的位置参数</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_func</span><span class="params">(*args)</span>:</span></div><div class="line">  <span class="keyword">pass</span> <span class="comment"># args is tuple</span></div><div class="line"></div><div class="line">some_func(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>)</div></pre></td></tr></table></figure>
-<p>使用**收集其余的关键字参数</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">some_func</span><span class="params">(*kargs)</span>:</span></div><div class="line">  <span class="keyword">pass</span> <span class="comment">#kargs is dict</span></div><div class="line"></div><div class="line">some_func(a=<span class="number">1</span>, b=<span class="number">2</span>, c=<span class="number">3</span>)</div></pre></td></tr></table></figure>
-<ul>
-<li>参数分配<em>和*</em></li>
-</ul>
-<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">params = (<span class="number">1</span>, <span class="number">2</span>)</div><div class="line">some_func(<span class="name">*params</span>)</div></pre></td></tr></table></figure>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">params = &#123;<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'b'</span>:<span class="number">2</span>&#125;</div><div class="line"><span class="function"><span class="title">some_func</span><span class="params">(**params)</span></span></div></pre></td></tr></table></figure>
-<h3 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h3><ul>
-<li>私有化</li>
-</ul>
-<p>Python并没有真正的私有化支持</p>
-<p>使用双下划线,类内部使用双下划线开始的名称都被翻译为’_<classname>__<methodname>‘</methodname></classname></p>
-<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Some</span></span>:</div><div class="line">  <span class="function"><span class="keyword">def</span> <span class="title">__pri_method</span></span>:</div><div class="line">    print <span class="symbol">'you</span> can call <span class="keyword">this</span> fake <span class="keyword">private</span> method'</div><div class="line"></div><div class="line">s = <span class="type">Some</span>()</div><div class="line">s._Some__pri_method()</div></pre></td></tr></table></figure>
-<p>另外类的函数名称前包含单下划线的方法都不会被imports语句导入</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;Python文件头&quot;&gt;&lt;a href=&quot;#Python文件头&quot; class=&quot;headerlink&quot; title=&quot;Python文件头&quot;&gt;&lt;/a&gt;Python文件头&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;设置脚本执行解释器路径&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;告诉操作系统执行脚本
-    
-    </summary>
-    
-    
-      <category term="python" scheme="http://yunlzheng.github.io/tags/python/"/>
     
   </entry>
   
@@ -1737,53 +1848,6 @@
     
       &lt;p&gt;对于使用过OpenStack的用户，我们第一次操作虚拟机都可能是直接通过OpenStack Dashbord管理控制台提供的Web vnc来进行使用。&lt;/p&gt;
 &lt;p&gt;如图所示，我们可以很方便的使用该功能，对虚拟机进行管理和配置；&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="openstack" scheme="http://yunlzheng.github.io/tags/openstack/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>OpenStack之Neutron Vlan</title>
-    <link href="http://yunlzheng.github.io/2015/01/31/openstack-icehouse-vlan/"/>
-    <id>http://yunlzheng.github.io/2015/01/31/openstack-icehouse-vlan/</id>
-    <published>2015-01-30T16:00:34.000Z</published>
-    <updated>2016-12-20T07:34:14.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>如下图所示在基于Neutron的Vlan网络模式下，需要对交换机（L3）进行相应的配置, 一般可划分为3个基本网络：管理网络，用于Openstack内部API调用管理; 虚拟机网络，用于虚拟机之间的通讯；外部网络，用于连接外部网络，作为虚拟机的浮动IP来源；</p>
-<p>由于Vlan模式下，租户建立的网络都具有独立的Vlan标签，故需要利用交换机将虚机网络设置为trunk模式,如允许通过vlan tag 为800~2000网络，保证虚拟机之间能够正常通讯；</p>
-<a id="more"></a>
-<p><img src="http://filehost.qiniudn.com/openstack-icehouse-vlan.png" alt=""></p>
-<h2 id="Vlan模式主要配置内容"><a href="#Vlan模式主要配置内容" class="headerlink" title="Vlan模式主要配置内容"></a>Vlan模式主要配置内容</h2><ul>
-<li>修改控制节点配置信息</li>
-</ul>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/neutron/plugins/ml2/ml2_conf.ini</span></div><div class="line"><span class="section">[ml2]</span></div><div class="line"><span class="attr">type_drivers</span> = vlan</div><div class="line"><span class="section"></span></div><div class="line">[ml2_type_vlan]</div><div class="line"><span class="attr">network_vlan_ranges</span> = physnet1:<span class="number">800</span>:<span class="number">2000</span></div><div class="line"><span class="section"></span></div><div class="line">[ovs]</div><div class="line"><span class="attr">tenant_network_type</span> = vlan</div><div class="line"><span class="attr">bridge_mappings</span> = physnet1:br-em2</div></pre></td></tr></table></figure>
-<p>重启neutron-server服务</p>
-<figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service neutron-<span class="keyword">server</span> restart</div></pre></td></tr></table></figure>
-<ul>
-<li>网络节点和计算节点</li>
-</ul>
-<p>添加网桥用于虚拟机之间的通讯</p>
-<figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ovs-vsctl<span class="built_in"> add-br </span>br-em2</div><div class="line">ovs-vsctl<span class="built_in"> add-port </span>br-em2 em2</div></pre></td></tr></table></figure>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/neutron/plugins/ml2/ml2_conf.ini</span></div><div class="line"><span class="attr">type_drivers</span> = vlan</div><div class="line"><span class="section"></span></div><div class="line">[ml2_type_vlan]</div><div class="line"><span class="attr">network_vlan_ranges</span> = physnet1:<span class="number">800</span>:<span class="number">2000</span></div><div class="line"><span class="section"></span></div><div class="line">[ovs]</div><div class="line"><span class="attr">tenant_network_type</span> = vlan</div><div class="line"><span class="attr">bridge_mappings</span> = physnet1:br-em2</div></pre></td></tr></table></figure>
-<p>重启openvswitch agent服务</p>
-<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">service neutron-plugin-openvswitch-agent restart</span></div></pre></td></tr></table></figure>
-<ul>
-<li>网络节点创建外部网络网桥</li>
-</ul>
-<figure class="highlight smali"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ovs-vsctl<span class="built_in"> add-br </span>br-ext</div><div class="line">ovs-vsctl<span class="built_in"> add-port </span>br-ext em3</div></pre></td></tr></table></figure>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># vim /etc/neutron/l3_agent.ini</span></div><div class="line"><span class="attr">external_network_bridge</span> = br-ext</div></pre></td></tr></table></figure>
-<p>重启L3网络服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">service neutron<span class="_">-l</span>3-agent restart</div></pre></td></tr></table></figure>
-<h2 id="其他问题"><a href="#其他问题" class="headerlink" title="其他问题"></a>其他问题</h2><p>对于Neutron而言该项目提供了多种网络模式诸如: gre, vlan, xvlan等。 在最初采用gre网络模式的部署方案对于大部分业务场景都无异常，但是对于某些特定协议如VNC，windows的RDP远程桌面对虚拟机进行使用时，会导致远程桌面黑屏无法使用的问题，具体原因可能是和gre本身性能，或者是内部过滤器相关，但无定论； 在采用vlan模式部署后该问题消失</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;如下图所示在基于Neutron的Vlan网络模式下，需要对交换机（L3）进行相应的配置, 一般可划分为3个基本网络：管理网络，用于Openstack内部API调用管理; 虚拟机网络，用于虚拟机之间的通讯；外部网络，用于连接外部网络，作为虚拟机的浮动IP来源；&lt;/p&gt;
-&lt;p&gt;由于Vlan模式下，租户建立的网络都具有独立的Vlan标签，故需要利用交换机将虚机网络设置为trunk模式,如允许通过vlan tag 为800~2000网络，保证虚拟机之间能够正常通讯；&lt;/p&gt;
     
     </summary>
     
